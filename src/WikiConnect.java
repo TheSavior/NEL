@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -26,9 +27,10 @@ public class WikiConnect {
             	String query = scanner.nextLine();
             	query = query.toLowerCase().replace(' ', '_');
                 
-                // Statement
+            	// TODO: this can probably be simplified to a single query.
+                // Find matching pages
                 st = con.createStatement();
-                rs = st.executeQuery("SELECT * FROM page WHERE LOWER(page_title) = '" + query + "';");//MATCH(page_title) AGAINST('University_of_[Ww]ashington');");
+                rs = st.executeQuery("SELECT page_id, page_title, page_latest FROM page WHERE LOWER(page.page_title) = '" + query + "';");
 
                 int numCols = rs.getMetaData().getColumnCount();
                 
@@ -39,9 +41,19 @@ public class WikiConnect {
                 			System.out.print(" | ");
                 		}
                 		System.out.print("'" + rs.getString(i) + "'");
+                		
                 	}
                 	System.out.println("]");
+
+                    // Get recent changes for page_latest
+                /*    
+                    BigDecimal latestChange = rs.getBigDecimal(3);
+                    Statement st2 = con.createStatement();
+                    */
                 }
+                
+                rs.close();
+                st.close();
             }
 
 
