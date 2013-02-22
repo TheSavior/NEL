@@ -1,12 +1,6 @@
 package com.cse454.nel;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-
-import com.cse454.warmup.sf.SFConstants;
+import com.cse454.nel.extract.HistogramExtractor;
 import com.cse454.warmup.sf.retriever.ProcessedCorpus;
 
 public class Main {
@@ -15,6 +9,16 @@ public class Main {
 
 	public static void main(String[] args) {
 
+		try {
+			ProcessedCorpus corpus = new ProcessedCorpus();
+			HistogramExtractor extractor = new HistogramExtractor(corpus);
+			extractor.extract(null);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/*
 		BufferedWriter fos = null;
 		AbstractEntityExtractor extractor;
 		try {
@@ -53,6 +57,7 @@ public class Main {
 				}
 			}
 		}
+		*/
 	}
 
 	public static void usage() {

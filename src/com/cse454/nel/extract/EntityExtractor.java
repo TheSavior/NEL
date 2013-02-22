@@ -1,9 +1,10 @@
-package com.cse454.nel;
+package com.cse454.nel.extract;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.cse454.nel.Entity;
 import com.cse454.warmup.sf.SFConstants;
 
 /**
