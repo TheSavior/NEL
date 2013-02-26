@@ -43,7 +43,7 @@ public class EntityExtractor extends AbstractEntityExtractor {
 			}
 			String entityText = buffer.toString();
 			String span = startIndex + ":" + i;
-			entities.add(new Entity(entityText, span));
+			entities.add(new EntityMention(entityText, span));
 		}
 		return entities;
 	}

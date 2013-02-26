@@ -139,6 +139,11 @@ public class WikiConnect {
 		
 		return null;
 	}
+	
+	public List<Sentence> getFile(int docID) {
+		// TODO:
+		return null;
+	}
 
 	/**
 	 * @param args
