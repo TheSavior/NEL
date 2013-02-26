@@ -18,18 +18,25 @@ import com.cse454.warmup.tackbp.KbpConstants;
 /**
  * An iterator of sentences and their annotations from the corpus. Do not forget
  * to call close() after use.
- * 
+ *
  * @author xiaoling
- * 
+ *
  */
 public class ProcessedCorpus implements Iterator<Map<String, String>> {
+
+	private final String processedDocPath;
+
 	public ProcessedCorpus() throws Exception {
-		dataTypes = SFConstants.dataTypes;
-		init();
+		this(KbpConstants.processedDocPath, SFConstants.dataTypes);
 	}
 
-	public ProcessedCorpus(String[] dts) throws Exception {
+	public ProcessedCorpus(String docPath) throws Exception {
+		this(docPath, SFConstants.dataTypes);
+	}
+
+	public ProcessedCorpus(String docPath, String[] dts) throws Exception {
 		dataTypes = dts;
+		this.processedDocPath = docPath;
 		init();
 	}
 
@@ -38,7 +45,7 @@ public class ProcessedCorpus implements Iterator<Map<String, String>> {
 	protected Map<String, BufferedReader> dataReaders = null;
 
 	protected Map<String, String> cur = null;
-	
+
 	// caching the line when hasNext is called.
 	protected String cache = null;
 
@@ -50,7 +57,7 @@ public class ProcessedCorpus implements Iterator<Map<String, String>> {
 		}
 		for (String dataType : dataTypes) {
 			try {
-				String filename = KbpConstants.processedDocPath
+				String filename = processedDocPath
 						+ SFConstants.prefix + "." + dataType;
 				if (new File(filename).exists()) {
 					BufferedReader reader = new BufferedReader(

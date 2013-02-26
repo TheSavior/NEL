@@ -3,7 +3,7 @@ package com.cse454.warmup.tackbp;
 
 public class KbpConstants {
 	// the data folder. TODO CHANGE it if you mount the volume elsewhere.
-	public static String rootPath = "/Users/andrewrogers/AmazonEC2/kbp2/data/";
+	public static String rootPath = "/Users/andrewrogers/AmazonEC2/kbp/data/";
 
 	public static final String processedDocPath = rootPath + "09nw/";;
 

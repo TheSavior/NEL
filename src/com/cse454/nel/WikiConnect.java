@@ -6,29 +6,34 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
 public class WikiConnect {
-	
-	private Connection connection;
-	
+
+	protected static String defaultUrl = "jdbc:mysql://54.244.244.3:3306/wikidb";
+	protected static String defaultUser = "god";
+	protected static String defaultPassword = "jesus";
+
+	protected Connection connection;
+
 	public WikiConnect() throws SQLException {
-        connection = DriverManager.getConnection(
-        		"jdbc:mysql://54.244.244.3:3306/wikidb",
-        		"god", "jesus");
+        this(defaultUrl, defaultUser, defaultPassword);
 	}
-	
+
+	public WikiConnect(String url, String user, String password) throws SQLException {
+		connection = DriverManager.getConnection(url, user, password);
+	}
+
 	private void GetPages(String query, Map<String, String> pages, Set<String> redirects) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
-		
+
 		try {
 			st = connection.createStatement();
 			rs = st.executeQuery("SELECT page_id, page_title, page_is_redirect, page_latest FROM page WHERE page_title LIKE '"+query+"' AND page_namespace = 0;");
-			
+
 			int numCols = rs.getMetaData().getColumnCount();
 			while (rs.next()) {
 				System.out.print("[");
@@ -38,9 +43,9 @@ public class WikiConnect {
 					}
 					System.out.print("'" + rs.getString(i) + "'");
 				}
-			
+
 				System.out.println("]");
-	    	
+
 				// If this is a redirect
 				if (rs.getBoolean(3)) {
 					redirects.add(rs.getString(1));
@@ -54,22 +59,22 @@ public class WikiConnect {
 			if (st != null) {
 				st.close();
 			}
-			
+
 			if (rs != null) {
 				rs.close();
 			}
 		}
 	}
-	
+
 	public void Search(String query) throws Exception {
 		query = query.toLowerCase().replace(' ', '_').replaceAll("'", "\\'");
 
 		Map<String, String> pages = new HashMap<String, String>();
 		Set<String> redirects = new HashSet<String>();
-		
+
 		// Get a list of pages
 		GetPages(query, pages, redirects);
-		
+
 		// Go through redirects and pull out all links
 		while (!redirects.isEmpty()) {
 			String redirect = redirects.iterator().next();
@@ -80,19 +85,19 @@ public class WikiConnect {
 			try {
 				st = connection.createStatement();
 				rs = st.executeQuery("SELECT pl_title FROM pagelinks WHERE pl_from = "+redirect+" AND pl_namespace = 0;");
-				
+
 				while (rs.next()) {
 					System.out.println("\t\t" + rs.getString(1));
 					GetPages(rs.getString(1), pages, redirects);
 				}
-			
+
 			} catch (Exception e) {
 				throw e;
 			} finally {
 				if (st != null) {
 					st.close();
 				}
-				
+
 				if (rs != null) {
 					rs.close();
 				}
@@ -100,12 +105,12 @@ public class WikiConnect {
 			redirects.remove(redirect);
 		}
 	}
-	
+
 	/**
 	 * Returns the wiki article text for the given id. Does not sanitize pageID
 	 * @param pageID
 	 * @return
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public String GetWikiText(String pageID) throws Exception {
 		Statement st = null;
@@ -114,11 +119,11 @@ public class WikiConnect {
 		try {
 			st = connection.createStatement();
 			rs = st.executeQuery("SELECT page_latest FROM page WHERE page_id = "+pageID+";");
-			
+
 			if (rs.next()) {
 				String page_latest = rs.getString(1);
 				System.out.println("page_latest = " + page_latest);
-				
+
 				rs.close();
 		//		rs = st.executeQuery("SELECT ")
 				// TODO: here
@@ -131,18 +136,18 @@ public class WikiConnect {
 			if (st != null) {
 				st.close();
 			}
-			
+
 			if (rs != null) {
 				rs.close();
 			}
 		}
-		
+
 		return null;
 	}
 
 	/**
 	 * @param args
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
 	public static void main(String[] args) throws SQLException {
 		Scanner scanner = new Scanner(System.in);
