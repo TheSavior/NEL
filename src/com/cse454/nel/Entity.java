@@ -8,10 +8,8 @@ package com.cse454.nel;
 public class Entity {
 
 	private String wikiID;
-	private EntityMention mention;
 
-	public Entity(String wikiID, EntityMention mention) {
+	public Entity(String wikiID) {
 		this.wikiID = wikiID;
-		this.mention = mention;
 	}
 }

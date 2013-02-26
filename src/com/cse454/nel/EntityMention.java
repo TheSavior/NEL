@@ -4,14 +4,15 @@ import java.util.List;
 
 public class EntityMention {
 	int sentenceID;
-	int tokStart, tokEnd;
+	int tokStart, numToks;
 	String mentionString;
 	public List<Entity> candidates;
 	
-	public EntityMention(int sentenceID, int tokStart, int tokEnd) {
+	public EntityMention(int sentenceID, String mention, int tokStart, int numToks) {
 		this.sentenceID = sentenceID;
 		this.tokStart = tokStart;
-		this.tokEnd = tokEnd;
+		this.numToks = numToks;
+		this.mentionString = mention;
 		candidates = null;
 	}
 
@@ -20,7 +21,7 @@ public class EntityMention {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + sentenceID;
-		result = prime * result + tokEnd;
+		result = prime * result + numToks;
 		result = prime * result + tokStart;
 		return result;
 	}
@@ -36,27 +37,10 @@ public class EntityMention {
 		EntityMention other = (EntityMention) obj;
 		if (sentenceID != other.sentenceID)
 			return false;
-		if (tokEnd != other.tokEnd)
+		if (numToks != other.numToks)
 			return false;
 		if (tokStart != other.tokStart)
 			return false;
 		return true;
 	}
-
-/*
-	@Override
-	public boolean equals(Object obj) {
-		if (!(obj instanceof Entity)) {
-			return false;
-		}
-		Entity ent = (Entity) obj;
-		return this.mEntityText.equals(ent.mEntityText);
-	}
-
-	@Override
-	public int hashCode() {
-		int hash = 5;
-        hash = 89 * hash + this.mEntityText.hashCode();
-        return hash;
-	}*/
 }
