@@ -13,6 +13,8 @@ public class SFConstants {
 
 	public static final String STANFORDPOS = "stanfordpos";
 
+	public static final String ARTICLE_IDS = "articleIDs";
+
 	public static final String TOKEN_SPANS = "tokenSpans";
 
 	public static final String TOKENS = "tokens.fixed";
