@@ -69,7 +69,7 @@ public class PopulateSentences {
 	static class PopulateConnect extends MySQLConnect {
 
 		public PopulateConnect() throws SQLException {
-			super("54.244.244.3:3306", "sentences");
+			super(defaultUrl, "sentences");
 		}
 
 		public void populateSentenceRow(int id, int docId, String tokens, String ner) throws Exception {

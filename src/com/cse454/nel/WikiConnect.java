@@ -12,7 +12,6 @@ import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
 
-	protected static String defaultUrl = "54.244.244.3:3306";
 	protected static String defaultDB = "wikidb";
 
 	protected Connection connection;
@@ -139,7 +138,7 @@ public class WikiConnect extends MySQLConnect {
 
 		return null;
 	}
-	
+
 	public List<Sentence> getFile(int docID) {
 		// TODO:
 		return null;
