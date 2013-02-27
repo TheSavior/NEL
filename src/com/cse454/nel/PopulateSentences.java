@@ -66,12 +66,10 @@ public class PopulateSentences {
 		}
 	}
 
-	static class PopulateConnect extends WikiConnect {
-
-		private static String sentencesDb = "jdbc:mysql://54.244.244.3:3306/sentences";
+	static class PopulateConnect extends MySQLConnect {
 
 		public PopulateConnect() throws SQLException {
-			super(sentencesDb, defaultUser, defaultPassword);
+			super("54.244.244.3:3306", "sentences");
 		}
 
 		public void populateSentenceRow(int id, int docId, String tokens, String ner) throws Exception {

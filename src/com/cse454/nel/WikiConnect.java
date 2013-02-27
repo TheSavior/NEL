@@ -1,29 +1,24 @@
 package com.cse454.nel;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class WikiConnect {
+public class WikiConnect extends MySQLConnect {
 
-	protected static String defaultUrl = "jdbc:mysql://54.244.244.3:3306/wikidb";
-	protected static String defaultUser = "god";
-	protected static String defaultPassword = "jesus";
+	protected static String defaultUrl = "54.244.244.3:3306";
+	protected static String defaultDB = "wikidb";
 
 	protected Connection connection;
 
 	public WikiConnect() throws SQLException {
-        this(defaultUrl, defaultUser, defaultPassword);
-	}
-
-	public WikiConnect(String url, String user, String password) throws SQLException {
-		connection = DriverManager.getConnection(url, user, password);
+        super(defaultUrl, defaultDB);
 	}
 
 	private void GetPages(String query, Map<String, String> pages, Set<String> redirects) throws Exception {
@@ -142,6 +137,11 @@ public class WikiConnect {
 			}
 		}
 
+		return null;
+	}
+	
+	public List<Sentence> getFile(int docID) {
+		// TODO:
 		return null;
 	}
 

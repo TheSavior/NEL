@@ -2,9 +2,9 @@ package com.cse454.nel.extract;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import com.cse454.nel.Entity;
+import com.cse454.nel.EntityMention;
+import com.cse454.nel.Sentence;
 import com.cse454.warmup.sf.SFConstants;
 
 /**
@@ -17,8 +17,8 @@ import com.cse454.warmup.sf.SFConstants;
 public class EntityExtractor extends AbstractEntityExtractor {
 
 	@Override
-	public List<Entity> extract(Map<String, String> annotations) {
-		List<Entity> entities = new ArrayList<Entity>();
+	public List<EntityMention> extract(List<Sentence> annotations) {
+		List<EntityMention> entities = new ArrayList<EntityMention>();
 
 		String[] split;
 		split = annotations.get(SFConstants.TOKENS).split("\t");
@@ -43,7 +43,7 @@ public class EntityExtractor extends AbstractEntityExtractor {
 			}
 			String entityText = buffer.toString();
 			String span = startIndex + ":" + i;
-			entities.add(new Entity(entityText, span));
+			entities.add(new EntityMention(-1, entityText, startIndex, i));
 		}
 		return entities;
 	}
