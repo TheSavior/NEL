@@ -18,14 +18,15 @@ public class DocumentProcessor {
 		this.docID = docID;
 	}
 
-	public void run() throws SQLException {
+	public void run() throws Exception {
+		WikiConnect wiki = new WikiConnect();
 		SentenceConnect docs = new SentenceConnect();
 		List<Sentence> sentences = docs.getDocument(this.docID);
 
 		AbstractEntityExtractor extractor = new BasicExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
 
-		AbstractSearcher searcher = new BasicSearcher();
+		AbstractSearcher searcher = new BasicSearcher(wiki);
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}

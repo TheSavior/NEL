@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
@@ -17,21 +16,26 @@ public class WikiConnect extends MySQLConnect {
         super(defaultUrl, defaultDB);
 	}
 
-	private void GetPages(String query, Map<String, String> pages, Set<String> redirects) throws Exception {
+	/**
+	 * 
+	 * @param query
+	 * @param pages a map of <page_id, page_latest>
+	 * @param redirects
+	 * @throws Exception
+	 */
+	public void GetPages(String query, Map<String, String> pages, Set<String> redirects) throws Exception {
 		Statement st = null;
 		ResultSet rs = null;
 
 		try {
 			st = connection.createStatement();
-			rs = st.executeQuery("SELECT page_id, page_is_redirect, page_latest FROM page WHERE page_title LIKE '"+query+"' AND page_namespace = 0;");
+			rs = st.executeQuery("SELECT page_id, page_is_redirect, page_latest FROM page WHERE page_title LIKE '"+query.replaceAll("'", "''")+"' AND page_namespace = 0;");
 
 			while (rs.next()) {
 				// If this is a redirect
 				if (!rs.getBoolean(2)) {
-					System.out.println("Page: " + rs.getString(1));
 					pages.put(rs.getString(1), rs.getString(3));
 				} else if (redirects != null) {
-					System.out.println("Redirect: " + rs.getString(1));
 					redirects.add(rs.getString(1));
 				}
 			}
@@ -47,42 +51,62 @@ public class WikiConnect extends MySQLConnect {
 			}
 		}
 	}
+	
+	/**
+	 * Does not sanitize pageID
+	 * @param pages a map of <page_id, page_latest>
+	 * @param pageID
+	 * @throws Exception
+	 */
+	public void GetPageLinks(Map<String, String> pages, String pageID) throws Exception {
+		Statement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.createStatement();
+			rs = st.executeQuery("SELECT pl_title FROM pagelinks WHERE pl_from = "+pageID+" AND pl_namespace = 0;");
+
+			while (rs.next()) {
+				GetPages(rs.getString(1), pages, null);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null) {
+				st.close();
+			}
+
+			if (rs != null) {
+				rs.close();
+			}
+		}
+	}
 
 	public void Search(String query) throws Exception {
-		query = query.toLowerCase().replace(' ', '_').replaceAll("'", "\\'");
+		// Sanitize the query, and convert to wikipedia format (i.e. spaces become underscores)
+		query = query.replace(' ', '_');
 
+		// Get a list of matching pages
 		Map<String, String> pages = new HashMap<String, String>();
 		Set<String> redirects = new HashSet<String>();
-
-		// Get a list of pages
 		GetPages(query, pages, redirects);
-		GetPages(query + "_(disambiguation)", pages, redirects);
+		
+		// Now find all (if any) disambiguation links.
+		// 1. pull up disambiguation page
+		Map<String, String> disam_pages = new HashMap<String, String>();
+		GetPages(query + "_(disambiguation)", disam_pages, redirects);
+		
+		// 2. Extract links from the disam page
+		for (Entry<String, String> entry : disam_pages.entrySet()) {
+			//System.out.println("Disam: " + entry.getKey());
+			GetPageLinks(pages, entry.getKey());
+		}
+		
 		// Go through redirects and pull out all links
 		while (!redirects.isEmpty()) {
 			String redirect = redirects.iterator().next();
-
-			Statement st = null;
-			ResultSet rs = null;
-			System.out.println(redirect);
-			try {
-				st = connection.createStatement();
-				rs = st.executeQuery("SELECT pl_title FROM pagelinks WHERE pl_from = "+redirect+" AND pl_namespace = 0;");
-
-				while (rs.next()) {
-					GetPages(rs.getString(1), pages, null);
-				}
-
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				if (st != null) {
-					st.close();
-				}
-
-				if (rs != null) {
-					rs.close();
-				}
-			}
+			GetPageLinks(pages, redirect);
 			redirects.remove(redirect);
 		}
 		
@@ -94,6 +118,28 @@ public class WikiConnect extends MySQLConnect {
 			if (rs.next()) {
 				System.out.println(page.getKey() + ": " + rs.getString(1));
 			}
+		}
+	}
+	
+	public String GetArticleName(String pageID) throws Exception {
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			st = connection.createStatement();
+			rs = st.executeQuery("SELECT page_title FROM page WHERE page_id = "+pageID+";");
+			
+			if (rs.next()) {
+				return rs.getString(1);
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
 		}
 	}
 
@@ -136,25 +182,4 @@ public class WikiConnect extends MySQLConnect {
 		return null;
 	}
 
-	/**
-	 * @param args
-	 * @throws SQLException
-	 */
-	public static void main(String[] args) throws SQLException {
-		Scanner scanner = new Scanner(System.in);
-		WikiConnect connect = new WikiConnect();
-		//SentenceConnect connect = new SentenceConnect();
-		
-		while (true) {
-			System.out.print("Enter a query: ");
-			String query = scanner.nextLine();
-
-			try {
-				connect.Search(query);
-				//connect.getDocument(Integer.valueOf(query));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-    }
 }

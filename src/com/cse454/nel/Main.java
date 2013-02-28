@@ -1,6 +1,5 @@
 package com.cse454.nel;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class Main {
 							DocumentProcessor process = new DocumentProcessor(counter);
 							process.run();
 							counter++;
-						} catch (SQLException e) {
+						} catch (Exception e) {
 							System.err.println("Error processing document: " + counter);
 							e.printStackTrace();
 						}
