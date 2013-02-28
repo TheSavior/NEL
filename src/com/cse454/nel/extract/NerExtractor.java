@@ -13,7 +13,7 @@ import com.cse454.nel.Sentence;
  * @author andrewrogers
  *
  */
-public class BasicExtractor extends AbstractEntityExtractor {
+public class NerExtractor extends AbstractEntityExtractor {
 
 	@Override
 	public List<EntityMention> extract(List<Sentence> sentences) {
@@ -33,14 +33,14 @@ public class BasicExtractor extends AbstractEntityExtractor {
 				}
 				int startIndex = i;
 				StringBuffer buffer = new StringBuffer(tokens[i]);
-				while (i < numTokens && ner[i].equals(ner[i + 1])) {
+				while (i < numTokens - 1 && ner[i].equals(ner[i + 1])) {
 					i++;
 					buffer.append(" " + tokens[i]);
 				}
 				String entityText = buffer.toString();
 				int numToks = i - startIndex;
 				EntityMention entity = new EntityMention(sentenceID, entityText, startIndex, numToks);
-				entities.add(new EntityMention(-1, entityText, startIndex, i));
+				entities.add(new EntityMention(sentenceID, entityText, startIndex, i));
 			}
 		}
 		return entities;
