@@ -5,7 +5,7 @@ import java.util.List;
 public class EntityMention {
 	int sentenceID;
 	int tokStart, numToks;
-	String mentionString;
+	public String mentionString;
 	public List<Entity> candidates;
 	
 	public EntityMention(int sentenceID, String mention, int tokStart, int numToks) {
