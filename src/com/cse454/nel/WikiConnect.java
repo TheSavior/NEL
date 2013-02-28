@@ -159,11 +159,23 @@ public class WikiConnect extends MySQLConnect {
 
 			if (rs.next()) {
 				String page_latest = rs.getString(1);
-				System.out.println("page_latest = " + page_latest);
 
 				rs.close();
-		//		rs = st.executeQuery("SELECT ")
-				// TODO: here
+				rs = st.executeQuery("SELECT rev_text_id FROM revision WHERE rev_id = " + page_latest + ";");
+				
+				if (rs.next()) {
+					String rev_text_id = rs.getString(1);
+					
+					rs.close();
+					rs = st.executeQuery("SELECT old_text FROM text WHERE old_id = " + rev_text_id + ";");
+					if (rs.next()) {
+						return rs.getString(1);
+					} else {
+						throw new Exception("No Text For Page With Old ID = " + rev_text_id);
+					}
+				} else {
+					throw new Exception("No Page With Rev ID: " + page_latest);
+				}
 			} else {
 				throw new Exception("No Page With ID: " + pageID);
 			}
@@ -178,8 +190,6 @@ public class WikiConnect extends MySQLConnect {
 				rs.close();
 			}
 		}
-
-		return null;
 	}
 
 }
