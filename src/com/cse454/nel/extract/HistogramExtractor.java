@@ -21,7 +21,7 @@ public class HistogramExtractor {
 	}
 
 	public void extract(BufferedWriter out) {
-		EntityExtractor entityExtractor = new EntityExtractor();
+		BasicExtractor entityExtractor = new BasicExtractor();
 		Map<String, String> annotations = null;
 		while(mCorpus.hasNext()) {
 			if (annotations == null) {

@@ -13,7 +13,7 @@ import com.cse454.nel.Sentence;
  * @author andrewrogers
  *
  */
-public class EntityExtractor extends AbstractEntityExtractor {
+public class BasicExtractor extends AbstractEntityExtractor {
 
 	@Override
 	public List<EntityMention> extract(List<Sentence> sentences) {

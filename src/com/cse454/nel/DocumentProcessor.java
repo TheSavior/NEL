@@ -6,7 +6,7 @@ import java.util.List;
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
 import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
-import com.cse454.nel.extract.EntityExtractor;
+import com.cse454.nel.extract.BasicExtractor;
 import com.cse454.nel.search.AbstractSearcher;
 import com.cse454.nel.search.BasicSearcher;
 
@@ -22,7 +22,7 @@ public class DocumentProcessor {
 		WikiConnect wiki = new WikiConnect();
 		List<Sentence> sentences = wiki.getFile(this.docID);
 
-		AbstractEntityExtractor extractor = new EntityExtractor();
+		AbstractEntityExtractor extractor = new BasicExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		AbstractSearcher searcher = new BasicSearcher();
