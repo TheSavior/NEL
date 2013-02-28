@@ -19,19 +19,19 @@ public class Test {
 		WikiConnect wiki = new WikiConnect();
 		SentenceConnect docs = new SentenceConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
-		
+
 		while (true) {
 			System.out.print("Enter a query: ");
 			String query = scanner.nextLine();
 
 			try {
-				//System.out.println(wiki.GetCleanedWikiText(query));
-				EntityMention mention = new EntityMention(0, query, 0, 0);
+				System.out.println(wiki.GetCleanedWikiText(query));
+				/*EntityMention mention = new EntityMention(0, query, 0, 0);
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {
 					System.out.println(ent.wikiID + ": " + wiki.GetArticleName(ent.wikiID));
 				}
-				//docs.getDocument(Integer.valueOf(query));
+				docs.getDocument(Integer.valueOf(query)); */
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
