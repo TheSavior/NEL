@@ -39,8 +39,7 @@ public class NerExtractor extends AbstractEntityExtractor {
 				}
 				String entityText = buffer.toString();
 				int numToks = i - startIndex;
-				EntityMention entity = new EntityMention(sentenceID, entityText, startIndex, numToks);
-				entities.add(new EntityMention(sentenceID, entityText, startIndex, i));
+				entities.add(new EntityMention(sentenceID, entityText, startIndex, numToks));
 			}
 		}
 		return entities;

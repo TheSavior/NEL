@@ -12,7 +12,7 @@ import com.cse454.nel.EntityMention;
 import com.cse454.nel.WikiConnect;
 
 public class BasicSearcher extends AbstractSearcher {
-
+	
 	private WikiConnect wiki;
 	
 	public BasicSearcher(WikiConnect wiki) {
@@ -34,9 +34,20 @@ public class BasicSearcher extends AbstractSearcher {
 		Map<String, String> disam_pages = new HashMap<String, String>();
 		wiki.GetPages(query + "_(disambiguation)", disam_pages, redirects);
 		
-		// 2. Extract links from the disam page
+		// 2. Make sure matching regular pages aren't actually disambiguation pages (e.x. 'Chilean')
+		for (Entry<String, String> entry : new HashSet<Entry<String, String>>(pages.entrySet())) {
+			System.out.println("Page<" + entry.getKey() + ", " + entry.getValue() +">");
+			String text = wiki.GetWikiTextFromPageLatest(entry.getValue());
+			if (text.contains("{{disambig")) {
+				disam_pages.put(entry.getKey(), entry.getValue());
+				pages.remove(entry.getKey());
+				System.out.println("-->Disambig");
+			}
+		}
+		
+		// 3. Extract links from the disam page
 		for (Entry<String, String> entry : disam_pages.entrySet()) {
-			//System.out.println("Disam: " + entry.getKey());
+			System.out.println("Disambig<" + entry.getKey() + ", " + entry.getValue() +">");
 			wiki.GetPageLinks(pages, entry.getKey());
 		}
 		
