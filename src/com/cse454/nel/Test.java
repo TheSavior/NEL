@@ -13,6 +13,7 @@ public class Test {
 	 * @param args
 	 * @throws SQLException
 	 */
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException {
 		scanner = new Scanner(System.in);
 		WikiConnect wiki = new WikiConnect();
@@ -24,7 +25,7 @@ public class Test {
 			String query = scanner.nextLine();
 
 			try {
-				System.out.println(wiki.GetWikiText(query));
+				System.out.println(wiki.GetCleanedWikiText(query));
 				/*EntityMention mention = new EntityMention(0, query, 0, 0);
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {

@@ -2,10 +2,7 @@ package com.cse454.nel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
@@ -82,44 +79,6 @@ public class WikiConnect extends MySQLConnect {
 			}
 		}
 	}
-
-	public void Search(String query) throws Exception {
-		// Sanitize the query, and convert to wikipedia format (i.e. spaces become underscores)
-		query = query.replace(' ', '_');
-
-		// Get a list of matching pages
-		Map<String, String> pages = new HashMap<String, String>();
-		Set<String> redirects = new HashSet<String>();
-		GetPages(query, pages, redirects);
-		
-		// Now find all (if any) disambiguation links.
-		// 1. pull up disambiguation page
-		Map<String, String> disam_pages = new HashMap<String, String>();
-		GetPages(query + "_(disambiguation)", disam_pages, redirects);
-		
-		// 2. Extract links from the disam page
-		for (Entry<String, String> entry : disam_pages.entrySet()) {
-			//System.out.println("Disam: " + entry.getKey());
-			GetPageLinks(pages, entry.getKey());
-		}
-		
-		// Go through redirects and pull out all links
-		while (!redirects.isEmpty()) {
-			String redirect = redirects.iterator().next();
-			GetPageLinks(pages, redirect);
-			redirects.remove(redirect);
-		}
-		
-		for (Entry<String, String> page : pages.entrySet()) {
-			Statement st = null;
-			ResultSet rs = null;
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT page_title FROM page WHERE page_id = "+page.getKey()+";");
-			if (rs.next()) {
-				System.out.println(page.getKey() + ": " + rs.getString(1));
-			}
-		}
-	}
 	
 	public String GetArticleName(String pageID) throws Exception {
 		Statement st = null;
@@ -141,6 +100,34 @@ public class WikiConnect extends MySQLConnect {
 			if (rs != null)
 				rs.close();
 		}
+	}
+	
+	private String replaceWhileEffective(String str, String rgx, String replace) {
+		String oldStr;
+		do {
+			oldStr = str;
+			str = str.replaceAll(rgx, replace);
+		} while (str != oldStr);
+		return str;
+	}
+	
+	public String GetCleanedWikiText(String pageID) throws Exception {
+		String text = GetWikiText(pageID);
+		
+		text = text.replaceAll("#REDIRECT", "");			// Redirects
+		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
+		text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives
+
+		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";	
+		String innerDoubleBracketRgx = 
+				"(?s:\\[\\[" +				// opening brackets
+					"(?:" + noDoubleBracketRgx + "\\|)*?" + // stuff before visible text
+					"(" + noDoubleBracketRgx + ")\\|?" +	// visible text
+				"\\]\\])";
+		text = replaceWhileEffective(text, innerDoubleBracketRgx, "$1"); // [[ ... ]] links
+		text = text.replaceAll("<[^>]+>", ""); // html
+		
+		return text;
 	}
 
 	/**

@@ -77,7 +77,8 @@ public class SFScore {
      *  scores response file against key file
      */
 
-    public static void main (String[] args) throws IOException {
+    @SuppressWarnings("unused")
+	public static void main (String[] args) throws IOException {
 
 	if (args.length < 2 || args.length > 6) {
 	    System.out.println ("SlotScorer must be invoked with 2 to 6 arguments:");
@@ -398,7 +399,8 @@ public class SFScore {
      *  reads a series of lines from 'fileName' and returns them as a list of Strings
      */
 
-    static List<String> readLines (String fileName) {
+    @SuppressWarnings("resource")
+	static List<String> readLines (String fileName) {
 	BufferedReader reader = null;
 	List<String> lines = new ArrayList<String>();
 	try {
