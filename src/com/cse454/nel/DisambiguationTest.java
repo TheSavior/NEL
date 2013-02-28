@@ -39,6 +39,9 @@ public class DisambiguationTest {
 			Map<EntityMention, Entity> map = disambiguator.disambiguate(mentions);
 
 			for (Entry<EntityMention, Entity> entry : map.entrySet()) {
+				if (entry == null || entry.getValue() == null) {
+					continue;
+				}
 				String wikiId = entry.getValue().wikiID;
 				System.out.printf("%s\t\t%s\n", entry.getKey().mentionString, wikiId);
 			}
