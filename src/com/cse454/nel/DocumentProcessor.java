@@ -6,7 +6,7 @@ import java.util.List;
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
 import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
-import com.cse454.nel.extract.EntityExtractor;
+import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.search.AbstractSearcher;
 import com.cse454.nel.search.BasicSearcher;
 
@@ -23,7 +23,7 @@ public class DocumentProcessor {
 		SentenceConnect docs = new SentenceConnect();
 		List<Sentence> sentences = docs.getDocument(this.docID);
 
-		AbstractEntityExtractor extractor = new EntityExtractor();
+		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		AbstractSearcher searcher = new BasicSearcher(wiki);

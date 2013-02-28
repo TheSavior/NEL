@@ -7,7 +7,7 @@ public class EntityMention {
 	int tokStart, numToks;
 	public String mentionString;
 	public List<Entity> candidates;
-	
+
 	public EntityMention(int sentenceID, String mention, int tokStart, int numToks) {
 		this.sentenceID = sentenceID;
 		this.tokStart = tokStart;
