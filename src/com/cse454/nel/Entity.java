@@ -7,7 +7,7 @@ package com.cse454.nel;
  */
 public class Entity {
 
-	private String wikiID;
+	public String wikiID;
 
 	public Entity(String wikiID) {
 		this.wikiID = wikiID;
