@@ -1,63 +1,36 @@
 package com.cse454.nel;
 
-import com.cse454.nel.extract.HistogramExtractor;
-import com.cse454.warmup.sf.retriever.ProcessedCorpus;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class Main {
 
 	public static final String sentencesFile = "sentences.entities";
+    public static Object lock = new Object();
 
+    public static int counter = 0;
 	public static void main(String[] args) {
-
-		try {
-			ProcessedCorpus corpus = new ProcessedCorpus();
-			HistogramExtractor extractor = new HistogramExtractor(corpus);
-			extractor.extract(null);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		/*
-		BufferedWriter fos = null;
-		AbstractEntityExtractor extractor;
-		try {
-			fos = new BufferedWriter(new FileWriter(sentencesFile));
-			extractor = new EntityExtractor();
-			ProcessedCorpus corpus = new ProcessedCorpus();
-			Map<String, String> annotations = null;
-			int c = 0;
-			while (corpus.hasNext()) {
-				annotations = corpus.next();
-				if (++c % 100 == 0) {
-					System.err.print("finished reading " + c + " lines\r");
-					break;
-				}
-				String id = annotations.get(SFConstants.TOKENS).split("\t")[0];
-				StringBuffer outSentence = new StringBuffer(id + "\t");
-				List<Entity> entities = extractor.extract(annotations);
-				for (int i = 0; i < entities.size(); i++) {
-					outSentence.append(entities.get(i).toString());
-					if (i < entities.size() - 1) {
-						outSentence.append("\t");
+		List<Thread> threadPool = new ArrayList<Thread>();
+		for (int i = 0; i < 16; i++) {
+			Thread thread = new Thread() {
+				@Override
+				public void run() {
+					synchronized (lock) {
+						try {
+							DocumentProcessor process = new DocumentProcessor(counter);
+							process.run();
+							counter++;
+						} catch (SQLException e) {
+							System.err.println("Error processing document: " + counter);
+							e.printStackTrace();
+						}
 					}
 				}
-				outSentence.append("\n");
-				fos.write(outSentence.toString());
-			}
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			if (fos != null) {
-				try {
-					fos.close();
-				} catch (IOException e) {
-					// ignore
-				}
-			}
+			};
+			threadPool.add(thread);
 		}
-		*/
 	}
 
 	public static void usage() {

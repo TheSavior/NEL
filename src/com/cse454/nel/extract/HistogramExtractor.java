@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cse454.nel.Entity;
+import com.cse454.nel.EntityMention;
 import com.cse454.warmup.sf.SFConstants;
 import com.cse454.warmup.sf.retriever.ProcessedCorpus;
 
@@ -34,7 +35,7 @@ public class HistogramExtractor {
 			Map<Entity, Integer> histogram = new HashMap<Entity, Integer>();
 			while (curId.equals(documentId)) {
 				sentences.add(annotations);
-				List<Entity> entities = entityExtractor.extract(annotations);
+				List<EntityMention> entities = entityExtractor.extract(annotations);
 				for (Entity entity: entities) {
 					if (!histogram.containsKey(entity)) {
 						histogram.put(entity, 1);

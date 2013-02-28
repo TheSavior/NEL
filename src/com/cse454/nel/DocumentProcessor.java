@@ -12,21 +12,27 @@ import com.cse454.nel.search.BasicSearcher;
 
 public class DocumentProcessor {
 
+	private final int docID;
+
 	public DocumentProcessor(int docID) throws SQLException {
+		this.docID = docID;
+	}
+
+	public void run() throws SQLException {
 		WikiConnect wiki = new WikiConnect();
-		List<Sentence> sentences = wiki.getFile(docID);
-		
+		List<Sentence> sentences = wiki.getFile(this.docID);
+
 		AbstractEntityExtractor extractor = new EntityExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
-		
+
 		AbstractSearcher searcher = new BasicSearcher();
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
-		
+
 		AbstractDisambiguator disambiguator = new SimpleDisambiguator();
 		disambiguator.disambiguate(mentions);
-		
+
 		// TODO: output entities to file
 	}
 
