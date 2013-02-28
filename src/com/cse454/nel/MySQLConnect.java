@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MySQLConnect {
-	protected static String defaultUrl = "54.244.244.3:3306";
+	protected static String defaultUrl = "54.244.241.108:3306";
 	protected static String defaultUser = "god";
 	protected static String defaultPassword = "jesus";
 
