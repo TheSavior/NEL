@@ -120,10 +120,11 @@ public class WikiConnect extends MySQLConnect {
 	
 	public String GetCleanedWikiText(String pageID) throws Exception {
 		String text = GetWikiText(pageID);
+		System.out.println(text);
 		
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
-		text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives
+	//	text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives TODO: Stack overflowing!
 
 		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";	
 		String innerDoubleBracketRgx = 
