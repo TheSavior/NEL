@@ -2,6 +2,7 @@ package com.cse454.nel;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
 import com.cse454.nel.disambiguate.SimpleDisambiguator;
@@ -32,7 +33,7 @@ public class DocumentProcessor {
 		}
 
 		AbstractDisambiguator disambiguator = new SimpleDisambiguator();
-		disambiguator.disambiguate(mentions);
+		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions);
 
 		// TODO: output entities to file
 	}

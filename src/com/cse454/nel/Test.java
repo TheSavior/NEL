@@ -30,10 +30,10 @@ public class Test {
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {
 					System.out.println(ent.wikiID + ": " + wiki.GetArticleName(ent.wikiID));
-				}
-				docs.getDocument(Integer.valueOf(query)); */
-			} catch (Exception e) {
-				e.printStackTrace();
+				}*/
+				//docs.getDocument(Integer.valueOf(query));
+			} catch (Throwable t) {
+				t.printStackTrace();
 			}
 		}
     }

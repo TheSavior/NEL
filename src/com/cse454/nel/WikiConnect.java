@@ -2,16 +2,22 @@ package com.cse454.nel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
 
-	// TODO: cache page text
-	protected static String defaultDB = "wikidb";
+	private static String defaultDB = "wikidb";
+	
+	private Map<String, String> page_latestCache; // page_id -> page_latest
+	private Map<String, String> page_textCache; // page_latest -> text
 
 	public WikiConnect() throws SQLException {
         super(defaultUrl, defaultDB);
+        
+        page_latestCache = new HashMap<String, String>();
+        page_textCache = new HashMap<String, String>();
 	}
 
 	/**
@@ -114,10 +120,11 @@ public class WikiConnect extends MySQLConnect {
 	
 	public String GetCleanedWikiText(String pageID) throws Exception {
 		String text = GetWikiText(pageID);
+		System.out.println(text);
 		
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
-		text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives
+	//	text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives TODO: Stack overflowing!
 
 		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";	
 		String innerDoubleBracketRgx = 
@@ -138,6 +145,10 @@ public class WikiConnect extends MySQLConnect {
 	 * @throws Exception 
 	 */
 	public String GetWikiTextFromPageLatest(String page_latest) throws Exception {
+		if (page_textCache.containsKey(page_latest)) {
+			return page_textCache.get(page_latest);
+		}
+		
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -151,7 +162,9 @@ public class WikiConnect extends MySQLConnect {
 				rs.close();
 				rs = st.executeQuery("SELECT old_text FROM text WHERE old_id = " + rev_text_id + ";");
 				if (rs.next()) {
-					return rs.getString(1);
+					String text = rs.getString(1);
+					page_textCache.put(page_latest, text);
+					return text;
 				} else {
 					throw new Exception("No Text For Page With Old ID = " + rev_text_id);
 				}
@@ -175,6 +188,10 @@ public class WikiConnect extends MySQLConnect {
 	 * @throws Exception
 	 */
 	public String GetWikiText(String pageID) throws Exception {
+		if (page_latestCache.containsKey(pageID)) {
+			return GetWikiTextFromPageLatest(page_latestCache.get(pageID));
+		}
+		
 		Statement st = null;
 		ResultSet rs = null;
 
@@ -184,6 +201,7 @@ public class WikiConnect extends MySQLConnect {
 
 			if (rs.next()) {
 				String page_latest = rs.getString(1);
+				page_latestCache.put(pageID, page_latest);
 				return GetWikiTextFromPageLatest(page_latest);
 			} else {
 				throw new Exception("No Page With ID: " + pageID);
