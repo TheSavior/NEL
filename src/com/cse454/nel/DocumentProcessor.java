@@ -19,8 +19,8 @@ public class DocumentProcessor {
 	}
 
 	public void run() throws SQLException {
-		WikiConnect wiki = new WikiConnect();
-		List<Sentence> sentences = wiki.getFile(this.docID);
+		SentenceConnect docs = new SentenceConnect();
+		List<Sentence> sentences = docs.getDocument(this.docID);
 
 		AbstractEntityExtractor extractor = new BasicExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
