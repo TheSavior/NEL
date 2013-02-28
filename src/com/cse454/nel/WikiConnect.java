@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
 
+	// TODO: cache page text
 	protected static String defaultDB = "wikidb";
 
 	public WikiConnect() throws SQLException {
@@ -129,6 +130,43 @@ public class WikiConnect extends MySQLConnect {
 		
 		return text;
 	}
+	
+	/**
+	 * Returns the wiki article text for the page with the revision 'page_latest'
+	 * @param page_latest
+	 * @return
+	 * @throws Exception 
+	 */
+	public String GetWikiTextFromPageLatest(String page_latest) throws Exception {
+		Statement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.createStatement();
+			rs = st.executeQuery("SELECT rev_text_id FROM revision WHERE rev_id = " + page_latest + ";");
+		
+			if (rs.next()) {
+				String rev_text_id = rs.getString(1);
+			
+				rs.close();
+				rs = st.executeQuery("SELECT old_text FROM text WHERE old_id = " + rev_text_id + ";");
+				if (rs.next()) {
+					return rs.getString(1);
+				} else {
+					throw new Exception("No Text For Page With Old ID = " + rev_text_id);
+				}
+			} else {
+				throw new Exception("No Page With Rev ID: " + page_latest);
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
+		}
+	}
 
 	/**
 	 * Returns the wiki article text for the given id. Does not sanitize pageID
@@ -146,23 +184,7 @@ public class WikiConnect extends MySQLConnect {
 
 			if (rs.next()) {
 				String page_latest = rs.getString(1);
-
-				rs.close();
-				rs = st.executeQuery("SELECT rev_text_id FROM revision WHERE rev_id = " + page_latest + ";");
-				
-				if (rs.next()) {
-					String rev_text_id = rs.getString(1);
-					
-					rs.close();
-					rs = st.executeQuery("SELECT old_text FROM text WHERE old_id = " + rev_text_id + ";");
-					if (rs.next()) {
-						return rs.getString(1);
-					} else {
-						throw new Exception("No Text For Page With Old ID = " + rev_text_id);
-					}
-				} else {
-					throw new Exception("No Page With Rev ID: " + page_latest);
-				}
+				return GetWikiTextFromPageLatest(page_latest);
 			} else {
 				throw new Exception("No Page With ID: " + pageID);
 			}
