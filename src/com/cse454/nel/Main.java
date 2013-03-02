@@ -11,6 +11,7 @@ public class Main {
 
     public static int counter = 0;
 	public static void main(String[] args) {
+		System.out.println("Start");
 		List<Thread> threadPool = new ArrayList<Thread>();
 		for (int i = 0; i < 16; i++) {
 			Thread thread = new Thread() {
@@ -28,6 +29,7 @@ public class Main {
 					}
 				}
 			};
+			thread.start();
 			threadPool.add(thread);
 		}
 	}
