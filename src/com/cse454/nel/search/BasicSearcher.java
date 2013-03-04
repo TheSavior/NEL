@@ -33,6 +33,8 @@ public class BasicSearcher extends AbstractSearcher {
 		// 1. pull up disambiguation page
 		Map<String, String> disam_pages = new HashMap<String, String>();
 		wiki.GetPages(query + "_(disambiguation)", disam_pages, redirects);
+		// TODO:
+		// select page.page_id, page.page_latest from pagelinks inner join page on page.page_title = pagelinks.pl_title where pagelinks.pl_from = 8531;
 		
 		// 2. Make sure matching regular pages aren't actually disambiguation pages (e.x. 'Chilean')
 		for (Entry<String, String> entry : new HashSet<Entry<String, String>>(pages.entrySet())) {

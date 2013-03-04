@@ -188,6 +188,7 @@ public class WikiConnect extends MySQLConnect {
 	 * @throws Exception
 	 */
 	public String GetWikiText(String pageID) throws Exception {
+		// select page.page_title,text.old_id from page left join revision on page.page_latest = revision.rev_id left join text on text.old_id = revision.rev_text_id where page.page_namespace = 0 and page.page_title = 'Paris';
 		if (page_latestCache.containsKey(pageID)) {
 			return GetWikiTextFromPageLatest(page_latestCache.get(pageID));
 		}
