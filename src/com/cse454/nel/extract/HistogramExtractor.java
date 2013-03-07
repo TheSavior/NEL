@@ -1,15 +1,7 @@
 package com.cse454.nel.extract;
 
 import java.io.BufferedWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
-import com.cse454.warmup.sf.SFConstants;
 import com.cse454.warmup.sf.retriever.ProcessedCorpus;
 
 public class HistogramExtractor {
@@ -21,8 +13,8 @@ public class HistogramExtractor {
 	}
 
 	public void extract(BufferedWriter out) {
-		NerExtractor entityExtractor = new NerExtractor();
-		Map<String, String> annotations = null;
+		/* NerExtractor entityExtractor = new NerExtractor();
+		List<Sentence> annotations = null;
 		while(mCorpus.hasNext()) {
 			if (annotations == null) {
 				annotations = mCorpus.next();
@@ -56,5 +48,6 @@ public class HistogramExtractor {
 			}
 			break;
 		}
+		*/
 	}
 }
