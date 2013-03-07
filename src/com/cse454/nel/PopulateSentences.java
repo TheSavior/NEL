@@ -3,92 +3,91 @@ package com.cse454.nel;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.cse454.warmup.sf.SFConstants;
 import com.cse454.warmup.sf.retriever.ProcessedCorpus;
 
 public class PopulateSentences {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(final String[] args) throws Exception {
 		if (args.length != 1) {
 			throw new IllegalArgumentException("Need to provide processed doc path");
 		}
+		final ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 100, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
+		// final ExecutorService executor = Executors.newFixedThreadPool(100);
+		final BlockingQueue<String> lines = new ArrayBlockingQueue<>(100);
+		for (int i = 0; i < 99; i++) {
+			DatabaseUpdateWorker worker = new DatabaseUpdateWorker(lines);
+			executor.execute(worker);
+		}
 		String docPath = args[0];
-		String[] dataTypes = {SFConstants.ARTICLE_IDS, SFConstants.STANFORDNER, SFConstants.TOKENS};
-		ProcessedCorpus corpus = new ProcessedCorpus(docPath, dataTypes);
-		new ProcessedCorpus(docPath, dataTypes);
-		Map<String, String> annotations = null;
-		PopulateConnect connect = new PopulateConnect();
-		int count = 0;
-		while (corpus.hasNext()) {
-			annotations = corpus.next();
-			if (count < 9315225) {
-				count++;
+		String[] dataTypes = {SFConstants.META};
+		ProcessedCorpus corpus = null;
+		try {
+			corpus = new ProcessedCorpus(docPath, dataTypes);
+			Map<String, String> annotations = null;
+			while (corpus.hasNext()) {
+				annotations = corpus.next();
+				lines.put(annotations.get(SFConstants.META));
+			}
+			while (!lines.isEmpty()) {
 				continue;
 			}
-			String[] split;
-			int id = -1;
-			int docId = -1;
-			String tokens = null;
-			String ner = null;
-			split = annotations.get(SFConstants.TOKENS).split("\t");
-			if (split.length == 2) {
-				try {
-					id = Integer.valueOf(split[0]).intValue();
-				} catch (NumberFormatException e) {
-					System.err.println("Error parsing id: " + split[0]);
-					continue;
-				}
-			} else {
-				System.err.println("tried to split tokens to get id, malformed format: " +
-						annotations.get(SFConstants.TOKENS));
-				System.err.println("skipping this sentence...");
-				continue;
-			}
-			split = annotations.get(SFConstants.ARTICLE_IDS).split("\t");
-			if (split.length >= 2) {
-				docId = Integer.valueOf(split[1]).intValue();
-			} else {
-				System.err.println("Malformed articleIDs format: " +
-						annotations.get(SFConstants.ARTICLE_IDS) +
-						"\nunable to get docId");
-			}
-			split = annotations.get(SFConstants.TOKENS).split("\t");
-			if (split.length == 2) {
-				tokens = split[1];
-			}
-			split = annotations.get(SFConstants.STANFORDNER).split("\t");
-			if (split.length == 2) {
-				ner = split[1];
-			}
-
-			connect.populateSentenceRow(Integer.valueOf(id).intValue(), docId, tokens, ner);
+			executor.shutdownNow();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
-	static class PopulateConnect extends MySQLConnect {
+	static class DatabaseUpdateWorker implements Runnable {
 
-		public PopulateConnect() throws SQLException {
-			super(defaultUrl, "sentences");
+		private final BlockingQueue<String> lines;
+		private final MySQLConnect connection;
+
+		public DatabaseUpdateWorker(BlockingQueue<String> lines) throws SQLException {
+			this.lines = lines;
+			connection = new MySQLConnect(MySQLConnect.defaultUrl, "sentences");
 		}
 
-		public void populateSentenceRow(int id, int docId, String tokens, String ner) throws Exception {
-			PreparedStatement st = null;
-
+		@Override
+		public void run() {
 			try {
-				String sql = "INSERT INTO sentences (sentenceID, docID, tokens, ner) VALUES (?,?,?,?);";
-				st = connection.prepareStatement(sql);
-				st.setInt(1, id);
-				st.setInt(2, docId);
-				st.setString(3, tokens);
-				st.setString(4, ner);
-				st.executeUpdate();
-			} catch (Exception e) {
-				throw e;
-			} finally {
-				if (st != null) {
-					st.close();
+				while(true) {
+					String line = lines.take();
+					String[] split = line.split("\t");
+					if (split.length != 5) {
+						return;
+					}
+					int id = Integer.valueOf(split[0]).intValue();
+					String docName = split[2];
+					String sql = "UPDATE sentences SET docName = ? where sentenceID = ?";
+					PreparedStatement st = null;
+					try {
+						st = connection.connection.prepareStatement(sql);
+						st.setString(1, docName);
+						st.setInt(2, id);
+						st.executeUpdate();
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						if (st != null) {
+							try {
+								st.close();
+							} catch (SQLException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+					}
 				}
+			} catch (InterruptedException e) {
+				System.err.println("Unable to take from blocking queue");
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
