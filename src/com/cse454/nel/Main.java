@@ -11,23 +11,27 @@ public class Main {
 
     public static int counter = 0;
 	public static void main(String[] args) {
+		System.out.println("Start");
 		List<Thread> threadPool = new ArrayList<Thread>();
 		for (int i = 0; i < 16; i++) {
 			Thread thread = new Thread() {
 				@Override
 				public void run() {
-					synchronized (lock) {
-						try {
-							DocumentProcessor process = new DocumentProcessor(counter);
-							process.run();
+					try {
+						DocumentProcessor process;
+						synchronized (lock) {
+							process = new DocumentProcessor(counter);
 							counter++;
-						} catch (Exception e) {
-							System.err.println("Error processing document: " + counter);
-							e.printStackTrace();
 						}
+						
+						process.run();
+					} catch (Exception e) {
+						System.err.println("Error processing document: " + counter);
+						e.printStackTrace();
 					}
 				}
 			};
+			thread.start();
 			threadPool.add(thread);
 		}
 	}
