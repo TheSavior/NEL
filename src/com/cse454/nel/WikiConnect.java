@@ -72,6 +72,8 @@ public class WikiConnect extends MySQLConnect {
 		where pagelinks.pl_from = 8531
 		and page.page_namespace = 0
 		and page.page_is_redirect = 0;
+		
+		select page.page_id from pagelinks inner join page on page.page_title = pagelinks.pl_title where pagelinks.pl_from = 8531 and page.page_namespace = 0 and page.page_is_redirect = 0;
 		*/
 		try {
 			st = connection.createStatement();
