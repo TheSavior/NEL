@@ -17,15 +17,17 @@ public class Main {
 			Thread thread = new Thread() {
 				@Override
 				public void run() {
-					synchronized (lock) {
-						try {
-							DocumentProcessor process = new DocumentProcessor(counter);
-							process.run();
+					try {
+						DocumentProcessor process;
+						synchronized (lock) {
+							process = new DocumentProcessor(counter);
 							counter++;
-						} catch (Exception e) {
-							System.err.println("Error processing document: " + counter);
-							e.printStackTrace();
 						}
+						
+						process.run();
+					} catch (Exception e) {
+						System.err.println("Error processing document: " + counter);
+						e.printStackTrace();
 					}
 				}
 			};

@@ -19,7 +19,7 @@ public class Test {
 		WikiConnect wiki = new WikiConnect();
 		SentenceConnect docs = new SentenceConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
-		
+
 		while (true) {
 			System.out.print("Enter a query: ");
 			String query = scanner.nextLine();

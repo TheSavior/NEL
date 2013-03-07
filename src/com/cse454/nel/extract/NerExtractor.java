@@ -44,5 +44,4 @@ public class NerExtractor extends AbstractEntityExtractor {
 		}
 		return entities;
 	}
-
 }
