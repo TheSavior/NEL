@@ -1,10 +1,7 @@
 package com.cse454.nel.search;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.cse454.nel.Entity;
@@ -25,44 +22,35 @@ public class BasicSearcher extends AbstractSearcher {
 		String query = mention.mentionString.replace(' ', '_');
 
 		// Get a list of matching pages
-		Map<String, String> pages = new HashMap<String, String>();
+		Set<String> pages = new HashSet<String>();
 		Set<String> redirects = new HashSet<String>();
 		wiki.GetPages(query, pages, redirects);
 		
 		// Now find all (if any) disambiguation links.
 		// 1. pull up disambiguation page
-		Map<String, String> disam_pages = new HashMap<String, String>();
-		wiki.GetPages(query + "_(disambiguation)", disam_pages, redirects);
-		// TODO:
-		// select page.page_id, page.page_latest from pagelinks inner join page on page.page_title = pagelinks.pl_title where pagelinks.pl_from = 8531;
+		wiki.GetPages(query + "_(disambiguation)", redirects, redirects);
+
 		
 		// 2. Make sure matching regular pages aren't actually disambiguation pages (e.x. 'Chilean')
-		for (Entry<String, String> entry : new HashSet<Entry<String, String>>(pages.entrySet())) {
-			System.out.println("Page<" + entry.getKey() + ", " + entry.getValue() +">");
-			String text = wiki.GetWikiTextFromPageLatest(entry.getValue());
+		for (String page : new HashSet<String>(pages)) {
+			System.out.println("Page<" + page + ">");
+			String text = wiki.GetWikiText(page);
 			if (text.contains("{{disambig")) {
-				disam_pages.put(entry.getKey(), entry.getValue());
-				pages.remove(entry.getKey());
+				redirects.add(page);
+				pages.remove(page);
 				System.out.println("-->Disambig");
 			}
 		}
 		
-		// 3. Extract links from the disam page
-		for (Entry<String, String> entry : disam_pages.entrySet()) {
-			System.out.println("Disambig<" + entry.getKey() + ", " + entry.getValue() +">");
-			wiki.GetPageLinks(pages, entry.getKey());
-		}
-		
-		// Go through redirects and pull out all links
-		while (!redirects.isEmpty()) {
-			String redirect = redirects.iterator().next();
+		// 3. Extract links from disambig/redirect pages
+		for (String redirect : redirects) {
+			System.out.println("Disam/Redir<" + redirect +">");
 			wiki.GetPageLinks(pages, redirect);
-			redirects.remove(redirect);
 		}
 		
 		mention.candidates = new ArrayList<Entity>();
-		for (Entry<String, String> page : pages.entrySet()) {
-			mention.candidates.add( new Entity(page.getKey()) );
+		for (String page : pages) {
+			mention.candidates.add( new Entity(page) );
 		}
 	}
 }
