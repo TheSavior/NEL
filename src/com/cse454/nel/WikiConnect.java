@@ -1,7 +1,6 @@
 package com.cse454.nel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -21,37 +20,29 @@ public class WikiConnect extends MySQLConnect {
 	/**
 	 * 
 	 * @param query
-	 * @param pages a set of page id's
-	 * @param redirects
+	 * @param pages <page id, page title>
+	 * @param redirects <page id, page title>
 	 * @throws Exception
 	 */
-	public void GetPages(String query, Set<String> pages, Set<String> redirects) throws Exception {
-		Statement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT page_id, page_is_redirect FROM page WHERE page_title LIKE '"+query.replaceAll("'", "''")+"' AND page_namespace = 0;");
-
-			while (rs.next()) {
-				// If this is a redirect
-				if (!rs.getBoolean(2)) {
-					pages.add(rs.getString(1));
-				} else if (redirects != null) {
-					redirects.add(rs.getString(1));
+	public void GetPages(String query, final Map<String, String> pages, final Map<String, String> redirects) throws Exception {
+		ExecuteQuery(
+				"SELECT page_id, page_title, page_is_redirect FROM page WHERE page_title LIKE '"+query.replaceAll("'", "''")+"' AND page_namespace = 0;",
+				new QueryResponder<Void>() {
+					public Void Result(ResultSet result) throws SQLException {
+						while (result.next()) {
+							// If this is a redirect
+							String id = result.getString(1);
+							String title = result.getString(2);
+							if (!result.getBoolean(3)) {
+								pages.put(id, title);
+							} else if (redirects != null) {
+								redirects.put(id, title);
+							}
+						}
+						return null;
+					}
 				}
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null) {
-				st.close();
-			}
-
-			if (rs != null) {
-				rs.close();
-			}
-		}
+		);
 	}
 	
 	/**
@@ -60,40 +51,18 @@ public class WikiConnect extends MySQLConnect {
 	 * @param pageID
 	 * @throws Exception
 	 */
-	public void GetPageLinks(Set<String> pages, String pageID) throws Exception {
-		Statement st = null;
-		ResultSet rs = null;
-		// TODO:
-		/*
-		select page.page_id
-		from pagelinks
-			inner join page
-				on page.page_title = pagelinks.pl_title
-		where pagelinks.pl_from = 8531
-		and page.page_namespace = 0
-		and page.page_is_redirect = 0;
-		
-		select page.page_id from pagelinks inner join page on page.page_title = pagelinks.pl_title where pagelinks.pl_from = 8531 and page.page_namespace = 0 and page.page_is_redirect = 0;
-		*/
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT pl_title FROM pagelinks WHERE pl_from = "+pageID+" AND pl_namespace = 0;");
-
-			while (rs.next()) {
-				GetPages(rs.getString(1), pages, null);
-			}
-
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null) {
-				st.close();
-			}
-
-			if (rs != null) {
-				rs.close();
-			}
-		}
+	public void GetPageLinks(final Set<String> pages, String pageID) throws Exception {
+		ExecuteQuery(
+				"SELECT pl_title FROM pagelinks WHERE pl_from = "+pageID+" AND pl_namespace = 0;",
+				new QueryResponder<Void>() {
+					public Void Result(ResultSet result) throws SQLException {
+						while (result.next()) {
+							pages.add(result.getString(1));
+						}
+						return null;
+					}
+				}
+		);
 	}
 	
 	public String GetArticleName(String pageID) throws Exception {
@@ -144,9 +113,9 @@ public class WikiConnect extends MySQLConnect {
 	 * @return
 	 * @throws Exception
 	 */
-	public String GetWikiText(String pageID) throws Exception {
-		if (page_textCache.containsKey(pageID)) {
-			return page_textCache.get(pageID);
+	public String GetWikiText(final String pageTitle) throws Exception {
+		if (page_textCache.containsKey(pageTitle)) {
+			return page_textCache.get(pageTitle);
 		}
 
 		String query = "SELECT text.old_text " +
@@ -155,13 +124,15 @@ public class WikiConnect extends MySQLConnect {
 					   "		ON page.page_latest = revision.rev_id " +
 					   "	LEFT JOIN text " +
 					   "		ON text.old_id = revision.rev_text_id " +
-					   "WHERE page.page_namespace = 0 and page.page_id = " + pageID;
+					   "WHERE page.page_namespace = 0 and page.page_title = '" + pageTitle + "'";
 		return ExecuteQuery(query,
 					new QueryResponder<String>() {
 						public String Result(ResultSet rs) throws SQLException {
-							if (rs.next())
-								return rs.getString(1);
-							else return null;
+							if (rs.next()) {
+								String text = rs.getString(1);
+								page_textCache.put(pageTitle, text);
+								return text;
+							} else return null;
 						}
 					});
 	}

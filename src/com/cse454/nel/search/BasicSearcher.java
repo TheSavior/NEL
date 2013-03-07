@@ -1,7 +1,10 @@
 package com.cse454.nel.search;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.cse454.nel.Entity;
@@ -22,8 +25,8 @@ public class BasicSearcher extends AbstractSearcher {
 		String query = mention.mentionString.replace(' ', '_');
 
 		// Get a list of matching pages
-		Set<String> pages = new HashSet<String>();
-		Set<String> redirects = new HashSet<String>();
+		Map<String, String> pages = new HashMap<String, String>();
+		Map<String, String> redirects = new HashMap<String, String>();
 		wiki.GetPages(query, pages, redirects);
 		
 		// Now find all (if any) disambiguation links.
@@ -32,24 +35,26 @@ public class BasicSearcher extends AbstractSearcher {
 
 		
 		// 2. Make sure matching regular pages aren't actually disambiguation pages (e.x. 'Chilean')
-		for (String page : new HashSet<String>(pages)) {
-			System.out.println("Page<" + page + ">");
-			String text = wiki.GetWikiText(page);
+		for (Entry<String, String> page : new HashSet<Entry<String, String>>(pages.entrySet())) {
+			//System.out.println("Page<" + page + ">");
+			String text = wiki.GetWikiText(page.getValue());
 			if (text.contains("{{disambig")) {
-				redirects.add(page);
-				pages.remove(page);
-				System.out.println("-->Disambig");
+				redirects.put(page.getKey(), page.getValue());
+				pages.remove(page.getKey());
+				//System.out.println("-->Disambig");
 			}
 		}
 		
+		Set<String> candidates = new HashSet<String>(pages.values());
+		
 		// 3. Extract links from disambig/redirect pages
-		for (String redirect : redirects) {
-			System.out.println("Disam/Redir<" + redirect +">");
-			wiki.GetPageLinks(pages, redirect);
+		for (String pageID : redirects.keySet()) {
+			System.out.println("Disam/Redir<" + redirects.get(pageID) +">");
+			wiki.GetPageLinks(candidates, pageID);
 		}
 		
 		mention.candidates = new ArrayList<Entity>();
-		for (String page : pages) {
+		for (String page : candidates) {
 			mention.candidates.add( new Entity(page) );
 		}
 	}
