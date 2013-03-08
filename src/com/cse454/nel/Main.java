@@ -8,7 +8,7 @@ import com.cse454.nel.scoring.Scorer;
 
 public class Main {
 
-	private static final String sentencesFile = "sentences.entities";
+	//private static final String sentencesFile = "sentences.entities";
     private static Object lock = new Object();
     private static int counter = 0;
     private static int NUM_DOCUMENTS = 2;

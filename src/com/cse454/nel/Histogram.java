@@ -70,6 +70,7 @@ public class Histogram {
 				map.put(mention, 0);
 			}
 		}
+		@SuppressWarnings("resource")
 		Scanner scanner = new Scanner(text);
 		while (scanner.hasNext()) {
 			String token = scanner.next();
