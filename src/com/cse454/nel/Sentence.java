@@ -7,6 +7,7 @@ public class Sentence {
 	private String[] ner;
 
 	public Sentence(int sentenceID, String tokens, String ner) {
+		this.sentenceID = sentenceID;
 		this.tokens = tokens.split("\\s");
 		this.ner = ner.split("\\s");
 	}

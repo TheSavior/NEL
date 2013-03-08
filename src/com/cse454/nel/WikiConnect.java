@@ -8,17 +8,17 @@ import java.util.Set;
 public class WikiConnect extends MySQLConnect {
 
 	private static String defaultDB = "wikidb";
-	
+
 	private Map<String, String> page_textCache; // page_latest -> text
 
 	public WikiConnect() throws SQLException {
         super(defaultUrl, defaultDB);
-        
+
         page_textCache = new HashMap<String, String>();
 	}
 
 	/**
-	 * 
+	 *
 	 * @param query
 	 * @param pages <page id, page title>
 	 * @param redirects <page id, page title>
@@ -44,7 +44,7 @@ public class WikiConnect extends MySQLConnect {
 				}
 		);
 	}
-	
+
 	/**
 	 * Does not sanitize pageID
 	 * @param pages a set of page id's
@@ -64,7 +64,7 @@ public class WikiConnect extends MySQLConnect {
 				}
 		);
 	}
-	
+
 	public String GetArticleName(String pageID) throws SQLException {
 		return ExecuteQuery(
 					"SELECT page_title FROM page WHERE page_id = " + pageID,
@@ -170,7 +170,7 @@ public class WikiConnect extends MySQLConnect {
 				"\\]\\])";
 		text = ReplaceWhileEffective(text, innerDoubleBracketRgx, "$1"); // [[ ... ]] links
 		text = text.replaceAll("<[^>]+>", ""); // html
-		
+
 		return text;
 	}
 

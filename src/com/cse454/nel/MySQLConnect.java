@@ -12,7 +12,7 @@ public class MySQLConnect {
 	protected static String defaultPassword = "jesus";
 
 	protected Connection connection;
-	
+
 	protected static abstract class QueryResponder<T> {
 		public abstract T Result(ResultSet result) throws SQLException;
 	}
@@ -24,7 +24,7 @@ public class MySQLConnect {
 	public MySQLConnect(String url, String database, String user, String password) throws SQLException {
 		connection = DriverManager.getConnection("jdbc:mysql://" + url + "/" + database, user, password);
 	}
-	
+
 	protected <T> T ExecuteQuery(String query, QueryResponder<T> response) throws SQLException {
 		Statement st = null;
 		ResultSet rs = null;
@@ -32,7 +32,7 @@ public class MySQLConnect {
 		try {
 			st = connection.createStatement();
 			rs = st.executeQuery(query);
-			
+
 			return response.Result(rs);
 
 		} catch (SQLException e) {
