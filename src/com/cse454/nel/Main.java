@@ -11,12 +11,12 @@ public class Main {
 	private static final String sentencesFile = "sentences.entities";
     private static Object lock = new Object();
     private static int counter = 0;
-    private static int NUM_DOCUMENTS = 1286425;
+    private static int NUM_DOCUMENTS = 2;
 
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Start");
 		final Scorer scorer = new Scorer();
-		
+
 		List<Thread> threadPool = new ArrayList<Thread>();
 		for (int i = 0; i < 16; i++) {
 			Thread thread = new Thread() {
@@ -48,7 +48,7 @@ public class Main {
 		for (Thread t : threadPool) {
 			t.join();
 		}
-		
+
 		// Now that we have results from the docs, evaluate the scorer
 		scorer.ScoreOverall();
 	}

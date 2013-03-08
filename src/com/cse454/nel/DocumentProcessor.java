@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
-import com.cse454.nel.disambiguate.SimpleDisambiguator;
+import com.cse454.nel.disambiguate.InLinkDisambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.scoring.Scorer;
@@ -20,10 +20,13 @@ public class DocumentProcessor {
 	private final int docID;
 	private final Scorer scorer;
 	private final WikiConnect wiki;
+	private final SentenceConnect sentenceDb;
+
 	public DocumentProcessor(int docID, Scorer scorer) throws SQLException {
 		this.docID = docID;
 		this.scorer = scorer;
 		this.wiki = new WikiConnect();
+		this.sentenceDb = new SentenceConnect();
 	}
 
 	public void run() throws Exception {
@@ -43,20 +46,19 @@ public class DocumentProcessor {
 		}
 
 		// Disambiguate
-		AbstractDisambiguator disambiguator = new SimpleDisambiguator();
+		AbstractDisambiguator disambiguator = new InLinkDisambiguator(wiki, sentences);
 		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions);
 
-
 		// update the entity column
-//		Map<Integer, List<Entity>> sentenceEntities = convertToIdEntityListMap(entities);
-//		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
-//			updateEntityColumn(entry.getKey(), entry.getValue());
-//		}
+		Map<Integer, List<Entity>> sentenceEntities = convertToIdEntityListMap(entities);
+		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
+			updateEntityColumn(entry.getKey(), entry.getValue());
+		}
 
-		String docName = "foo"; // We need to use the docname
+		// String docName = "foo"; // We need to use the docname
 
 		// Score our results (if necessary)
-		scorer.ScoreResults(docName, entities);
+		// scorer.ScoreResults(docName, entities);
 
 		// TODO: output entities to file
 	}
@@ -69,8 +71,9 @@ public class DocumentProcessor {
 			if (count != entities.size() - 1) {
 				entityString.append("\t");
 			}
+			count++;
 		}
-		wiki.EntityUpdate(sentenceID, entityString.toString());
+		sentenceDb.EntityUpdate(sentenceID, entityString.toString());
 	}
 
 	private Map<Integer, List<Entity>> convertToIdEntityListMap(Map<EntityMention, Entity> entities) {

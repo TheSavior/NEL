@@ -3,7 +3,7 @@ package com.cse454.nel;
 import java.util.List;
 
 public class EntityMention {
-	int sentenceID;
+	public int sentenceID;
 	int tokStart, numToks;
 	public String mentionString;
 	public List<Entity> candidates;

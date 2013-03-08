@@ -7,8 +7,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SentenceConnect extends MySQLConnect {
+
 	public SentenceConnect() throws SQLException {
 		super(defaultUrl, "sentences");
+	}
+
+	public void EntityUpdate(int sentenceId, String entityString) {
+		String sql = "UPDATE sentences SET entities = ? where sentenceID = ?";
+		PreparedStatement st = null;
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, entityString);
+			st.setInt(2, sentenceId);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	public List<Sentence> getDocument(int docID) throws SQLException {
@@ -22,6 +45,7 @@ public class SentenceConnect extends MySQLConnect {
 
 			List<Sentence> sentences = new ArrayList<Sentence>();
 			while (rs.next()) {
+				System.out.println(rs.getInt(1));
 				Sentence sentence = new Sentence(rs.getInt(1), rs.getString(2), rs.getString(3));
 				sentences.add(sentence);
 			}

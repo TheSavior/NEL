@@ -1,5 +1,4 @@
 package com.cse454.nel;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -16,28 +15,6 @@ public class WikiConnect extends MySQLConnect {
         super(defaultUrl, defaultDB);
 
         page_textCache = new HashMap<String, String>();
-	}
-
-	public void EntityUpdate(int sentenceId, String entityString) {
-		String sql = "UPDATE sentences SET entity = ? where sentenceID = ?";
-		PreparedStatement st = null;
-		try {
-			st = connection.prepareStatement(sql);
-			st.setString(1, entityString);
-			st.setInt(2, sentenceId);
-			st.executeUpdate();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (st != null) {
-				try {
-					st.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	/**
@@ -112,7 +89,7 @@ public class WikiConnect extends MySQLConnect {
 
 	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
-		System.out.println(text);
+		// System.out.println(text);
 
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
@@ -136,7 +113,7 @@ public class WikiConnect extends MySQLConnect {
 	 */
 	public int GetInlinks(String title) throws SQLException {
 		return ExecuteQuery(
-				"SELECT COUNT(pl_from) FROM pagelinks WHERE pl_title = '" + title + "'",
+				"SELECT COUNT(pl_from) FROM pagelinks WHERE pl_title = '" + title.replaceAll("'", "''") + "'",
 				new QueryResponder<Integer>() {
 					public Integer Result(ResultSet result) throws SQLException {
 						if (result.next()) {
