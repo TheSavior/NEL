@@ -1,7 +1,10 @@
 package com.cse454.nel.scoring;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -12,11 +15,11 @@ public class Scorer {
 
 	private Map<String, Set<String>> results;
 	private Object lock = new Object();
-	
+
 	public Scorer() {
 		results = new HashMap<String, Set<String>>();
 	}
-	
+
 	public void ScoreResults(String docID, Map<EntityMention, Entity> entities) {
 		// Process Results
 
@@ -24,11 +27,11 @@ public class Scorer {
 		for(Entity ent : entities.values())
 		{
 			if (ent != null) {
-				values.add(ent.wikiID);
+				values.add(ent.wikiTitle);
 			}
 		}
-		
-		synchronized (lock) {	
+
+		synchronized (lock) {
 			results.put(docID, values);
 			// Aggregate score
 		}
@@ -38,7 +41,7 @@ public class Scorer {
 		for(Entry<String, Set<String>> entry : results.entrySet()) {
 		    String key = entry.getKey();
 		    Set<String> values = entry.getValue();
-		    
+
 		    System.out.println(key+"\t"+StringUtils.join(values, "\t"));
 		}
 	}

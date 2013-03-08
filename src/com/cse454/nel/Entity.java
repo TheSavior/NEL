@@ -13,8 +13,8 @@ public class Entity {
 	public Entity(String wikiID) {
 		this.wikiTitle = wikiID;
 	}
-	
+
 	public String toString() {
-		return this.wikiID;
+		return this.wikiTitle;
 	}
 }
