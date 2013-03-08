@@ -25,13 +25,21 @@ public class Test {
 			String query = scanner.nextLine();
 
 			try {
+				// 1. Get wiki text
 				//System.out.println(wiki.GetWikiText(query));
-				EntityMention mention = new EntityMention(0, query, 0, 0);
+				
+				// 2. Candidate lists
+				/*EntityMention mention = new EntityMention(0, query, 0, 0);
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {
-					System.out.println(ent.wikiID + ": "/* + wiki.GetArticleName(ent.wikiID)*/);
-				}
+					System.out.println(ent.wikiID);
+				}*/
+				
+				// 3. Get document
 				//docs.getDocument(Integer.valueOf(query));
+				
+				// 4. Inlinks
+				System.out.println(wiki.GetInlinks(query) + " inlinks to '" + query + "'");
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}

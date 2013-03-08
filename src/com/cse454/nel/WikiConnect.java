@@ -24,7 +24,7 @@ public class WikiConnect extends MySQLConnect {
 	 * @param redirects <page id, page title>
 	 * @throws Exception
 	 */
-	public void GetPages(String query, final Map<String, String> pages, final Map<String, String> redirects) throws Exception {
+	public void GetPages(String query, final Map<String, String> pages, final Map<String, String> redirects) throws SQLException {
 		ExecuteQuery(
 				"SELECT page_id, page_title, page_is_redirect FROM page WHERE page_title LIKE '"+query.replaceAll("'", "''")+"' AND page_namespace = 0;",
 				new QueryResponder<Void>() {
@@ -51,7 +51,7 @@ public class WikiConnect extends MySQLConnect {
 	 * @param pageID
 	 * @throws Exception
 	 */
-	public void GetPageLinks(final Set<String> pages, String pageID) throws Exception {
+	public void GetPageLinks(final Set<String> pages, String pageID) throws SQLException {
 		ExecuteQuery(
 				"SELECT pl_title FROM pagelinks WHERE pl_from = "+pageID+" AND pl_namespace = 0;",
 				new QueryResponder<Void>() {
@@ -65,7 +65,7 @@ public class WikiConnect extends MySQLConnect {
 		);
 	}
 	
-	public String GetArticleName(String pageID) throws Exception {
+	public String GetArticleName(String pageID) throws SQLException {
 		return ExecuteQuery(
 					"SELECT page_title FROM page WHERE page_id = " + pageID,
 					new QueryResponder<String>() {
@@ -87,7 +87,7 @@ public class WikiConnect extends MySQLConnect {
 		return str;
 	}
 	
-	public String GetCleanedWikiText(String pageID) throws Exception {
+	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
 		System.out.println(text);
 		
@@ -106,6 +106,25 @@ public class WikiConnect extends MySQLConnect {
 		
 		return text;
 	}
+	
+	/**
+	 * Returns the number of in-links to an article with the given title
+	 * @param title the article title (exact)
+	 */
+	public int GetInlinks(String title) throws SQLException {
+		return ExecuteQuery(
+				"SELECT COUNT(pl_from) FROM pagelinks WHERE pl_title = '" + title + "'",
+				new QueryResponder<Integer>() {
+					public Integer Result(ResultSet result) throws SQLException {
+						if (result.next()) {
+							return result.getInt(1);
+						} else {
+							throw new SQLException("No count returned.");
+						}
+					}
+				}
+		);
+	}
 
 	/**
 	 * Returns the wiki article text for the given id. Does not sanitize pageID
@@ -113,7 +132,7 @@ public class WikiConnect extends MySQLConnect {
 	 * @return
 	 * @throws Exception
 	 */
-	public String GetWikiText(final String pageTitle) throws Exception {
+	public String GetWikiText(final String pageTitle) throws SQLException {
 		if (page_textCache.containsKey(pageTitle)) {
 			return page_textCache.get(pageTitle);
 		}

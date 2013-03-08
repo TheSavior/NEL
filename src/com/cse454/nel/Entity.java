@@ -8,6 +8,7 @@ package com.cse454.nel;
 public class Entity {
 
 	public String wikiID;
+	public Integer inlinks;
 
 	public Entity(String wikiID) {
 		this.wikiID = wikiID;
