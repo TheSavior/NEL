@@ -78,42 +78,13 @@ public class WikiConnect extends MySQLConnect {
 					});
 	}
 	
-	private String replaceWhileEffective(String str, String rgx, String replace) {
-		String oldStr;
-		do {
-			oldStr = str;
-			str = str.replaceAll(rgx, replace);
-		} while (str != oldStr);
-		return str;
-	}
-	
-	public String GetCleanedWikiText(String pageID) throws SQLException {
-		String text = GetWikiText(pageID);
-		System.out.println(text);
-		
-		text = text.replaceAll("#REDIRECT", "");			// Redirects
-		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
-	//	text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives TODO: Stack overflowing!
-
-		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";	
-		String innerDoubleBracketRgx = 
-				"(?s:\\[\\[" +				// opening brackets
-					"(?:" + noDoubleBracketRgx + "\\|)*?" + // stuff before visible text
-					"(" + noDoubleBracketRgx + ")\\|?" +	// visible text
-				"\\]\\])";
-		text = replaceWhileEffective(text, innerDoubleBracketRgx, "$1"); // [[ ... ]] links
-		text = text.replaceAll("<[^>]+>", ""); // html
-		
-		return text;
-	}
-	
 	/**
 	 * Returns the number of in-links to an article with the given title
 	 * @param title the article title (exact)
 	 */
 	public int GetInlinks(String title) throws SQLException {
 		return ExecuteQuery(
-				"SELECT COUNT(pl_from) FROM pagelinks WHERE pl_title = '" + title + "'",
+				"SELECT COUNT(pl_from) FROM pagelinks WHERE pl_title = '" + title.replaceAll("'", "''") + "'",
 				new QueryResponder<Integer>() {
 					public Integer Result(ResultSet result) throws SQLException {
 						if (result.next()) {
@@ -124,6 +95,83 @@ public class WikiConnect extends MySQLConnect {
 					}
 				}
 		);
+	}
+	
+	
+	private String ReplaceWhileEffective(String str, String rgx, String replace) {
+		String oldStr;
+		do {
+			oldStr = str;
+			str = str.replaceAll(rgx, replace);
+		} while (str != oldStr);
+		return str;
+	}
+	
+	/**
+	 * 
+	 * @param str
+	 * @param startStr
+	 * @param endStr must be same length as startStr (or exceptions will ensue)
+	 * @return
+	 */
+	private String RemoveRecursiveStruct(String str, String startStr, String endStr) {
+		int tokLen = startStr.length();
+		String ret = "";
+		
+		while (true) {
+			int start = str.indexOf(startStr);
+			if (start >= 0) {
+				ret += str.substring(0, start);
+				str = str.substring(start);
+				
+				// Now find the end of this struct
+				int depth = 1;
+				int i = startStr.length();
+				int len = str.length() - tokLen;
+				while (i <= len) {
+					String substr = str.substring(i, i+tokLen);
+					if (substr.equals(startStr)) {
+						++depth;
+					} else if (substr.equals(endStr)) {
+						--depth;
+						if (depth == 0) {
+							i += tokLen;
+							break;
+						}
+					}
+					++i;
+				}
+				
+				// We have found the whole struct, remove it.
+				str = str.substring(i);
+				
+			} else {
+				ret += str;
+				break;
+			}
+		}
+		
+		
+		return ret;
+	}
+	
+	public String GetCleanedWikiText(String pageID) throws SQLException {
+		String text = GetWikiText(pageID);
+		
+		text = text.replaceAll("#REDIRECT", "");			// Redirects
+		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
+		text = RemoveRecursiveStruct(text, "{{", "}}");
+		
+		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";
+		String innerDoubleBracketRgx = 
+				"(?s:\\[\\[" +				// opening brackets
+					"(?:" + noDoubleBracketRgx + "\\|)*?" + // stuff before visible text
+					"(" + noDoubleBracketRgx + ")\\|?" +	// visible text
+				"\\]\\])";
+		text = ReplaceWhileEffective(text, innerDoubleBracketRgx, "$1"); // [[ ... ]] links
+		text = text.replaceAll("<[^>]+>", ""); // html
+		
+		return text;
 	}
 
 	/**
