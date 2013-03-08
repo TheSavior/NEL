@@ -43,8 +43,10 @@ public class DocumentProcessor {
 		AbstractDisambiguator disambiguator = new SimpleDisambiguator();
 		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions);
 
+		String docName = "foo"; // We need to use the docname
+		
 		// Score our results (if necessary)
-		scorer.ScoreResults(docID, entities);
+		scorer.ScoreResults(docName, entities);
 		
 		// TODO: output entities to file
 	}

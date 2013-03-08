@@ -16,6 +16,7 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Start");
 		final Scorer scorer = new Scorer();
+		
 		List<Thread> threadPool = new ArrayList<Thread>();
 		for (int i = 0; i < 16; i++) {
 			Thread thread = new Thread() {
@@ -43,9 +44,13 @@ public class Main {
 			thread.start();
 			threadPool.add(thread);
 		}
+
 		for (Thread t : threadPool) {
 			t.join();
 		}
+		
+		// Now that we have results from the docs, evaluate the scorer
+		scorer.ScoreOverall();
 	}
 
 	public static void usage() {
