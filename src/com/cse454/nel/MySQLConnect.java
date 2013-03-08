@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class MySQLConnect {
-	protected static String defaultUrl = "54.244.241.108:3306";
+	public final static String defaultUrl = "54.244.241.108:3306";
 	protected static String defaultUser = "god";
 	protected static String defaultPassword = "jesus";
 
-	protected Connection connection;
+	public final Connection connection;
 
 	protected static abstract class QueryResponder<T> {
 		public abstract T Result(ResultSet result) throws SQLException;

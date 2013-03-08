@@ -6,8 +6,9 @@ import java.util.Map.Entry;
 
 public class Util {
 
-	public static String tokenizeText(String text) {
-		return text.replaceAll("[^a-zA-Z0-9\\s]", "");
+	public static String[] tokenizeText(String text) {
+		text = text.replaceAll("[^a-zA-Z0-9\\s]", "");
+		return text.split(" ");
 	}
 
 	public static double computeDotProduct(Histogram hist1, Histogram hist2) {

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Scanner;
 import java.util.Set;
 
 public class Histogram {
@@ -34,6 +33,14 @@ public class Histogram {
 		return map;
 	}
 
+	public static Histogram fromTokens(String[] tokens) {
+		Map<String, Integer> map = new HashMap<String, Integer>();
+		for (String token : tokens) {
+			insertIntoHistogramMap(map, token);
+		}
+		return new Histogram(map);
+	}
+
 	public static Histogram extractFromSentenceArray(List<Sentence> sentences) {
 		return extractFromSentenceArray(sentences, null);
 	}
@@ -56,24 +63,21 @@ public class Histogram {
 		return new Histogram(map);
 	}
 
-	public static Histogram extractFromTokenizedString(String text) {
+	public static Histogram extractFromTokenizedText(String[] text) {
 		return extractFromTokenizedString(text, null);
 	}
 
 	/**
 	 * Extracts only the given mentions from the text to populate the histogram
 	 */
-	public static Histogram extractFromTokenizedString(String text, Set<String> mentions) {
+	public static Histogram extractFromTokenizedString(String[] text, Set<String> mentions) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		if (mentions != null) {
 			for (String mention : mentions) {
 				map.put(mention, 0);
 			}
 		}
-		@SuppressWarnings("resource")
-		Scanner scanner = new Scanner(text);
-		while (scanner.hasNext()) {
-			String token = scanner.next();
+		for (String token : text) {
 			if (mentions != null && !mentions.contains(token)) {
 				continue;
 			}
