@@ -1,4 +1,5 @@
 package com.cse454.nel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -8,17 +9,39 @@ import java.util.Set;
 public class WikiConnect extends MySQLConnect {
 
 	private static String defaultDB = "wikidb";
-	
+
 	private Map<String, String> page_textCache; // page_latest -> text
 
 	public WikiConnect() throws SQLException {
         super(defaultUrl, defaultDB);
-        
+
         page_textCache = new HashMap<String, String>();
 	}
 
+	public void EntityUpdate(int sentenceId, String entityString) {
+		String sql = "UPDATE sentences SET entity = ? where sentenceID = ?";
+		PreparedStatement st = null;
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, entityString);
+			st.setInt(2, sentenceId);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	/**
-	 * 
+	 *
 	 * @param query
 	 * @param pages <page id, page title>
 	 * @param redirects <page id, page title>
@@ -44,7 +67,7 @@ public class WikiConnect extends MySQLConnect {
 				}
 		);
 	}
-	
+
 	/**
 	 * Does not sanitize pageID
 	 * @param pages a set of page id's
@@ -64,7 +87,7 @@ public class WikiConnect extends MySQLConnect {
 				}
 		);
 	}
-	
+
 	public String GetArticleName(String pageID) throws SQLException {
 		return ExecuteQuery(
 					"SELECT page_title FROM page WHERE page_id = " + pageID,
@@ -77,7 +100,7 @@ public class WikiConnect extends MySQLConnect {
 						}
 					});
 	}
-	
+
 	private String replaceWhileEffective(String str, String rgx, String replace) {
 		String oldStr;
 		do {
@@ -86,27 +109,27 @@ public class WikiConnect extends MySQLConnect {
 		} while (str != oldStr);
 		return str;
 	}
-	
+
 	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
 		System.out.println(text);
-		
+
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
 	//	text = replaceWhileEffective(text, "(?s:\\{\\{(?:(?:[^\\{])|(?:\\{(?!\\{)))+?\\}\\})", ""); // {{ ... }} Directives TODO: Stack overflowing!
 
-		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";	
-		String innerDoubleBracketRgx = 
+		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";
+		String innerDoubleBracketRgx =
 				"(?s:\\[\\[" +				// opening brackets
 					"(?:" + noDoubleBracketRgx + "\\|)*?" + // stuff before visible text
 					"(" + noDoubleBracketRgx + ")\\|?" +	// visible text
 				"\\]\\])";
 		text = replaceWhileEffective(text, innerDoubleBracketRgx, "$1"); // [[ ... ]] links
 		text = text.replaceAll("<[^>]+>", ""); // html
-		
+
 		return text;
 	}
-	
+
 	/**
 	 * Returns the number of in-links to an article with the given title
 	 * @param title the article title (exact)

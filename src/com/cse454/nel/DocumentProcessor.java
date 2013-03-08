@@ -1,8 +1,11 @@
 package com.cse454.nel;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
 import com.cse454.nel.disambiguate.SimpleDisambiguator;
@@ -16,16 +19,16 @@ public class DocumentProcessor {
 
 	private final int docID;
 	private final Scorer scorer;
-
+	private final WikiConnect wiki;
 	public DocumentProcessor(int docID, Scorer scorer) throws SQLException {
 		this.docID = docID;
 		this.scorer = scorer;
+		this.wiki = new WikiConnect();
 	}
 
 	public void run() throws Exception {
-		WikiConnect wiki = new WikiConnect();
 		SentenceConnect docs = new SentenceConnect();
-		
+
 		// Retrive document
 		List<Sentence> sentences = docs.getDocument(this.docID);
 
@@ -43,12 +46,49 @@ public class DocumentProcessor {
 		AbstractDisambiguator disambiguator = new SimpleDisambiguator();
 		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions);
 
+
+		// update the entity column
+//		Map<Integer, List<Entity>> sentenceEntities = convertToIdEntityListMap(entities);
+//		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
+//			updateEntityColumn(entry.getKey(), entry.getValue());
+//		}
+
 		String docName = "foo"; // We need to use the docname
-		
+
 		// Score our results (if necessary)
 		scorer.ScoreResults(docName, entities);
-		
+
 		// TODO: output entities to file
 	}
 
+	private void updateEntityColumn(int sentenceID, List<Entity> entities) {
+		StringBuffer entityString = new StringBuffer();
+		int count = 0;
+		for (Entity entity : entities) {
+			entityString.append(entity.wikiTitle);
+			if (count != entities.size() - 1) {
+				entityString.append("\t");
+			}
+		}
+		wiki.EntityUpdate(sentenceID, entityString.toString());
+	}
+
+	private Map<Integer, List<Entity>> convertToIdEntityListMap(Map<EntityMention, Entity> entities) {
+		Map<Integer, List<Entity>> sentenceEntities = new HashMap<>();
+
+		for (Entry<EntityMention, Entity> entry : entities.entrySet()) {
+			if (entry.getValue() == null) {
+				continue;
+			}
+			Integer id = Integer.valueOf(entry.getKey().sentenceID);
+			if (sentenceEntities.containsKey(id)) {
+				sentenceEntities.get(id).add(entry.getValue());
+			} else {
+				List<Entity> entityList = new ArrayList<Entity>();
+				entityList.add(entry.getValue());
+				sentenceEntities.put(id, entityList);
+			}
+		}
+		return sentenceEntities;
+	}
 }
