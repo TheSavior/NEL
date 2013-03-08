@@ -1,6 +1,5 @@
-package com.cse454.warmup.sf;
+package com.cse454.nel.kbp;
 
-import com.cse454.warmup.tackbp.KbpConstants;
 
 public class SFConstants {
 

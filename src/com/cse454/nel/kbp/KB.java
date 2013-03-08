@@ -1,4 +1,4 @@
-package com.cse454.warmup.tackbp;
+package com.cse454.nel.kbp;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 
 public class KB {
 	public Map<String, KbEntity> entityMap = new HashMap<String, KbEntity>(); 

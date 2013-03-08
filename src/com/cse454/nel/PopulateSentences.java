@@ -8,8 +8,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.cse454.warmup.sf.SFConstants;
-import com.cse454.warmup.sf.retriever.ProcessedCorpus;
+import com.cse454.nel.kbp.ProcessedCorpus;
+import com.cse454.nel.kbp.SFConstants;
 
 public class PopulateSentences {
 

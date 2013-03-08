@@ -1,4 +1,4 @@
-package com.cse454.warmup.sf.retriever;
+package com.cse454.nel.kbp;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.cse454.warmup.sf.SFConstants;
-import com.cse454.warmup.tackbp.KbpConstants;
 
 
 /**

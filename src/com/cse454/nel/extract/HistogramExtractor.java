@@ -2,7 +2,7 @@ package com.cse454.nel.extract;
 
 import java.io.BufferedWriter;
 
-import com.cse454.warmup.sf.retriever.ProcessedCorpus;
+import com.cse454.nel.kbp.ProcessedCorpus;
 
 public class HistogramExtractor {
 
