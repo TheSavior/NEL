@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.dump;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -8,6 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.cse454.nel.MySQLConnect;
 import com.cse454.nel.kbp.ProcessedCorpus;
 import com.cse454.nel.kbp.SFConstants;
 

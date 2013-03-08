@@ -26,7 +26,7 @@ public class Test {
 
 			try {
 				// 1. Get wiki text
-				//System.out.println(wiki.GetWikiText(query));
+				System.out.println(wiki.GetCleanedWikiText(query));
 				
 				// 2. Candidate lists
 				/*EntityMention mention = new EntityMention(0, query, 0, 0);
@@ -39,7 +39,7 @@ public class Test {
 				//docs.getDocument(Integer.valueOf(query));
 				
 				// 4. Inlinks
-				System.out.println(wiki.GetInlinks(query) + " inlinks to '" + query + "'");
+				//System.out.println(wiki.GetInlinks(query) + " inlinks to '" + query + "'");
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
