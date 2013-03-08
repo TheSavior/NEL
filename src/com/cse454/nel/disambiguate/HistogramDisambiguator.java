@@ -36,7 +36,7 @@ public class HistogramDisambiguator extends AbstractDisambiguator {
 			Entity chosenOne = null;
 			double max = 0;
 			for (Entity entity : entities) {
-				String text = Util.tokenizeText(wiki.GetWikiText(entity.wikiID));
+				String text = Util.tokenizeText(wiki.GetWikiText(entity.wikiTitle));
 				Histogram hist = Histogram.extractFromTokenizedString(text, mentionWords);
 				double dotProduct = Util.computeDotProduct(sentenceHist, hist);
 				if (dotProduct > max) {

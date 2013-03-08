@@ -20,9 +20,18 @@ public class InLinkDisambiguator extends AbstractDisambiguator {
 			throws Exception {
 		Map<EntityMention, Entity> ret = new HashMap<EntityMention, Entity>();
 		for (EntityMention entityMention : mentions) {
-
+			List<Entity> entities = entityMention.candidates;
+			Integer max = -1;
+			Entity chosenOne = null;
+			for (Entity entity : entities) {
+				if (entity.inlinks == null) {
+					entity.inlinks = wiki.GetInlinks(entity.wikiTitle);
+				}
+				chosenOne = entity.inlinks > max ? entity : chosenOne;
+			}
+			ret.put(entityMention, chosenOne);
 		}
-		return null;
+		return ret;
 	}
 
 }

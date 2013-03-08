@@ -42,7 +42,7 @@ public class DisambiguationTest {
 				if (entry == null || entry.getValue() == null) {
 					continue;
 				}
-				String wikiId = entry.getValue().wikiID;
+				String wikiId = entry.getValue().wikiTitle;
 				System.out.printf("%s\t\t%s\n", entry.getKey().mentionString, wikiId);
 			}
 
