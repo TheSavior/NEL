@@ -13,9 +13,9 @@ import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
 import com.cse454.nel.WikiConnect;
 
-public class HistogramDisambiguator extends AbstractDisambiguator {
+public class EntityMentionHistogramDisambiguator extends AbstractDisambiguator {
 
-	public HistogramDisambiguator(WikiConnect wiki, List<Sentence> sentences) {
+	public EntityMentionHistogramDisambiguator(WikiConnect wiki, List<Sentence> sentences) {
 		super(wiki, sentences);
 	}
 
@@ -36,8 +36,8 @@ public class HistogramDisambiguator extends AbstractDisambiguator {
 			Entity chosenOne = null;
 			double max = 0;
 			for (Entity entity : entities) {
-				String text = Util.tokenizeText(wiki.GetWikiText(entity.wikiTitle));
-				Histogram hist = Histogram.extractFromTokenizedString(text, mentionWords);
+				String[] tokens = Util.tokenizeText(wiki.GetCleanedWikiText(entity.wikiTitle));
+				Histogram hist = Histogram.extractFromTokenizedString(tokens, mentionWords);
 				double dotProduct = Util.computeDotProduct(sentenceHist, hist);
 				if (dotProduct > max) {
 					max = dotProduct;
