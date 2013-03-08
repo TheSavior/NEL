@@ -3,6 +3,8 @@ package com.cse454.nel;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cse454.nel.scoring.Scorer;
+
 
 public class Main {
 
@@ -13,6 +15,7 @@ public class Main {
 
 	public static void main(String[] args) throws InterruptedException {
 		System.out.println("Start");
+		final Scorer scorer = new Scorer();
 		List<Thread> threadPool = new ArrayList<Thread>();
 		for (int i = 0; i < 16; i++) {
 			Thread thread = new Thread() {
@@ -25,7 +28,7 @@ public class Main {
 								if (counter > NUM_DOCUMENTS) {
 									break;
 								}
-								process = new DocumentProcessor(counter);
+								process = new DocumentProcessor(counter, scorer);
 								counter++;
 							}
 

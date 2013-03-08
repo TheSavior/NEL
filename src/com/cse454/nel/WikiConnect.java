@@ -1,7 +1,6 @@
 package com.cse454.nel;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -10,103 +9,73 @@ public class WikiConnect extends MySQLConnect {
 
 	private static String defaultDB = "wikidb";
 	
-	private Map<String, String> page_latestCache; // page_id -> page_latest
 	private Map<String, String> page_textCache; // page_latest -> text
 
 	public WikiConnect() throws SQLException {
         super(defaultUrl, defaultDB);
         
-        page_latestCache = new HashMap<String, String>();
         page_textCache = new HashMap<String, String>();
 	}
 
 	/**
 	 * 
 	 * @param query
-	 * @param pages a map of <page_id, page_latest>
-	 * @param redirects
+	 * @param pages <page id, page title>
+	 * @param redirects <page id, page title>
 	 * @throws Exception
 	 */
-	public void GetPages(String query, Map<String, String> pages, Set<String> redirects) throws Exception {
-		Statement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT page_id, page_is_redirect, page_latest FROM page WHERE page_title LIKE '"+query.replaceAll("'", "''")+"' AND page_namespace = 0;");
-
-			while (rs.next()) {
-				// If this is a redirect
-				if (!rs.getBoolean(2)) {
-					pages.put(rs.getString(1), rs.getString(3));
-				} else if (redirects != null) {
-					redirects.add(rs.getString(1));
+	public void GetPages(String query, final Map<String, String> pages, final Map<String, String> redirects) throws Exception {
+		ExecuteQuery(
+				"SELECT page_id, page_title, page_is_redirect FROM page WHERE page_title LIKE '"+query.replaceAll("'", "''")+"' AND page_namespace = 0;",
+				new QueryResponder<Void>() {
+					public Void Result(ResultSet result) throws SQLException {
+						while (result.next()) {
+							// If this is a redirect
+							String id = result.getString(1);
+							String title = result.getString(2);
+							if (!result.getBoolean(3)) {
+								pages.put(id, title);
+							} else if (redirects != null) {
+								redirects.put(id, title);
+							}
+						}
+						return null;
+					}
 				}
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null) {
-				st.close();
-			}
-
-			if (rs != null) {
-				rs.close();
-			}
-		}
+		);
 	}
 	
 	/**
 	 * Does not sanitize pageID
-	 * @param pages a map of <page_id, page_latest>
+	 * @param pages a set of page id's
 	 * @param pageID
 	 * @throws Exception
 	 */
-	public void GetPageLinks(Map<String, String> pages, String pageID) throws Exception {
-		Statement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT pl_title FROM pagelinks WHERE pl_from = "+pageID+" AND pl_namespace = 0;");
-
-			while (rs.next()) {
-				GetPages(rs.getString(1), pages, null);
-			}
-
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null) {
-				st.close();
-			}
-
-			if (rs != null) {
-				rs.close();
-			}
-		}
+	public void GetPageLinks(final Set<String> pages, String pageID) throws Exception {
+		ExecuteQuery(
+				"SELECT pl_title FROM pagelinks WHERE pl_from = "+pageID+" AND pl_namespace = 0;",
+				new QueryResponder<Void>() {
+					public Void Result(ResultSet result) throws SQLException {
+						while (result.next()) {
+							pages.add(result.getString(1));
+						}
+						return null;
+					}
+				}
+		);
 	}
 	
 	public String GetArticleName(String pageID) throws Exception {
-		Statement st = null;
-		ResultSet rs = null;
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT page_title FROM page WHERE page_id = "+pageID+";");
-			
-			if (rs.next()) {
-				return rs.getString(1);
-			} else {
-				return null;
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null)
-				st.close();
-			if (rs != null)
-				rs.close();
-		}
+		return ExecuteQuery(
+					"SELECT page_title FROM page WHERE page_id = " + pageID,
+					new QueryResponder<String>() {
+						public String Result(ResultSet result) throws SQLException {
+							if (result.next())
+								return result.getString(1);
+							else
+								return null;
+						}
+					});
 	}
 	
 	private String replaceWhileEffective(String str, String rgx, String replace) {
@@ -137,49 +106,6 @@ public class WikiConnect extends MySQLConnect {
 		
 		return text;
 	}
-	
-	/**
-	 * Returns the wiki article text for the page with the revision 'page_latest'
-	 * @param page_latest
-	 * @return
-	 * @throws Exception 
-	 */
-	public String GetWikiTextFromPageLatest(String page_latest) throws Exception {
-		if (page_textCache.containsKey(page_latest)) {
-			return page_textCache.get(page_latest);
-		}
-		
-		Statement st = null;
-		ResultSet rs = null;
-
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT rev_text_id FROM revision WHERE rev_id = " + page_latest + ";");
-		
-			if (rs.next()) {
-				String rev_text_id = rs.getString(1);
-			
-				rs.close();
-				rs = st.executeQuery("SELECT old_text FROM text WHERE old_id = " + rev_text_id + ";");
-				if (rs.next()) {
-					String text = rs.getString(1);
-					page_textCache.put(page_latest, text);
-					return text;
-				} else {
-					throw new Exception("No Text For Page With Old ID = " + rev_text_id);
-				}
-			} else {
-				throw new Exception("No Page With Rev ID: " + page_latest);
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null)
-				st.close();
-			if (rs != null)
-				rs.close();
-		}
-	}
 
 	/**
 	 * Returns the wiki article text for the given id. Does not sanitize pageID
@@ -187,36 +113,28 @@ public class WikiConnect extends MySQLConnect {
 	 * @return
 	 * @throws Exception
 	 */
-	public String GetWikiText(String pageID) throws Exception {
-		if (page_latestCache.containsKey(pageID)) {
-			return GetWikiTextFromPageLatest(page_latestCache.get(pageID));
+	public String GetWikiText(final String pageTitle) throws Exception {
+		if (page_textCache.containsKey(pageTitle)) {
+			return page_textCache.get(pageTitle);
 		}
-		
-		Statement st = null;
-		ResultSet rs = null;
 
-		try {
-			st = connection.createStatement();
-			rs = st.executeQuery("SELECT page_latest FROM page WHERE page_id = "+pageID+";");
-
-			if (rs.next()) {
-				String page_latest = rs.getString(1);
-				page_latestCache.put(pageID, page_latest);
-				return GetWikiTextFromPageLatest(page_latest);
-			} else {
-				throw new Exception("No Page With ID: " + pageID);
-			}
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			if (st != null) {
-				st.close();
-			}
-
-			if (rs != null) {
-				rs.close();
-			}
-		}
+		String query = "SELECT text.old_text " +
+					   "FROM page " +
+					   "	LEFT JOIN revision " +
+					   "		ON page.page_latest = revision.rev_id " +
+					   "	LEFT JOIN text " +
+					   "		ON text.old_id = revision.rev_text_id " +
+					   "WHERE page.page_namespace = 0 and page.page_title = '" + pageTitle + "'";
+		return ExecuteQuery(query,
+					new QueryResponder<String>() {
+						public String Result(ResultSet rs) throws SQLException {
+							if (rs.next()) {
+								String text = rs.getString(1);
+								page_textCache.put(pageTitle, text);
+								return text;
+							} else return null;
+						}
+					});
 	}
 
 }
