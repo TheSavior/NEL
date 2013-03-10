@@ -45,7 +45,6 @@ public class SentenceConnect extends MySQLConnect {
 
 			List<Sentence> sentences = new ArrayList<Sentence>();
 			while (rs.next()) {
-				System.out.println(rs.getInt(1));
 				Sentence sentence = new Sentence(rs.getInt(1), rs.getString(2), rs.getString(3));
 				sentences.add(sentence);
 			}
