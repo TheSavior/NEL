@@ -1,6 +1,7 @@
 package com.cse454.nel.disambiguate;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -37,14 +38,24 @@ public class EntityWikiMentionHistogramDisambiguator extends AbstractDisambiguat
 			if (splitMentions) {
 				String[] words = mention.mentionString.split("\\s");
 				for (String w : words) {
-					mentionWords.add(w);
+					mentionWords.add(Util.cleanString(w).toLowerCase());
 				}
 			} else {
 				mentionWords.add(mention.mentionString);
 			}
 		}
 		
-		Histogram hist = Histogram.extractFromSentenceArray(sentences, mentionWords);
+		List<Sentence> cleanedSentences = new ArrayList<Sentence>();
+		for (Sentence sentence : sentences) {
+			String[] tokens = sentence.getTokens();
+			String[] newTokens = new String[tokens.length];
+			for (int i = 0; i < tokens.length; ++i) {
+				newTokens[i] = tokens[i].toLowerCase();
+			}
+			cleanedSentences.add(new Sentence(sentence.getSentenceId(), newTokens, sentence.getNer()));
+		}
+		
+		Histogram hist = Histogram.extractFromSentenceArray(cleanedSentences, mentionWords);
 		return hist.getNormalizedMap();
 	}
 	

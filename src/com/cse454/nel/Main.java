@@ -22,6 +22,7 @@ public class Main {
     private static int counter = 0;
     private static int NUM_DOCUMENTS = 100;
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws InterruptedException, SQLException {
 		System.out.println("Start");
 
@@ -96,6 +97,8 @@ public class Main {
 
 		@Override
 		public void run() {
+			NERClassifier nerClassifier = new NERClassifier();
+			
 			while (true) {
 				try {
 					DocumentProcessor process;
@@ -108,7 +111,7 @@ public class Main {
 //						counter++;
 //					}
 					String docName = docs.take();
-					process = new DocumentProcessor(count, docName, documentConnect, scorer);
+					process = new DocumentProcessor(count, docName, documentConnect, scorer, nerClassifier);
 					process.run();
 				} catch (Exception e) {
 					System.err.println("Error processing document: " + counter);

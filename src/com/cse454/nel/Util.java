@@ -6,9 +6,12 @@ import java.util.Map.Entry;
 
 public class Util {
 
+	public static String cleanString(String str) {
+		return str.replaceAll("[^a-zA-Z0-9_\\s]", "");
+	}
+	
 	public static String[] tokenizeText(String text) {
-		text = text.replaceAll("[^a-zA-Z0-9\\s]", "");
-		return text.split(" ");
+		return cleanString(text).split(" ");
 	}
 
 	public static double computeDotProduct(Map<String, Double> h1, Map<String, Double> h2) {
