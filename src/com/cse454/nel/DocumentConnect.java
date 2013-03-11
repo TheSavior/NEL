@@ -58,19 +58,31 @@ public class DocumentConnect extends MySQLConnect {
 	}
 
 	public List<Sentence> getDocumentById(int docID) throws SQLException {
-		return getDocument("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = " + docID + " ORDER BY sentenceID");
+		PreparedStatement st = null;
+		try {
+			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = ? ORDER BY sentenceID");
+			st.setInt(1,docID);
+		} catch (Exception e) {
+			throw e;
+		}
+		return getDocument(st);
 	}
 
 	public List<Sentence> getDocumentByName(String name) throws SQLException {
-		return getDocument("SELECT sentenceID, tokens, ner FROM sentences WHERE docName = " + name + " ORDER BY sentenceID");
+		PreparedStatement st = null;
+		try {
+			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = ? ORDER BY sentenceID");
+			st.setString(1, name);
+		} catch (Exception e) {
+			throw e;
+		}
+		return getDocument(st);
 	}
 
-	public List<Sentence> getDocument(String query) throws SQLException {
-		PreparedStatement st = null;
+	public List<Sentence> getDocument(PreparedStatement st) throws SQLException {
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement(query);
 			rs = st.executeQuery();
 
 			List<Sentence> sentences = new ArrayList<Sentence>();

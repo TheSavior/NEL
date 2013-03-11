@@ -25,10 +25,9 @@ public class Main {
 	public static void main(String[] args) throws InterruptedException, SQLException {
 		System.out.println("Start");
 
-		final DocumentConnect documentConnect = null;//new DocumentConnect();
 		final Scorer scorer;
 		try {
-			scorer = new Scorer(documentConnect);
+			scorer = new Scorer();
 		} catch (IOException e1) {
 			System.out.println("Cannot load gold data file");
 			e1.printStackTrace();
@@ -40,7 +39,7 @@ public class Main {
 
 		final BlockingQueue<String> docNames = new ArrayBlockingQueue<>(100);
 		for (int i = 0; i < 16; i++) {
-			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, documentConnect, scorer);
+			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), scorer);
 			executor.execute(worker);
 		}
 
@@ -78,7 +77,6 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 
 		// Now that we have results from the docs, evaluate the scorer
 		scorer.ScoreOverall();

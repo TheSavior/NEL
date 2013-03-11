@@ -35,7 +35,7 @@ public class DocumentProcessor {
 
 		// Retrieve document
 		// List<Sentence> sentences = sentenceDb.getDocument(this.docID);
-		List<Sentence> sentences = sentenceDb.getDocument(docName);
+		List<Sentence> sentences = sentenceDb.getDocumentByName(docName);
 
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();
