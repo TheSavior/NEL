@@ -19,6 +19,8 @@ public class Test {
 		WikiConnect wiki = new WikiConnect();
 		DocumentConnect docs = new DocumentConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
+		
+		NERClassifier classifier = new NERClassifier();
 
 		while (true) {
 			System.out.print("Enter a query: ");
@@ -29,17 +31,20 @@ public class Test {
 				//System.out.println(wiki.GetCleanedWikiText(query));
 				
 				// 2. Candidate lists
-				EntityMention mention = new EntityMention(0, query, 0, 0);
+				/*EntityMention mention = new EntityMention(0, query, 0, 0);
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {
 					System.out.println(ent.wikiTitle);
-				}
+				}*/
 				
 				// 3. Get document
 				//docs.getDocument(Integer.valueOf(query));
 
 				// 4. Inlinks
 				//System.out.println(wiki.GetInlinks(query) + " inlinks to '" + query + "'");
+				
+				// 5. NER
+				classifier.ProccessArticle(query);
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}

@@ -17,6 +17,7 @@
 	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/weka.jar"/>
 	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.23-bin.jar"/>
+	<classpathentry kind="lib" path="stanford-ner.jar" sourcepath="/Users/Simon/Downloads/stanford-ner-2012-11-11/stanford-ner-1.2.7-sources/edu/stanford/nlp/ling/CoreLabel.java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

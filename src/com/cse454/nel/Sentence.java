@@ -12,6 +12,12 @@ public class Sentence {
 		this.ner = ner.split("\\s");
 	}
 
+	public Sentence(int sentenceID, String[] tokens, String[] ner) {
+		this.sentenceID = sentenceID;
+		this.tokens = tokens;
+		this.ner = ner;
+	}
+
 	public int getSentenceId() {
 		return sentenceID;
 	}
