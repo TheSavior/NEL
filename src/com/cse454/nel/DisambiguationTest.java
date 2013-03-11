@@ -25,7 +25,7 @@ public class DisambiguationTest {
 
 			WikiConnect wiki = new WikiConnect();
 			DocumentConnect docs = new DocumentConnect();
-			List<Sentence> sentences = docs.getDocument(Integer.valueOf(docId).intValue());
+			List<Sentence> sentences = docs.getDocumentById(Integer.valueOf(docId).intValue());
 
 			AbstractEntityExtractor extractor = new NerExtractor();
 			List<EntityMention> mentions = extractor.extract(sentences);
