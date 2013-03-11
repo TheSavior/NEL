@@ -21,6 +21,8 @@ public class Main {
     private static int count = 0;
     private static int counter = 0;
     private static int NUM_DOCUMENTS = 100;
+    private static boolean FINISHED_READING_DOCNAMES = false;
+    private static int THREADS_WORKING = 0;
 
 	public static void main(String[] args) throws InterruptedException, SQLException {
 		System.out.println("Start");
@@ -58,7 +60,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null && count < 2) {
+			while ((line = reader.readLine()) != null) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
@@ -68,12 +70,11 @@ public class Main {
 				String docName = line.split("\t")[0];
 				docNames.put(docName);
 			}
-
 			// Wait for threads to finish
-			while (!docNames.isEmpty()) {
+			while (THREADS_WORKING > 0) {
 				continue;
 			}
-			executor.shutdownNow();
+			executor.shutdown();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -96,6 +97,7 @@ public class Main {
 
 		@Override
 		public void run() {
+			String docName = null;
 			while (true) {
 				try {
 					DocumentProcessor process;
@@ -107,11 +109,19 @@ public class Main {
 //						count = counter;
 //						counter++;
 //					}
-					String docName = docs.take();
+					docName = docs.take();
+					synchronized (lock) {
+						THREADS_WORKING++;
+					}
 					process = new DocumentProcessor(count, docName, documentConnect, scorer);
 					process.run();
+					synchronized (lock) {
+						THREADS_WORKING--;
+					}
+				} catch (InterruptedException e) {
+					// ignore
 				} catch (Exception e) {
-					System.err.println("Error processing document: " + counter);
+					System.err.println("Error processing document: " + docName);
 					e.printStackTrace();
 				}
 			}
