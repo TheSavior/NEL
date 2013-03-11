@@ -34,6 +34,14 @@ public class BasicSearcher extends AbstractSearcher {
 		Map<String, String> pages = new HashMap<String, String>();
 		Map<String, String> redirects = new HashMap<String, String>();
 		wiki.GetPages(query, pages, redirects);
+		System.out.println("pages:");
+		for (Entry<String, String> entry : pages.entrySet()) {
+			System.out.println(entry);
+		}
+		System.out.println("redirs:");
+		for (Entry<String, String> entry : redirects.entrySet()) {
+			System.out.println(entry);
+		}
 		
 		// Now find all (if any) disambiguation links.
 		// 1. pull up disambiguation page
