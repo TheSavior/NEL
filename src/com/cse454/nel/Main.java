@@ -60,7 +60,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null && count < 1) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
@@ -70,15 +70,20 @@ public class Main {
 				String docName = line.split("\t")[0];
 				docNames.put(docName);
 			}
+			while (!docNames.isEmpty()) {
+				Thread.sleep(0);
+			}
+			Thread.sleep(100);
 			// Wait for threads to finish
 			while (THREADS_WORKING > 0) {
 				Thread.sleep(0);
 			}
+			System.out.println("about to shut down");
 			executor.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("about to score");
 		// Now that we have results from the docs, evaluate the scorer
 		scorer.ScoreOverall();
 	}
@@ -113,8 +118,10 @@ public class Main {
 					synchronized (lock) {
 						THREADS_WORKING++;
 					}
+					System.out.println("starting process");
 					process = new DocumentProcessor(count, docName, documentConnect, scorer);
 					process.run();
+					System.out.println("finishing process");
 					synchronized (lock) {
 						THREADS_WORKING--;
 					}
