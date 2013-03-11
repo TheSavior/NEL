@@ -17,6 +17,10 @@ import com.cse454.nel.MySQLConnect;
 
 public class CrosswikiDumper {
 
+	private static final int START = 174608620;
+	private static int count = 0;
+	private static final Object lock = new Object();
+
 	@SuppressWarnings("resource")
 	public static void main(final String[] args) throws Exception {
 		if (args.length != 1) {
@@ -24,10 +28,10 @@ public class CrosswikiDumper {
 		}
 
 		// Setup thread pool
-		final ThreadPoolExecutor executor = new ThreadPoolExecutor(100, 100, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
+		final ThreadPoolExecutor executor = new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
 		final BlockingQueue<String> lines = new ArrayBlockingQueue<>(100);
-		for (int i = 0; i < 99; i++) {
+		for (int i = 0; i < 16; i++) {
 			DatabaseUpdateWorker worker = new DatabaseUpdateWorker(lines);
 			executor.execute(worker);
 		}
@@ -57,6 +61,15 @@ public class CrosswikiDumper {
 			// read lines
 			String line;
 			while ((line = reader.readLine()) != null) {
+				synchronized (lock) {
+					count++;
+					if (count % 100000 == 0) {
+						System.out.println("Count: " + count);
+					}
+					if (count < START) {
+						continue;
+					}
+				}
 				lines.put(line);
 			}
 

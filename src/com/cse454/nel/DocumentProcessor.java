@@ -18,12 +18,14 @@ import com.cse454.nel.search.BasicSearcher;
 public class DocumentProcessor {
 
 	private final int docID;
+	private final String docName;
 	private final Scorer scorer;
 	private final WikiConnect wiki;
-	private final SentenceConnect sentenceDb;
+	private final DocumentConnect sentenceDb;
 
-	public DocumentProcessor(int docID, SentenceConnect sentenceDb, Scorer scorer) throws SQLException {
+	public DocumentProcessor(int docID, String docName, DocumentConnect sentenceDb, Scorer scorer) throws SQLException {
 		this.docID = docID;
+		this.docName = docName;
 		this.scorer = scorer;
 		this.wiki = new WikiConnect();
 		this.sentenceDb = sentenceDb;
@@ -32,7 +34,8 @@ public class DocumentProcessor {
 	public void run() throws Exception {
 
 		// Retrieve document
-		List<Sentence> sentences = sentenceDb.getDocument(this.docID);
+		// List<Sentence> sentences = sentenceDb.getDocument(this.docID);
+		List<Sentence> sentences = sentenceDb.getDocument(docName);
 
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();

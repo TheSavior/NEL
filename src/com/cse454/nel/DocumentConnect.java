@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SentenceConnect extends MySQLConnect {
+public class DocumentConnect extends MySQLConnect {
 
-	public SentenceConnect() throws SQLException {
+	public DocumentConnect() throws SQLException {
 		super(defaultUrl, "sentences");
 	}
 
@@ -33,7 +33,7 @@ public class SentenceConnect extends MySQLConnect {
 			}
 		}
 	}
-	
+
 	public String getArticleId(int docID) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -45,7 +45,7 @@ public class SentenceConnect extends MySQLConnect {
 
 			rs.first();
 			String articleID = rs.getString("docName");
-			
+
 			return articleID;
 		} catch (Exception e) {
 			throw e;
@@ -57,13 +57,20 @@ public class SentenceConnect extends MySQLConnect {
 		}
 	}
 
-	public List<Sentence> getDocument(int docID) throws SQLException {
+	public List<Sentence> getDocumentById(int docID) throws SQLException {
+		return getDocument("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = " + docID + " ORDER BY sentenceID");
+	}
+
+	public List<Sentence> getDocumentByName(String name) throws SQLException {
+		return getDocument("SELECT sentenceID, tokens, ner FROM sentences WHERE docName = " + name + " ORDER BY sentenceID");
+	}
+
+	public List<Sentence> getDocument(String query) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		try {
-			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = ? ORDER BY sentenceID");
-			st.setInt(1, docID);
+			st = connection.prepareStatement(query);
 			rs = st.executeQuery();
 
 			List<Sentence> sentences = new ArrayList<Sentence>();

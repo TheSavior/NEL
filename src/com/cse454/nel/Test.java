@@ -17,7 +17,7 @@ public class Test {
 	public static void main(String[] args) throws SQLException {
 		scanner = new Scanner(System.in);
 		WikiConnect wiki = new WikiConnect();
-		SentenceConnect docs = new SentenceConnect();
+		DocumentConnect docs = new DocumentConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
 
 		while (true) {

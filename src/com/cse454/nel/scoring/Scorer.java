@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
-import com.cse454.nel.SentenceConnect;
+import com.cse454.nel.DocumentConnect;
 
 public class Scorer {
 	private static final String goldDataFile = "doc_gold.txt";
@@ -25,10 +25,10 @@ public class Scorer {
 	private Map<String, Set<String>> gold;
 	private Map<String, Set<String>> results;
 	
-	SentenceConnect sentences;
+	DocumentConnect sentences;
 	private Object lock = new Object();
 
-	public Scorer(SentenceConnect sentences) throws IOException {
+	public Scorer(DocumentConnect sentences) throws IOException {
 		this.sentences = sentences;
 		lookup = new HashMap<String, String>();
 		
