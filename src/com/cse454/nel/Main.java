@@ -1,8 +1,11 @@
 package com.cse454.nel;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.cse454.nel.kbp.KB;
 import com.cse454.nel.scoring.Scorer;
 
 
@@ -11,12 +14,22 @@ public class Main {
 	//private static final String sentencesFile = "sentences.entities";
     private static Object lock = new Object();
     private static int counter = 0;
-    private static int NUM_DOCUMENTS = 2;
+    private static int NUM_DOCUMENTS = 100;
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, SQLException {
 		System.out.println("Start");
-		final Scorer scorer = new Scorer();
-
+		
+		final SentenceConnect docs = new SentenceConnect();
+		
+		final Scorer scorer;
+		try {
+			scorer = new Scorer(docs);
+		} catch (IOException e1) {
+			System.out.println("Cannot load gold data file");
+			e1.printStackTrace();
+			return;
+		}
+		
 		List<Thread> threadPool = new ArrayList<Thread>();
 		for (int i = 0; i < 16; i++) {
 			Thread thread = new Thread() {
@@ -29,7 +42,7 @@ public class Main {
 								if (counter > NUM_DOCUMENTS) {
 									break;
 								}
-								process = new DocumentProcessor(counter, scorer);
+								process = new DocumentProcessor(counter, docs, scorer);
 								counter++;
 							}
 

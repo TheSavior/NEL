@@ -22,18 +22,17 @@ public class DocumentProcessor {
 	private final WikiConnect wiki;
 	private final SentenceConnect sentenceDb;
 
-	public DocumentProcessor(int docID, Scorer scorer) throws SQLException {
+	public DocumentProcessor(int docID, SentenceConnect sentenceDb, Scorer scorer) throws SQLException {
 		this.docID = docID;
 		this.scorer = scorer;
 		this.wiki = new WikiConnect();
-		this.sentenceDb = new SentenceConnect();
+		this.sentenceDb = sentenceDb;
 	}
 
 	public void run() throws Exception {
-		SentenceConnect docs = new SentenceConnect();
 
-		// Retrive document
-		List<Sentence> sentences = docs.getDocument(this.docID);
+		// Retrieve document
+		List<Sentence> sentences = sentenceDb.getDocument(this.docID);
 
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();
@@ -58,7 +57,7 @@ public class DocumentProcessor {
 		// String docName = "foo"; // We need to use the docname
 
 		// Score our results (if necessary)
-		// scorer.ScoreResults(docName, entities);
+		scorer.ScoreResults(docID, entities);
 
 		// TODO: output entities to file
 	}

@@ -33,6 +33,29 @@ public class SentenceConnect extends MySQLConnect {
 			}
 		}
 	}
+	
+	public String getArticleId(int docID) throws SQLException {
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement("SELECT docName FROM sentences WHERE docID = ? LIMIT 1");
+			st.setInt(1, docID);
+			rs = st.executeQuery();
+
+			rs.first();
+			String articleID = rs.getString("docName");
+			
+			return articleID;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
+		}
+	}
 
 	public List<Sentence> getDocument(int docID) throws SQLException {
 		PreparedStatement st = null;
