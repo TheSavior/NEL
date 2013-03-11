@@ -26,15 +26,15 @@ public class Test {
 
 			try {
 				// 1. Get wiki text
-				// System.out.println(wiki.GetCleanedWikiText(query));
-
+				//System.out.println(wiki.GetCleanedWikiText(query));
+				
 				// 2. Candidate lists
-				/*EntityMention mention = new EntityMention(0, query, 0, 0);
+				EntityMention mention = new EntityMention(0, query, 0, 0);
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {
 					System.out.println(ent.wikiTitle);
-				}*/
-
+				}
+				
 				// 3. Get document
 				//docs.getDocument(Integer.valueOf(query));
 

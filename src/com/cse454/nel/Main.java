@@ -58,7 +58,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null && count < 2) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
@@ -109,7 +109,6 @@ public class Main {
 //					}
 					String docName = docs.take();
 					process = new DocumentProcessor(count, docName, documentConnect, scorer);
-					System.out.println(docName);
 					process.run();
 				} catch (Exception e) {
 					System.err.println("Error processing document: " + counter);

@@ -35,7 +35,6 @@ public class BasicSearcher extends AbstractSearcher {
 		Map<String, String> pages = new HashMap<String, String>();
 		Map<String, String> redirects = new HashMap<String, String>();
 		wiki.GetPages(query, pages, redirects);
-
 		// Now find all (if any) disambiguation links.
 		// 1. pull up disambiguation page
 		wiki.GetPages(query + "_(disambiguation)", redirects, redirects);
