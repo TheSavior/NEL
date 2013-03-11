@@ -99,8 +99,13 @@ public class Scorer {
 				values.add(ent.wikiTitle);
 			}
 		}
-
-		System.out.println("\tGold: "+ Join(", ", gold.get(docName)));
+		
+		Set<String> names = new HashSet<String>();
+		for(String entityId : gold.get(docName)) {
+			names.add(lookup.get(entityId));
+		}
+		 
+		System.out.println("\tGold: "+ Join(", ", names));
 		System.out.println("\tGiven: "+ Join(", ", values));
 
 /*

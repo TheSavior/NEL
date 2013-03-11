@@ -3,9 +3,9 @@ package com.cse454.nel.kbp;
 
 public class KbpConstants {
 	// the data folder. TODO CHANGE it if you mount the volume elsewhere.
-	public static String rootPath = "/Users/andrewrogers/AmazonEC2/kbp/data/";
+	public static String rootPath = "C:/Users/Eli/Downloads/entityParts/";
 
-	public static final String processedDocPath = rootPath + "09nw/";;
+	public static final String processedDocPath = rootPath + "09nw/";
 
 	// knowledge base
 	public static final String kbPath = KbpConstants.rootPath + "TAC09KBPEvalRefKB/data/";
