@@ -79,14 +79,13 @@ public class Main {
 			while (THREADS_WORKING > 0) {
 				Thread.sleep(0);
 			}
-			System.out.println("about to shut down");
 			executor.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("about to score");
 		// Now that we have results from the docs, evaluate the scorer
 		scorer.ScoreOverall();
+		System.exit(0);
 	}
 
 	static class DocumentProcessWorker implements Runnable {
@@ -103,7 +102,7 @@ public class Main {
 
 		@Override
 		public void run() {
-			NERClassifier nerClassifier = new NERClassifier();
+			NERClassifier nerClassifier = null;
 			String docName = null;
 			while (true) {
 				try {

@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
-import com.cse454.nel.disambiguate.EntityWikiMentionHistogramDisambiguator;
+import com.cse454.nel.disambiguate.InLinkDisambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.scoring.Scorer;
@@ -50,7 +50,8 @@ public class DocumentProcessor {
 		}
 
 		// Disambiguate
-		AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(wiki, nerClassifier, sentences, true);
+		//AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(wiki, nerClassifier, sentences, true);
+		AbstractDisambiguator disambiguator = new InLinkDisambiguator(wiki, sentences);
 		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions);
 
 		// update the entity column
