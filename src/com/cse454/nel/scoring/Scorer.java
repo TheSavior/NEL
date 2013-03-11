@@ -85,6 +85,7 @@ public class Scorer {
 
 	public void ScoreResults(String docName, Map<EntityMention, Entity> entities) throws SQLException {
 		// Process Results
+		System.out.println("Scoring: "+docName+":");
 		if (!gold.containsKey(docName)){
 			System.out.println("\tDoc not in gold data");
 			return;
