@@ -72,7 +72,7 @@ public class Main {
 			}
 			// Wait for threads to finish
 			while (THREADS_WORKING > 0) {
-				continue;
+				Thread.sleep(0);
 			}
 			executor.shutdown();
 		} catch (Exception e) {
