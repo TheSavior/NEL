@@ -21,9 +21,6 @@ public class InLinkDisambiguator extends AbstractDisambiguator {
 		Map<EntityMention, Entity> ret = new HashMap<EntityMention, Entity>();
 		Map<String, Integer> inLinkCache = new HashMap<String, Integer>();
 		for (EntityMention entityMention : mentions) {
-			if (entityMention.sentenceID == 9) {
-				System.out.println("break");
-			}
 			List<Entity> entities = entityMention.candidates;
 			Integer max = -1;
 			Entity chosenOne = null;
