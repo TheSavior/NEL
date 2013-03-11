@@ -61,7 +61,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null && count < 1) {
+			while ((line = reader.readLine()) != null) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
