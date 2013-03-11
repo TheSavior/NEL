@@ -71,7 +71,7 @@ public class DocumentConnect extends MySQLConnect {
 	public List<Sentence> getDocumentByName(String name) throws SQLException {
 		PreparedStatement st = null;
 		try {
-			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = ? ORDER BY sentenceID");
+			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docName = ? ORDER BY sentenceID");
 			st.setString(1, name);
 		} catch (Exception e) {
 			throw e;
