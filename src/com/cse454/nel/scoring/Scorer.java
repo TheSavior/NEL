@@ -83,10 +83,8 @@ public class Scorer {
 		System.out.println("Imported "+gold.size()+" documents with gold data");
 	}
 
-	public void ScoreResults(int docID, Map<EntityMention, Entity> entities) throws SQLException {
+	public void ScoreResults(String docName, Map<EntityMention, Entity> entities) throws SQLException {
 		// Process Results
-		String docName = sentences.getArticleId(docID);
-		System.out.println("Scoring: "+docName);
 		if (!gold.containsKey(docName)){
 			System.out.println("\tDoc not in gold data");
 			return;
@@ -99,12 +97,12 @@ public class Scorer {
 				values.add(ent.wikiTitle);
 			}
 		}
-		
+
 		Set<String> names = new HashSet<String>();
 		for(String entityId : gold.get(docName)) {
 			names.add(lookup.get(entityId));
 		}
-		 
+
 		System.out.println("\tGold: "+ Join(", ", names));
 		System.out.println("\tGiven: "+ Join(", ", values));
 

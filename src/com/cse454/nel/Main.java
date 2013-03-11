@@ -60,7 +60,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null) {
+			while ((line = reader.readLine()) != null && count < 1) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
@@ -74,7 +74,7 @@ public class Main {
 			while (THREADS_WORKING > 0) {
 				Thread.sleep(0);
 			}
-			executor.shutdown();
+			executor.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
