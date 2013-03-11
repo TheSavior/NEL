@@ -21,6 +21,8 @@ public class Main {
     private static int count = 0;
     private static int counter = 0;
     private static int NUM_DOCUMENTS = 100;
+    private static boolean FINISHED_READING_DOCNAMES = false;
+    private static int THREADS_WORKING = 0;
 
 	@SuppressWarnings("resource")
 	public static void main(String[] args) throws InterruptedException, SQLException {
@@ -59,7 +61,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null && count < 2) {
+			while ((line = reader.readLine()) != null && count < 1) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
@@ -69,16 +71,20 @@ public class Main {
 				String docName = line.split("\t")[0];
 				docNames.put(docName);
 			}
-
-			// Wait for threads to finish
 			while (!docNames.isEmpty()) {
-				continue;
+				Thread.sleep(0);
 			}
+			Thread.sleep(100);
+			// Wait for threads to finish
+			while (THREADS_WORKING > 0) {
+				Thread.sleep(0);
+			}
+			System.out.println("about to shut down");
 			executor.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("about to score");
 		// Now that we have results from the docs, evaluate the scorer
 		scorer.ScoreOverall();
 	}
@@ -98,7 +104,7 @@ public class Main {
 		@Override
 		public void run() {
 			NERClassifier nerClassifier = new NERClassifier();
-			
+			String docName = null;
 			while (true) {
 				try {
 					DocumentProcessor process;
@@ -110,11 +116,21 @@ public class Main {
 //						count = counter;
 //						counter++;
 //					}
-					String docName = docs.take();
+					docName = docs.take();
+					synchronized (lock) {
+						THREADS_WORKING++;
+					}
+					System.out.println("starting process");
 					process = new DocumentProcessor(count, docName, documentConnect, scorer, nerClassifier);
 					process.run();
+					System.out.println("finishing process");
+					synchronized (lock) {
+						THREADS_WORKING--;
+					}
+				} catch (InterruptedException e) {
+					// ignore
 				} catch (Exception e) {
-					System.err.println("Error processing document: " + counter);
+					System.err.println("Error processing document: " + docName);
 					e.printStackTrace();
 				}
 			}
