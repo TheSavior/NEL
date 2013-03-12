@@ -111,6 +111,7 @@ public class Main {
 
 		@Override
 		public void run() {
+			NERClassifier nerClassifier = new NERClassifier(); // Make one per thread, because these are very costly to initialize
 			String docName = null;
 			while (true) {
 				try {
@@ -122,7 +123,7 @@ public class Main {
 					}
 					//System.out.println("starting process");
 					long startTime = System.currentTimeMillis();
-					process = new DocumentProcessor(docName, documentConnect, scorer, featureWeights);
+					process = new DocumentProcessor(docName, documentConnect, scorer, featureWeights, nerClassifier);
 					process.run();
 					long endTime = System.currentTimeMillis();
 					long duration = endTime - startTime;

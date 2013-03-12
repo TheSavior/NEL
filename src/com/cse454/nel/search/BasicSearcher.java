@@ -1,9 +1,7 @@
 package com.cse454.nel.search;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -15,16 +13,24 @@ import com.cse454.nel.WikiConnect;
 public class BasicSearcher extends AbstractSearcher {
 
 	private WikiConnect wiki;
-	private Map<String, List<Entity>> candidatesCache;
+	private Map<String, Set<Entity>> candidatesCache;
 
 	public BasicSearcher(WikiConnect wiki) {
 		this.wiki = wiki;
-		candidatesCache = new HashMap<String, List<Entity>>();
+		candidatesCache = new HashMap<String, Set<Entity>>();
 	}
-
+	
+	private Map<Entity, Map<String, Double>> ConvertToEmptyFeatures(Set<Entity> ents) {
+		Map<Entity, Map<String, Double>> ret = new HashMap<>();
+		for (Entity ent : ents) {
+			ret.put(ent, new HashMap<String, Double>());
+		}
+		return ret;
+	}
+	
 	public void GetCandidateEntities(EntityMention mention) throws Exception {
 		if (candidatesCache.containsKey(mention.mentionString)) {
-			mention.candidates = candidatesCache.get(mention.mentionString);
+			mention.candidateFeatures = ConvertToEmptyFeatures(candidatesCache.get(mention.mentionString));
 			return;
 		}
 
@@ -59,11 +65,12 @@ public class BasicSearcher extends AbstractSearcher {
 			wiki.GetPageLinks(candidates, pageID);
 		}
 
-		mention.candidates = new ArrayList<Entity>();
+		Set<Entity> entities = new HashSet<Entity>();
 		for (String page : candidates) {
-			mention.candidates.add( new Entity(page) );
+			entities.add( new Entity(page) );
 		}
 
-		candidatesCache.put(mention.mentionString, mention.candidates);
+		candidatesCache.put(mention.mentionString, entities);
+		mention.candidateFeatures = ConvertToEmptyFeatures(entities);
 	}
 }
