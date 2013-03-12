@@ -2,7 +2,9 @@ package com.cse454.nel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -16,6 +18,31 @@ public class WikiConnect extends MySQLConnect {
         super(defaultUrl, defaultDB);
 
         page_textCache = new HashMap<String, String>();
+	}
+
+	public List<CrossWikiData> GetCrossWikiDocs(String entityMention) throws Exception {
+
+		String query = "Select * from crosswiki where mention = ?";
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		List<CrossWikiData> crossWikiData = new ArrayList<CrossWikiData>();
+		try {
+			st = connection.prepareStatement(query);
+			st.setString(1, entityMention);
+			rs = st.executeQuery();
+			while (rs.next()) {
+				crossWikiData.add(new CrossWikiData(rs.getString(1), rs.getDouble(2), rs.getString(3)));
+			}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
+		}
+		return crossWikiData;
 	}
 
 	/**
