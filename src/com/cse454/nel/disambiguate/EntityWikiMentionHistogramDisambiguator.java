@@ -24,9 +24,9 @@ public class EntityWikiMentionHistogramDisambiguator extends AbstractDisambiguat
 	private NERClassifier classifier;
 	private boolean splitMentions;
 	
-	public EntityWikiMentionHistogramDisambiguator(WikiConnect wiki, boolean splitMentions) {
+	public EntityWikiMentionHistogramDisambiguator(WikiConnect wiki, boolean splitMentions, NERClassifier classifier) {
 		super(wiki);
-		this.classifier = new NERClassifier();;
+		this.classifier = classifier;
 		this.splitMentions = splitMentions;
 		this.extractor = new NerExtractor();
 	}

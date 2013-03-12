@@ -7,37 +7,37 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.cse454.nel.disambiguate.AbstractDisambiguator;
-import com.cse454.nel.disambiguate.InLinkDisambiguator;
-import com.cse454.nel.disambiguate.SimpleDisambiguator;
+import com.cse454.nel.disambiguate.Disambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
+import com.cse454.nel.features.FeatureGenerator;
 import com.cse454.nel.scoring.Scorer;
 import com.cse454.nel.search.AbstractSearcher;
 import com.cse454.nel.search.BasicSearcher;
 
 public class DocumentProcessor {
 
-	private final int docID;
 	private final String docName;
 	private final Scorer scorer;
 	private final DocumentConnect sentenceDb;
-	private final AbstractDisambiguator disambiguator;
-	//private final NERClassifier nerClassifier;
+	private final Map<String, Double> featureWeights;
+	private final NERClassifier nerClassifier;
 
-	public DocumentProcessor(int docID, String docName, DocumentConnect sentenceDb, Scorer scorer, AbstractDisambiguator disambiguator) throws SQLException {
-		this.docID = docID;
+	public DocumentProcessor(String docName, DocumentConnect sentenceDb, Scorer scorer, Map<String, Double> featureWeights) throws SQLException {
 		this.docName = docName;
 		this.scorer = scorer;
 		this.sentenceDb = sentenceDb;
-		this.disambiguator = disambiguator;
-		//this.nerClassifier = nerClassifier;
+		this.featureWeights = featureWeights;
+		this.nerClassifier = nerClassifier;
 	}
 
 	public void run() throws Exception {
+		// Setup feature generators
+		// TODO:
+		
+		Map<String, FeatureGenerator> featureGenerators;
 
 		// Retrieve document
-		// List<Sentence> sentences = sentenceDb.getDocument(this.docID);
 		List<Sentence> sentences = sentenceDb.getDocumentByName(docName);
 
 		// Extract entity mentions
@@ -51,7 +51,8 @@ public class DocumentProcessor {
 		}
 
 		// Disambiguate
-		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions, sentences);
+		Disambiguator disambiguator = new Disambiguator();
+		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions, featureWeights);
 
 
 		// update the entity column

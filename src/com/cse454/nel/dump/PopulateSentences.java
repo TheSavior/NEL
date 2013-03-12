@@ -1,4 +1,4 @@
-package com.cse454.dump;
+package com.cse454.nel.dump;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

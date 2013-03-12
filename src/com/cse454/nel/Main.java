@@ -6,17 +6,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.cse454.nel.disambiguate.AbstractDisambiguator;
-import com.cse454.nel.disambiguate.EntityWikiMentionHistogramDisambiguator;
-import com.cse454.nel.disambiguate.InLinkDisambiguator;
-import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.scoring.Scorer;
 
 
@@ -42,13 +38,18 @@ public class Main {
 			e1.printStackTrace();
 			return;
 		}
+		
+		// Get feature weights
+		// TODO: this should come from command line or something
+		Map<String, Double> featureWeights = new HashMap<String, Double>();
+		featureWeights.put("inlinks", 1.0);
 
 		// Setup thread pool
 		final ThreadPoolExecutor executor = new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
 		final BlockingQueue<String> docNames = new ArrayBlockingQueue<>(100);
 		for (int i = 0; i < 16; i++) {
-			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), scorer);
+			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), scorer, featureWeights);
 			executor.execute(worker);
 		}
 
@@ -97,13 +98,15 @@ public class Main {
 	static class DocumentProcessWorker implements Runnable {
 
 		private final BlockingQueue<String> docs;
+		private final Map<String, Double> featureWeights;
 		private final DocumentConnect documentConnect;
 		private final Scorer scorer;
 
-		public DocumentProcessWorker(BlockingQueue<String> docs, DocumentConnect documentConnect, Scorer scorer) {
+		public DocumentProcessWorker(BlockingQueue<String> docs, DocumentConnect documentConnect, Scorer scorer, Map<String, Double> featureWeights) {
 			this.docs = docs;
 			this.documentConnect = documentConnect;
 			this.scorer = scorer;
+			this.featureWeights = featureWeights;
 		}
 
 		@Override
@@ -112,32 +115,19 @@ public class Main {
 			while (true) {
 				try {
 					DocumentProcessor process;
-					int count = 0;
-//					synchronized (lock) {
-//						if (counter > NUM_DOCUMENTS) {
-//							break;
-//						}
-//						count = counter;
-//						counter++;
-//					}
+
 					docName = docs.take();
 					synchronized (lock) {
 						THREADS_WORKING++;
 					}
 					//System.out.println("starting process");
-					List<AbstractDisambiguator> disambiguators = new ArrayList<AbstractDisambiguator>();
-					//disambiguators.add(new EntityWikiMentionHistogramDisambiguator(new WikiConnect(), true));
-					disambiguators.add(new InLinkDisambiguator(new WikiConnect()));
-					disambiguators.add(new SimpleDisambiguator());
+					long startTime = System.currentTimeMillis();
+					process = new DocumentProcessor(docName, documentConnect, scorer, featureWeights);
+					process.run();
+					long endTime = System.currentTimeMillis();
+					long duration = endTime - startTime;
+					scorer.AddTiming(process.getClass(), duration);
 					
-					for(AbstractDisambiguator disambiguator : disambiguators) {
-						long startTime = System.currentTimeMillis();
-						process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
-						process.run();
-						long endTime = System.currentTimeMillis();
-						long duration = endTime - startTime;
-						scorer.AddTiming(disambiguator.getClass(), duration);
-					}
 					//System.out.println("finishing process");
 					synchronized (lock) {
 						THREADS_WORKING--;
