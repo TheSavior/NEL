@@ -1,19 +1,19 @@
 package com.cse454.nel;
 
-import java.util.List;
+import java.util.Map;
 
 public class EntityMention {
 	public int sentenceID;
 	int tokStart, numToks;
 	public String mentionString;
-	public List<Entity> candidates;
+	public Map<Entity, Map<String, Double>> candidateFeatures;
 
 	public EntityMention(int sentenceID, String mention, int tokStart, int numToks) {
 		this.sentenceID = sentenceID;
 		this.tokStart = tokStart;
 		this.numToks = numToks;
 		this.mentionString = mention;
-		candidates = null;
+		candidateFeatures = null;
 	}
 
 	@Override
