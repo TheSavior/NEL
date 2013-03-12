@@ -19,7 +19,7 @@ public class Test {
 		WikiConnect wiki = new WikiConnect();
 		DocumentConnect docs = new DocumentConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
-		
+
 		NERClassifier classifier = new NERClassifier();
 
 		while (true) {
@@ -29,22 +29,32 @@ public class Test {
 			try {
 				// 1. Get wiki text
 				//System.out.println(wiki.GetCleanedWikiText(query));
-				
+
 				// 2. Candidate lists
 				/*EntityMention mention = new EntityMention(0, query, 0, 0);
 				searcher.GetCandidateEntities(mention);
 				for (Entity ent : mention.candidates) {
 					System.out.println(ent.wikiTitle);
 				}*/
-				
+
 				// 3. Get document
 				//docs.getDocument(Integer.valueOf(query));
 
 				// 4. Inlinks
 				//System.out.println(wiki.GetInlinks(query) + " inlinks to '" + query + "'");
-				
+
 				// 5. NER
-				classifier.ProccessArticle(query);
+				//classifier.ProccessArticle(query);
+
+				// 6. Cross Wiki
+//				CrossWikiSearcher searcher = new CrossWikiSearcher(wiki);
+//				EntityMention mention = new EntityMention(0, query, 0, 0);
+//				searcher.GetCandidateEntities(mention);
+//				for (Entry<Entity, Map<String, Double>> entry : mention.candidateFeatures.entrySet()) {
+//					String url = entry.getKey().wikiTitle;
+//					Double prob = entry.getValue().get(Features.CROSS_WIKI_PROB);
+//					System.out.printf("%s : %f\n", url, prob);
+//				}
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}

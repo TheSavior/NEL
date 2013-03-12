@@ -19,9 +19,14 @@ public class WikiConnect extends MySQLConnect {
         page_textCache = new HashMap<String, String>();
 	}
 
-	public List<CrossWikiData> GetCrossWikiDocs(String entityMention) throws Exception {
+	/**
+	 * Retrieves entities from Google Cross Wiki Data based on the given entity mention.
+	 * @param entityMention the string to lookup
+	 * @param removeDisambiguation true to remove obvious disambiguation pages from results
+	 */
+	public List<CrossWikiData> GetCrossWikiDocs(String entityMention, boolean removeDisambiguation) throws Exception {
 
-		String query = "Select * from crosswiki where mention = ?";
+		String query = "Select * from crosswiki where mention = ? order by likelihood desc limit 10";
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -31,6 +36,9 @@ public class WikiConnect extends MySQLConnect {
 			st.setString(1, entityMention);
 			rs = st.executeQuery();
 			while (rs.next()) {
+				if (removeDisambiguation && rs.getString(3).contains("_(disambiguation)")) {
+					continue;
+				}
 				crossWikiData.add(new CrossWikiData(rs.getString(1), rs.getDouble(2), rs.getString(3)));
 			}
 		} catch (Exception e) {
