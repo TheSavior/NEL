@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -122,14 +124,17 @@ public class Main {
 					synchronized (lock) {
 						THREADS_WORKING++;
 					}
-					System.out.println("starting process");
+					//System.out.println("starting process");
+					List<AbstractDisambiguator> disambiguators = new ArrayList<AbstractDisambiguator>();
+					//disambiguators.add(new EntityWikiMentionHistogramDisambiguator(new WikiConnect(), true));
+					disambiguators.add(new InLinkDisambiguator(new WikiConnect()));
+					disambiguators.add(new SimpleDisambiguator());
 					
-					//AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(new WikiConnect(), true);
-					AbstractDisambiguator disambiguator = new InLinkDisambiguator(new WikiConnect());
-					//AbstractDisambiguator disambiguator = new SimpleDisambiguator();
-					process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
-					process.run();
-					System.out.println("finishing process");
+					for(AbstractDisambiguator disambiguator : disambiguators) {
+						process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
+						process.run();
+					}
+					//System.out.println("finishing process");
 					synchronized (lock) {
 						THREADS_WORKING--;
 					}
