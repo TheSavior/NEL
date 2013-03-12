@@ -41,7 +41,7 @@ public class Main {
 		final ThreadPoolExecutor executor = new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
 		final BlockingQueue<String> docNames = new ArrayBlockingQueue<>(100);
-		for (int i = 0; i < 16; i++) {
+		for (int i = 0; i < 1; i++) {
 			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), scorer);
 			executor.execute(worker);
 		}
