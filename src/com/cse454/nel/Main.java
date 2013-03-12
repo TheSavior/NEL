@@ -124,8 +124,8 @@ public class Main {
 					}
 					System.out.println("starting process");
 					
-					//AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(WikiConnect.getInstance(), true);
-					AbstractDisambiguator disambiguator = new InLinkDisambiguator(WikiConnect.getInstance());
+					//AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(new WikiConnect(), true);
+					AbstractDisambiguator disambiguator = new InLinkDisambiguator(new WikiConnect());
 					//AbstractDisambiguator disambiguator = new SimpleDisambiguator();
 					process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
 					process.run();

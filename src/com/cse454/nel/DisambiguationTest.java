@@ -23,7 +23,7 @@ public class DisambiguationTest {
 			System.out.print("Enter a docId: ");
 			String docId = scanner.nextLine();
 
-			WikiConnect wiki = WikiConnect.getInstance();
+			WikiConnect wiki = new WikiConnect();
 			DocumentConnect docs = new DocumentConnect();
 			List<Sentence> sentences = docs.getDocumentById(Integer.valueOf(docId).intValue());
 

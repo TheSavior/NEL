@@ -13,7 +13,7 @@ import com.cse454.nel.WikiConnect;
 public class InLinkDisambiguator extends AbstractDisambiguator {
 
 	public InLinkDisambiguator(WikiConnect wiki) throws SQLException {
-		super(WikiConnect.getInstance());
+		super(new WikiConnect());
 	}
 
 	@Override
