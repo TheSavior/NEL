@@ -38,6 +38,8 @@ public class Scorer {
 	private Map<Class, Long> timing;
 	
 	private int scoredDocuments = 0;
+	
+	private long startTime;
 
 	DocumentConnect sentences;
 	private Object lock = new Object();
@@ -55,6 +57,8 @@ public class Scorer {
 		
 		timing = new HashMap<Class, Long>();
 		processedDocs = new HashMap<Class, Integer>();
+		
+		startTime = System.currentTimeMillis();
 
 		LoadLookup();
 		LoadGoldData();
@@ -184,7 +188,11 @@ public class Scorer {
 	}
 
 	public void ScoreOverall() {
-		System.out.println();
+		
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		
+		System.out.println("Time to process: "+(duration/1000/60)+" minutes");
 		System.out.println("Class\tMatched\tTotal\tPercent\tAvg. Runtime");
 		for(Entry<Class, Integer> entry : total.entrySet()) {
 			int match = matched.get(entry.getKey());
