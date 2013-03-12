@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.features;
 
 public class Features {
 
