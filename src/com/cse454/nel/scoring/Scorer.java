@@ -115,16 +115,15 @@ public class Scorer {
 			}
 		}
 
-		
-		
 		Set<String> names = new HashSet<String>();
 		
 		synchronized(lock) {
+			if (!timing.containsKey(disambiguator)) {
+				timing.put(disambiguator, (long) 0);
+			}
 			if (!processedDocs.containsKey(disambiguator)) {
 				processedDocs.put(disambiguator, 0);
 			}
-			
-			processedDocs.put(disambiguator, processedDocs.get(disambiguator)+1);
 			
 			for(String entityId : gold.get(docName)) {
 				if (!matched.containsKey(disambiguator)) {
@@ -145,8 +144,6 @@ public class Scorer {
 				
 				names.add(lookup.get(entityId));
 			}
-			
-			scoredDocuments++;
 		}
 		if (scoredDocuments % 5 == 0) {
 			for(Entry<Class, Integer> entry : total.entrySet()) {
@@ -155,7 +152,7 @@ public class Scorer {
 				float percent = (((float)match)/ totals) * 100;
 				
 				long runtime = timing.get(entry.getKey());
-				double avgRuntime = (runtime / processedDocs.get(entry.getKey())) / 1000.0;
+				double avgRuntime = (runtime / Math.max(1, processedDocs.get(entry.getKey()))) / 1000.0;
 				System.out.println("Disambiguator: "+entry.getKey().getName()+" Scored: "+scoredDocuments+" -- Matched "+match+" out of "+totals+" total entities: "+String.format("%s",percent)+"% -- Avg Runtime: "+avgRuntime+"s");
 			}
 			System.out.println();
@@ -164,11 +161,10 @@ public class Scorer {
 	
 	public void AddTiming(Class disambiguator, long time) {
 		synchronized(lock) {
-			if (!timing.containsKey(disambiguator)) {
-				timing.put(disambiguator, (long) 0);
-			}
-			
 			timing.put(disambiguator, timing.get(disambiguator)+time);
+			processedDocs.put(disambiguator, processedDocs.get(disambiguator)+1);
+			
+			scoredDocuments++;
 		}
 	}
 
@@ -188,11 +184,16 @@ public class Scorer {
 	}
 
 	public void ScoreOverall() {
-		for(Entry<String, Set<String>> entry : results.entrySet()) {
-		    String key = entry.getKey();
-		    Set<String> values = entry.getValue();
-
-		    System.out.println(key+"\t"+StringUtils.join(values, "\t"));
+		System.out.println();
+		System.out.println("Class\tMatched\tTotal\tPercent\tAvg. Runtime");
+		for(Entry<Class, Integer> entry : total.entrySet()) {
+			int match = matched.get(entry.getKey());
+			int totals = entry.getValue();
+			float percent = (((float)match)/ totals) * 100;
+			
+			long runtime = timing.get(entry.getKey());
+			double avgRuntime = (runtime / Math.max(1, processedDocs.get(entry.getKey()))) / 1000.0;
+			System.out.println(entry.getKey().getName()+"\t"+match+"\t"+totals+"\t"+String.format("%s",percent)+"%\t"+avgRuntime+"s");
 		}
 	}
 }
