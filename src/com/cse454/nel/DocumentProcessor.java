@@ -23,7 +23,7 @@ public class DocumentProcessor {
 	private final Map<String, Double> featureWeights;
 	private final NERClassifier nerClassifier;
 
-	public DocumentProcessor(String docName, DocumentConnect sentenceDb, Scorer scorer, Map<String, Double> featureWeights) throws SQLException {
+	public DocumentProcessor(String docName, DocumentConnect sentenceDb, Scorer scorer, Map<String, Double> featureWeights, NERClassifier nerClassifier) throws SQLException {
 		this.docName = docName;
 		this.scorer = scorer;
 		this.sentenceDb = sentenceDb;
@@ -33,11 +33,12 @@ public class DocumentProcessor {
 
 	public void run() throws Exception {
 		// Setup feature generators
-		// TODO:
+		// TODO: setup these
 		
-		Map<String, FeatureGenerator> featureGenerators;
+		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
 
 		// Retrieve document
+		// TODO: generisize this for mitchel
 		List<Sentence> sentences = sentenceDb.getDocumentByName(docName);
 
 		// Extract entity mentions
@@ -49,24 +50,33 @@ public class DocumentProcessor {
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
+		
+		// Generate features
+		for (String feature : featureWeights.keySet()) {
+			FeatureGenerator generator = featureGenerators.get(feature);
+			if (generator == null) {
+				throw new Exception("No Feature Generator For Feature: '" + feature + "'");
+			}
+			
+			for (EntityMention mention : mentions) {
+				generator.GenerateFeatures(mention);
+			}
+		}
 
 		// Disambiguate
 		Disambiguator disambiguator = new Disambiguator();
 		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions, featureWeights);
 
 
-		// update the entity column
+		// Update the entity column
+		// TODO: generisize this for mitchel
 		Map<Integer, List<Entity>> sentenceEntities = convertToIdEntityListMap(entities);
 		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
 			updateEntityColumn(entry.getKey(), entry.getValue());
 		}
 
-		// String docName = "foo"; // We need to use the docname
-
 		// Score our results (if necessary)
 		scorer.ScoreResults(disambiguator.getClass(), docName, entities);
-
-		// TODO: output entities to file
 	}
 
 	private void updateEntityColumn(int sentenceID, List<Entity> entities) {
