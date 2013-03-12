@@ -10,7 +10,11 @@ import java.util.Map.Entry;
 import com.cse454.nel.disambiguate.Disambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
+import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
+import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
+import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureGenerator;
+import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.scoring.Scorer;
 import com.cse454.nel.search.AbstractSearcher;
 import com.cse454.nel.search.BasicSearcher;
@@ -22,6 +26,7 @@ public class DocumentProcessor {
 	private final DocumentConnect sentenceDb;
 	private final Map<String, Double> featureWeights;
 	private final NERClassifier nerClassifier;
+	private final WikiConnect wikiDb;
 
 	public DocumentProcessor(String docName, DocumentConnect sentenceDb, Scorer scorer, Map<String, Double> featureWeights, NERClassifier nerClassifier) throws SQLException {
 		this.docName = docName;
@@ -29,14 +34,10 @@ public class DocumentProcessor {
 		this.sentenceDb = sentenceDb;
 		this.featureWeights = featureWeights;
 		this.nerClassifier = nerClassifier;
+		this.wikiDb = new WikiConnect();
 	}
 
 	public void run() throws Exception {
-		// Setup feature generators
-		// TODO: setup these
-		
-		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
-
 		// Retrieve document
 		// TODO: generisize this for mitchel
 		List<Sentence> sentences = sentenceDb.getDocumentByName(docName);
@@ -50,6 +51,22 @@ public class DocumentProcessor {
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
+
+		// Setup feature generators
+		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
+		
+		AllWordsHistogramFeatureGenerator feature1 = new AllWordsHistogramFeatureGenerator(wikiDb, sentences);
+		featureGenerators.put(feature1.GetFeatureName(), feature1);
+		
+		EntityMentionHistogramFeatureGenerator feature2 = new EntityMentionHistogramFeatureGenerator(wikiDb, sentences, mentions);
+		featureGenerators.put(feature2.GetFeatureName(), feature2);
+		
+		// TODO: command line arg instead of 'true'?
+		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, nerClassifier, true);
+		featureGenerators.put(feature3.GetFeatureName(), feature3);
+		
+		InLinkFeatureGenerator feature4 = new InLinkFeatureGenerator(wikiDb);
+		featureGenerators.put(feature4.GetFeatureName(), feature4);
 		
 		// Generate features
 		for (String feature : featureWeights.keySet()) {

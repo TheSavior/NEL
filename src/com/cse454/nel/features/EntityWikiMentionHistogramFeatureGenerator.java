@@ -1,11 +1,11 @@
-package com.cse454.nel.disambiguate;
+package com.cse454.nel.features;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.cse454.nel.Entity;
@@ -17,21 +17,41 @@ import com.cse454.nel.Util;
 import com.cse454.nel.WikiConnect;
 import com.cse454.nel.extract.NerExtractor;
 
-public class EntityWikiMentionHistogramDisambiguator extends AbstractDisambiguator {
+public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenerator {
 
 	private Map<Entity, Map<String, Double>> wikiCache;
+	private WikiConnect wiki;
 	private NerExtractor extractor;
 	private NERClassifier classifier;
+	private Map<String, Double> docHist;
 	private boolean splitMentions;
 	
-	public EntityWikiMentionHistogramDisambiguator(WikiConnect wiki, boolean splitMentions, NERClassifier classifier) {
-		super(wiki);
+	public EntityWikiMentionHistogramFeatureGenerator(WikiConnect wiki, List<Sentence> sentences, List<EntityMention> mentions, NERClassifier classifier, boolean splitMentions) {
+		this.wiki = wiki;
 		this.classifier = classifier;
 		this.splitMentions = splitMentions;
+		this.docHist = HistogramFromMentions(mentions, sentences);
 		this.extractor = new NerExtractor();
 	}
+
+	@Override
+	public String GetFeatureName() {
+		return "entity-wiki-mention-histo";
+	}
+
+	@Override
+	public void GenerateFeatures(EntityMention mention) throws Exception {
+		if (mention.candidateFeatures == null) {
+			return;
+		}
+		
+		for (Entry<Entity, Map<String, Double>> candidate : mention.candidateFeatures.entrySet()) {
+			Map<String, Double> entHist = GetWikiHist(candidate.getKey());
+			double score = Util.computeDotProduct(docHist, entHist);
+			candidate.getValue().put(GetFeatureName(), score);
+		}
+	}
 	
-	// TODO: do this case insensitively
 	private Map<String, Double> HistogramFromMentions(List<EntityMention> mentions, List<Sentence> sentences) {
 		Set<String> mentionWords = new HashSet<String>();
 		for (EntityMention mention : mentions) {
@@ -71,33 +91,4 @@ public class EntityWikiMentionHistogramDisambiguator extends AbstractDisambiguat
 		wikiCache.put(ent, hist);
 		return hist;
 	}
-
-	@Override
-	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences) throws Exception {
-		Map<String, Double> docHist = HistogramFromMentions(mentions, sentences);
-		
-		Map<EntityMention, Entity> ret = new HashMap<EntityMention, Entity>();
-		for (EntityMention mention : mentions) {
-			if (mention.candidates == null || mention.candidates.isEmpty()) {
-				ret.put(mention, null);
-			} else {
-				double bestDP = -1;
-				Entity best = null;
-				
-				for (Entity ent : mention.candidates) {
-					Map<String, Double> entHist = GetWikiHist(ent);
-					double score = Util.computeDotProduct(docHist, entHist);
-					if (score > bestDP) {
-						best = ent;
-						bestDP = score;
-					}
-				}
-				
-				ret.put(mention, best);
-			}
-		}
-		
-		return ret;
-	}
-
 }

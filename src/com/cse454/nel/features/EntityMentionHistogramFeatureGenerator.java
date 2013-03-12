@@ -34,7 +34,7 @@ public class EntityMentionHistogramFeatureGenerator implements FeatureGenerator 
 
 	@Override
 	public void GenerateFeatures(EntityMention mention) throws Exception {
-		Set<String> words = new HashSet<String>();
+		//Set<String> words = new HashSet<String>();
 		Set<String> mentionWords = new HashSet<String>();
 		for (EntityMention em : mentions) {
 			mentionWords.add(em.mentionString);
