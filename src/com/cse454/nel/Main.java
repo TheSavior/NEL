@@ -131,8 +131,12 @@ public class Main {
 					disambiguators.add(new SimpleDisambiguator());
 					
 					for(AbstractDisambiguator disambiguator : disambiguators) {
+						long startTime = System.currentTimeMillis();
 						process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
 						process.run();
+						long endTime = System.currentTimeMillis();
+						long duration = endTime - startTime;
+						scorer.AddTiming(disambiguator.getClass(), duration);
 					}
 					//System.out.println("finishing process");
 					synchronized (lock) {

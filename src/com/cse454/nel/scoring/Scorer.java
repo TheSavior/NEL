@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.cse454.nel.DocumentConnect;
@@ -33,6 +34,9 @@ public class Scorer {
 	private Map<Class, Integer> matched;
 	private Map<Class, Integer> total;
 	
+	private Map<Class, Integer> processedDocs;
+	private Map<Class, Long> timing;
+	
 	private int scoredDocuments = 0;
 
 	DocumentConnect sentences;
@@ -48,6 +52,9 @@ public class Scorer {
 		
 		matched = new HashMap<Class, Integer>();
 		total = new HashMap<Class, Integer>();
+		
+		timing = new HashMap<Class, Long>();
+		processedDocs = new HashMap<Class, Integer>();
 
 		LoadLookup();
 		LoadGoldData();
@@ -113,6 +120,12 @@ public class Scorer {
 		Set<String> names = new HashSet<String>();
 		
 		synchronized(lock) {
+			if (!processedDocs.containsKey(disambiguator)) {
+				processedDocs.put(disambiguator, 0);
+			}
+			
+			processedDocs.put(disambiguator, processedDocs.get(disambiguator)+1);
+			
 			for(String entityId : gold.get(docName)) {
 				if (!matched.containsKey(disambiguator)) {
 					matched.put(disambiguator, 0);
@@ -121,7 +134,7 @@ public class Scorer {
 				if (!total.containsKey(disambiguator)) {
 					total.put(disambiguator, 0);
 				}
-				
+								
 				total.put(disambiguator, total.get(disambiguator)+1);
 				
 				String entity = lookup.get(entityId);
@@ -135,14 +148,27 @@ public class Scorer {
 			
 			scoredDocuments++;
 		}
-		if (scoredDocuments % 2 == 0) {
+		if (scoredDocuments % 5 == 0) {
 			for(Entry<Class, Integer> entry : total.entrySet()) {
 				int match = matched.get(entry.getKey());
 				int totals = entry.getValue();
 				float percent = (((float)match)/ totals) * 100;
-				System.out.println("Disambiguator: "+entry.getKey().getName()+" Scored: "+scoredDocuments+" -- Matched "+match+" out of "+totals+" total entities: "+String.format("%s",percent)+" %");
+				
+				long runtime = timing.get(entry.getKey());
+				double avgRuntime = (runtime / processedDocs.get(entry.getKey())) / 1000.0;
+				System.out.println("Disambiguator: "+entry.getKey().getName()+" Scored: "+scoredDocuments+" -- Matched "+match+" out of "+totals+" total entities: "+String.format("%s",percent)+"% -- Avg Runtime: "+avgRuntime+"s");
 			}
 			System.out.println();
+		}
+	}
+	
+	public void AddTiming(Class disambiguator, long time) {
+		synchronized(lock) {
+			if (!timing.containsKey(disambiguator)) {
+				timing.put(disambiguator, (long) 0);
+			}
+			
+			timing.put(disambiguator, timing.get(disambiguator)+time);
 		}
 	}
 
