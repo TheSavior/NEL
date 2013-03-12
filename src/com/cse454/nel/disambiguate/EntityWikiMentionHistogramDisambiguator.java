@@ -24,9 +24,9 @@ public class EntityWikiMentionHistogramDisambiguator extends AbstractDisambiguat
 	private NERClassifier classifier;
 	private boolean splitMentions;
 	
-	public EntityWikiMentionHistogramDisambiguator(WikiConnect wiki, NERClassifier classifier, List<Sentence> sentences, boolean splitMentions) {
-		super(wiki, sentences);
-		this.classifier = classifier;
+	public EntityWikiMentionHistogramDisambiguator(WikiConnect wiki, boolean splitMentions) {
+		super(wiki);
+		this.classifier = new NERClassifier();;
 		this.splitMentions = splitMentions;
 		this.extractor = new NerExtractor();
 	}
@@ -73,7 +73,7 @@ public class EntityWikiMentionHistogramDisambiguator extends AbstractDisambiguat
 	}
 
 	@Override
-	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions) throws Exception {
+	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences) throws Exception {
 		Map<String, Double> docHist = HistogramFromMentions(mentions, sentences);
 		
 		Map<EntityMention, Entity> ret = new HashMap<EntityMention, Entity>();

@@ -17,11 +17,11 @@ import com.cse454.nel.WikiConnect;
 public class AllWordsHistogramDisambiguator extends AbstractDisambiguator {
 
 	public AllWordsHistogramDisambiguator(WikiConnect wiki, List<Sentence> sentences) {
-		super(wiki, sentences);
+		super(wiki);
 	}
 
 	@Override
-	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions) throws Exception {
+	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences) throws Exception {
 		Map<EntityMention, Entity> entityMap = new HashMap<EntityMention, Entity>();
 
 		Set<String> words = new HashSet<String>();

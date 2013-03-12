@@ -1,5 +1,6 @@
 package com.cse454.nel.disambiguate;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,12 +12,12 @@ import com.cse454.nel.WikiConnect;
 
 public class InLinkDisambiguator extends AbstractDisambiguator {
 
-	public InLinkDisambiguator(WikiConnect wiki, List<Sentence> sentences) {
-		super(wiki, sentences);
+	public InLinkDisambiguator(WikiConnect wiki) throws SQLException {
+		super(WikiConnect.getInstance());
 	}
 
 	@Override
-	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions)
+	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences)
 			throws Exception {
 		Map<EntityMention, Entity> ret = new HashMap<EntityMention, Entity>();
 		Map<String, Integer> inLinkCache = new HashMap<String, Integer>();

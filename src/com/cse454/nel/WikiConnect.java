@@ -8,15 +8,24 @@ import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
 
+	private static WikiConnect instance = null;
+	
 	private static String defaultDB = "wikidb";
 
 	private Map<String, String> page_textCache; // page_latest -> text
 
-	public WikiConnect() throws SQLException {
+	private WikiConnect() throws SQLException {
         super(defaultUrl, defaultDB);
 
         page_textCache = new HashMap<String, String>();
 	}
+	
+	public static WikiConnect getInstance() throws SQLException {
+      if(instance == null) {
+    	  instance = new WikiConnect();
+      }
+      return instance;
+   }
 
 	/**
 	 *

@@ -11,12 +11,10 @@ import com.cse454.nel.WikiConnect;
 public abstract class AbstractDisambiguator {
 
 	protected WikiConnect wiki;
-	protected List<Sentence> sentences;
 
-	public AbstractDisambiguator(WikiConnect wiki, List<Sentence> sentences) {
+	public AbstractDisambiguator(WikiConnect wiki) {
 		this.wiki = wiki;
-		this.sentences = sentences;
 	}
 
-	public abstract Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions) throws Exception;
+	public abstract Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences) throws Exception;
 }

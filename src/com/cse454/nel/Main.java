@@ -11,6 +11,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.cse454.nel.disambiguate.AbstractDisambiguator;
+import com.cse454.nel.disambiguate.EntityWikiMentionHistogramDisambiguator;
+import com.cse454.nel.disambiguate.InLinkDisambiguator;
+import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.scoring.Scorer;
 
 
@@ -102,7 +106,6 @@ public class Main {
 
 		@Override
 		public void run() {
-			NERClassifier nerClassifier = null;
 			String docName = null;
 			while (true) {
 				try {
@@ -120,7 +123,11 @@ public class Main {
 						THREADS_WORKING++;
 					}
 					System.out.println("starting process");
-					process = new DocumentProcessor(count, docName, documentConnect, scorer, nerClassifier);
+					
+					//AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(WikiConnect.getInstance(), true);
+					AbstractDisambiguator disambiguator = new InLinkDisambiguator(WikiConnect.getInstance());
+					//AbstractDisambiguator disambiguator = new SimpleDisambiguator();
+					process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
 					process.run();
 					System.out.println("finishing process");
 					synchronized (lock) {
