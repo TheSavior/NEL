@@ -9,18 +9,18 @@ import java.util.Set;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
 import com.cse454.nel.Histogram;
+import com.cse454.nel.NERClassifier;
 import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
 import com.cse454.nel.WikiConnect;
 
 public class EntityMentionHistogramDisambiguator extends AbstractDisambiguator {
-
 	public EntityMentionHistogramDisambiguator(WikiConnect wiki, List<Sentence> sentences) {
-		super(wiki, sentences);
+		super(wiki);
 	}
 
 	@Override
-	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions) throws Exception {
+	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences) throws Exception {
 		Map<EntityMention, Entity> entityMap = new HashMap<EntityMention, Entity>();
 
 		Set<String> mentionWords = new HashSet<String>();

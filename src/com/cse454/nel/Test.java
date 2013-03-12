@@ -16,7 +16,7 @@ public class Test {
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws SQLException {
 		scanner = new Scanner(System.in);
-		WikiConnect wiki = new WikiConnect();
+		WikiConnect wiki = WikiConnect.getInstance();
 		DocumentConnect docs = new DocumentConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
 		
