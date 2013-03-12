@@ -63,7 +63,7 @@ public class DocumentProcessor {
 		// String docName = "foo"; // We need to use the docname
 
 		// Score our results (if necessary)
-		scorer.ScoreResults(docName, entities);
+		scorer.ScoreResults(disambiguator.getClass(), docName, entities);
 
 		// TODO: output entities to file
 	}

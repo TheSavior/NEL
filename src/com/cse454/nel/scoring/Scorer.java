@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.cse454.nel.DocumentConnect;
@@ -29,10 +30,16 @@ public class Scorer {
 	private Map<String, Set<String>> gold;
 	private Map<String, Set<String>> results;
 	
-	private int matched = 0;
-	private int total = 0;
+	// These map the disambiguator type to the sum
+	private Map<Class, Integer> matched;
+	private Map<Class, Integer> total;
+	
+	private Map<Class, Integer> processedDocs;
+	private Map<Class, Long> timing;
 	
 	private int scoredDocuments = 0;
+	
+	private long startTime;
 
 	DocumentConnect sentences;
 	private Object lock = new Object();
@@ -44,6 +51,14 @@ public class Scorer {
 
 		gold = new HashMap<String, Set<String>>();
 		results = new HashMap<String, Set<String>>();
+		
+		matched = new HashMap<Class, Integer>();
+		total = new HashMap<Class, Integer>();
+		
+		timing = new HashMap<Class, Long>();
+		processedDocs = new HashMap<Class, Integer>();
+		
+		startTime = System.currentTimeMillis();
 
 		LoadLookup();
 		LoadGoldData();
@@ -88,7 +103,7 @@ public class Scorer {
 		System.out.println("Imported "+gold.size()+" documents with gold data");
 	}
 
-	public void ScoreResults(String docName, Map<EntityMention, Entity> entities) throws SQLException {
+	public void ScoreResults(Class disambiguator, String docName, Map<EntityMention, Entity> entities) throws SQLException {
 		// Process Results
 		//System.out.println("Scoring: "+docName+":");
 		if (!gold.containsKey(docName)){
@@ -104,35 +119,57 @@ public class Scorer {
 			}
 		}
 
-		
-		
 		Set<String> names = new HashSet<String>();
-		for(String entityId : gold.get(docName)) {
-			total++;
-			
-			String entity = lookup.get(entityId);
-			if (values.contains(entity)){
-				matched++;
+		
+		synchronized(lock) {
+			if (!timing.containsKey(disambiguator)) {
+				timing.put(disambiguator, (long) 0);
+			}
+			if (!processedDocs.containsKey(disambiguator)) {
+				processedDocs.put(disambiguator, 0);
 			}
 			
-			names.add(lookup.get(entityId));
+			for(String entityId : gold.get(docName)) {
+				if (!matched.containsKey(disambiguator)) {
+					matched.put(disambiguator, 0);
+				}
+				
+				if (!total.containsKey(disambiguator)) {
+					total.put(disambiguator, 0);
+				}
+								
+				total.put(disambiguator, total.get(disambiguator)+1);
+				
+				String entity = lookup.get(entityId);
+				if (values.contains(entity)){
+					
+					matched.put(disambiguator, matched.get(disambiguator)+1);
+				}
+				
+				names.add(lookup.get(entityId));
+			}
 		}
-		
-		scoredDocuments++;
-		if (scoredDocuments % 10 == 0) {
-			float percent = (((float)matched)/ total) * 100;
-			System.out.println("Scored: "+scoredDocuments+" -- Matched "+matched+" out of "+total+" total entities: "+String.format("%s",percent)+" %");
+		if (scoredDocuments % 5 == 0) {
+			for(Entry<Class, Integer> entry : total.entrySet()) {
+				int match = matched.get(entry.getKey());
+				int totals = entry.getValue();
+				float percent = (((float)match)/ totals) * 100;
+				
+				long runtime = timing.get(entry.getKey());
+				double avgRuntime = (runtime / Math.max(1, processedDocs.get(entry.getKey()))) / 1000.0;
+				System.out.println("Disambiguator: "+entry.getKey().getName()+" Scored: "+scoredDocuments+" -- Matched "+match+" out of "+totals+" total entities: "+String.format("%s",percent)+"% -- Avg Runtime: "+avgRuntime+"s");
+			}
+			System.out.println();
 		}
-
-		//System.out.println("\tGold: "+ Join(", ", names));
-		//System.out.println("\tGiven: "+ Join(", ", values));
-
-/*
-		synchronized (lock) {
-			results.put(docName, values);
-			// Aggregate score
+	}
+	
+	public void AddTiming(Class disambiguator, long time) {
+		synchronized(lock) {
+			timing.put(disambiguator, timing.get(disambiguator)+time);
+			processedDocs.put(disambiguator, processedDocs.get(disambiguator)+1);
+			
+			scoredDocuments++;
 		}
-		*/
 	}
 
 	public String Join(String seperator, Set<String> items) {
@@ -151,11 +188,20 @@ public class Scorer {
 	}
 
 	public void ScoreOverall() {
-		for(Entry<String, Set<String>> entry : results.entrySet()) {
-		    String key = entry.getKey();
-		    Set<String> values = entry.getValue();
-
-		    System.out.println(key+"\t"+StringUtils.join(values, "\t"));
+		
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - startTime;
+		
+		System.out.println("Time to process: "+(duration/1000/60)+" minutes");
+		System.out.println("Class\tMatched\tTotal\tPercent\tAvg. Runtime");
+		for(Entry<Class, Integer> entry : total.entrySet()) {
+			int match = matched.get(entry.getKey());
+			int totals = entry.getValue();
+			float percent = (((float)match)/ totals) * 100;
+			
+			long runtime = timing.get(entry.getKey());
+			double avgRuntime = (runtime / Math.max(1, processedDocs.get(entry.getKey()))) / 1000.0;
+			System.out.println(entry.getKey().getName()+"\t"+match+"\t"+totals+"\t"+String.format("%s",percent)+"%\t"+avgRuntime+"s");
 		}
 	}
 }
