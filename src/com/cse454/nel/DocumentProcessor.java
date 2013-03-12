@@ -45,7 +45,7 @@ public class DocumentProcessor {
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		// Generate candidate entities
-		AbstractSearcher searcher = new BasicSearcher(WikiConnect.getInstance());
+		AbstractSearcher searcher = new BasicSearcher(new WikiConnect());
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
