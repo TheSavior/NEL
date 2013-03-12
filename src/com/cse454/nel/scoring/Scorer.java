@@ -28,6 +28,11 @@ public class Scorer {
 
 	private Map<String, Set<String>> gold;
 	private Map<String, Set<String>> results;
+	
+	private int matched = 0;
+	private int total = 0;
+	
+	private int scoredDocuments = 0;
 
 	DocumentConnect sentences;
 	private Object lock = new Object();
@@ -85,6 +90,7 @@ public class Scorer {
 
 	public void ScoreResults(String docName, Map<EntityMention, Entity> entities) throws SQLException {
 		// Process Results
+		//System.out.println("Scoring: "+docName+":");
 		if (!gold.containsKey(docName)){
 			System.out.println("\tDoc not in gold data");
 			return;
@@ -98,13 +104,28 @@ public class Scorer {
 			}
 		}
 
+		
+		
 		Set<String> names = new HashSet<String>();
 		for(String entityId : gold.get(docName)) {
+			total++;
+			
+			String entity = lookup.get(entityId);
+			if (values.contains(entity)){
+				matched++;
+			}
+			
 			names.add(lookup.get(entityId));
 		}
+		
+		scoredDocuments++;
+		if (scoredDocuments % 10 == 0) {
+			float percent = (((float)matched)/ total) * 100;
+			System.out.println("Scored: "+scoredDocuments+" -- Matched "+matched+" out of "+total+" total entities: "+String.format("%s",percent)+" %");
+		}
 
-		System.out.println("\tGold: "+ Join(", ", names));
-		System.out.println("\tGiven: "+ Join(", ", values));
+		//System.out.println("\tGold: "+ Join(", ", names));
+		//System.out.println("\tGiven: "+ Join(", ", values));
 
 /*
 		synchronized (lock) {

@@ -11,6 +11,10 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.cse454.nel.disambiguate.AbstractDisambiguator;
+import com.cse454.nel.disambiguate.EntityWikiMentionHistogramDisambiguator;
+import com.cse454.nel.disambiguate.InLinkDisambiguator;
+import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.scoring.Scorer;
 
 
@@ -61,7 +65,7 @@ public class Main {
 
 			// read lines
 			String line;
-			while ((line = reader.readLine()) != null && count < 1) {
+			while ((line = reader.readLine()) != null) {
 				synchronized (lock) {
 					count++;
 					if (count % 100 == 0) {
@@ -79,14 +83,13 @@ public class Main {
 			while (THREADS_WORKING > 0) {
 				Thread.sleep(0);
 			}
-			System.out.println("about to shut down");
 			executor.shutdownNow();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println("about to score");
 		// Now that we have results from the docs, evaluate the scorer
 		scorer.ScoreOverall();
+		System.exit(0);
 	}
 
 	static class DocumentProcessWorker implements Runnable {
@@ -103,7 +106,6 @@ public class Main {
 
 		@Override
 		public void run() {
-			NERClassifier nerClassifier = new NERClassifier();
 			String docName = null;
 			while (true) {
 				try {
@@ -121,7 +123,11 @@ public class Main {
 						THREADS_WORKING++;
 					}
 					System.out.println("starting process");
-					process = new DocumentProcessor(count, docName, documentConnect, scorer, nerClassifier);
+					
+					//AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(new WikiConnect(), true);
+					AbstractDisambiguator disambiguator = new InLinkDisambiguator(new WikiConnect());
+					//AbstractDisambiguator disambiguator = new SimpleDisambiguator();
+					process = new DocumentProcessor(count, docName, documentConnect, scorer, disambiguator);
 					process.run();
 					System.out.println("finishing process");
 					synchronized (lock) {

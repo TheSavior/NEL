@@ -6,16 +6,17 @@ import java.util.Map;
 
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
+import com.cse454.nel.Sentence;
 
 
 public class SimpleDisambiguator extends AbstractDisambiguator {
 
 	public SimpleDisambiguator() {
-		super(null, null);
+		super(null);
 	}
 
 	@Override
-	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions) {
+	public Map<EntityMention, Entity> disambiguate(List<EntityMention> mentions, List<Sentence> sentences) {
 		Map<EntityMention, Entity> ret = new HashMap<EntityMention, Entity>();
 		for (EntityMention mention : mentions) {
 			Entity ent = null;

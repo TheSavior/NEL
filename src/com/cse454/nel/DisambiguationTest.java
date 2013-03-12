@@ -36,7 +36,7 @@ public class DisambiguationTest {
 			}
 
 			AbstractDisambiguator disambiguator = new SimpleDisambiguator();
-			Map<EntityMention, Entity> map = disambiguator.disambiguate(mentions);
+			Map<EntityMention, Entity> map = disambiguator.disambiguate(mentions, sentences);
 
 			for (Entry<EntityMention, Entity> entry : map.entrySet()) {
 				if (entry == null || entry.getValue() == null) {

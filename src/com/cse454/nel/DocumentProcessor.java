@@ -8,7 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cse454.nel.disambiguate.AbstractDisambiguator;
-import com.cse454.nel.disambiguate.EntityWikiMentionHistogramDisambiguator;
+import com.cse454.nel.disambiguate.InLinkDisambiguator;
+import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.scoring.Scorer;
@@ -20,17 +21,17 @@ public class DocumentProcessor {
 	private final int docID;
 	private final String docName;
 	private final Scorer scorer;
-	private final WikiConnect wiki;
 	private final DocumentConnect sentenceDb;
-	private final NERClassifier nerClassifier;
+	private final AbstractDisambiguator disambiguator;
+	//private final NERClassifier nerClassifier;
 
-	public DocumentProcessor(int docID, String docName, DocumentConnect sentenceDb, Scorer scorer, NERClassifier nerClassifier) throws SQLException {
+	public DocumentProcessor(int docID, String docName, DocumentConnect sentenceDb, Scorer scorer, AbstractDisambiguator disambiguator) throws SQLException {
 		this.docID = docID;
 		this.docName = docName;
 		this.scorer = scorer;
-		this.wiki = new WikiConnect();
 		this.sentenceDb = sentenceDb;
-		this.nerClassifier = nerClassifier;
+		this.disambiguator = disambiguator;
+		//this.nerClassifier = nerClassifier;
 	}
 
 	public void run() throws Exception {
@@ -44,14 +45,14 @@ public class DocumentProcessor {
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		// Generate candidate entities
-		AbstractSearcher searcher = new BasicSearcher(wiki);
+		AbstractSearcher searcher = new BasicSearcher(new WikiConnect());
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
 
 		// Disambiguate
-		AbstractDisambiguator disambiguator = new EntityWikiMentionHistogramDisambiguator(wiki, nerClassifier, sentences, true);
-		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions);
+		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions, sentences);
+
 
 		// update the entity column
 		Map<Integer, List<Entity>> sentenceEntities = convertToIdEntityListMap(entities);

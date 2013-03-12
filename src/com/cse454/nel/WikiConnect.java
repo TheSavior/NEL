@@ -1,4 +1,5 @@
 package com.cse454.nel;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -6,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class WikiConnect extends MySQLConnect {
-
 	private static String defaultDB = "wikidb";
 
 	private Map<String, String> page_textCache; // page_latest -> text
@@ -77,7 +77,7 @@ public class WikiConnect extends MySQLConnect {
 						}
 					});
 	}
-	
+
 	/**
 	 * Returns the number of in-links to an article with the given title
 	 * @param title the article title (exact)
@@ -96,8 +96,8 @@ public class WikiConnect extends MySQLConnect {
 				}
 		);
 	}
-	
-	
+
+
 	private String ReplaceWhileEffective(String str, String rgx, String replace) {
 		String oldStr;
 		do {
@@ -106,9 +106,9 @@ public class WikiConnect extends MySQLConnect {
 		} while (str != oldStr);
 		return str;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param str
 	 * @param startStr
 	 * @param endStr must be same length as startStr (or exceptions will ensue)
@@ -117,13 +117,13 @@ public class WikiConnect extends MySQLConnect {
 	private String RemoveRecursiveStruct(String str, String startStr, String endStr) {
 		int tokLen = startStr.length();
 		String ret = "";
-		
+
 		while (true) {
 			int start = str.indexOf(startStr);
 			if (start >= 0) {
 				ret += str.substring(0, start);
 				str = str.substring(start);
-				
+
 				// Now find the end of this struct
 				int depth = 1;
 				int i = startStr.length();
@@ -141,29 +141,29 @@ public class WikiConnect extends MySQLConnect {
 					}
 					++i;
 				}
-				
+
 				// We have found the whole struct, remove it.
 				str = str.substring(i);
-				
+
 			} else {
 				ret += str;
 				break;
 			}
 		}
-		
-		
+
+
 		return ret;
 	}
-	
+
 	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
-		
+
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
 		text = RemoveRecursiveStruct(text, "{{", "}}");
-		
+
 		String noDoubleBracketRgx = "(?:(?:[^\\[\\|])|(?:\\[(?!\\[)))+?";
-		String innerDoubleBracketRgx = 
+		String innerDoubleBracketRgx =
 				"(?s:\\[\\[" +				// opening brackets
 					"(?:" + noDoubleBracketRgx + "\\|)*?" + // stuff before visible text
 					"(" + noDoubleBracketRgx + ")\\|?" +	// visible text
@@ -191,17 +191,28 @@ public class WikiConnect extends MySQLConnect {
 					   "		ON page.page_latest = revision.rev_id " +
 					   "	LEFT JOIN text " +
 					   "		ON text.old_id = revision.rev_text_id " +
-					   "WHERE page.page_namespace = 0 and page.page_title = '" + pageTitle + "'";
-		return ExecuteQuery(query,
-					new QueryResponder<String>() {
-						public String Result(ResultSet rs) throws SQLException {
-							if (rs.next()) {
-								String text = rs.getString(1);
-								page_textCache.put(pageTitle, text);
-								return text;
-							} else return null;
-						}
-					});
+					   "WHERE page.page_namespace = 0 and page.page_title = ?";
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			st = connection.prepareStatement(query);
+			st.setString(1, pageTitle);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				String text = rs.getString(1);
+				page_textCache.put(pageTitle, text);
+				return text;
+			}
+			return null;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
+		}
 	}
 
 }
