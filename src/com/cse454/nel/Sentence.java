@@ -5,7 +5,7 @@ public class Sentence {
 	private int sentenceID;
 	private String[] tokens;
 	private String[] ner;
-	private String[] entities;
+	public String[] entities;
 
 	public Sentence(int sentenceID, String tokens, String ner) {
 		this.sentenceID = sentenceID;
@@ -29,5 +29,9 @@ public class Sentence {
 
 	public String[] getNer() {
 		return ner;
+	}
+	
+	public String[] getEntities() {
+		return entities;
 	}
 }

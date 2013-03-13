@@ -78,9 +78,8 @@ public class DocumentProcessor {
 		disambiguator.disambiguate(mentions, featureWeights);
 
 		// Populate sentence entity data
-		// Update the entity column
-		Map<Integer, List<EntityMention>> sentenceEntities = convertToIdEntityListMap(entities);
-		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
+		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
+		for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
 			updateEntityColumn(entry.getKey(), entry.getValue());
 		}
 		
@@ -91,7 +90,7 @@ public class DocumentProcessor {
 		return sentences;
 	}
 
-	private void updateEntityColumn(int sentenceID, List<Entity> entities) {
+	/*private void updateEntityColumn(int sentenceID, List<Entity> entities) {
 		StringBuffer entityString = new StringBuffer();
 		int count = 0;
 		for (Entity entity : entities) {
@@ -102,7 +101,7 @@ public class DocumentProcessor {
 			count++;
 		}
 		// sentenceDb.EntityUpdate(sentenceID, entityString.toString());
-	}
+	}*/
 
 	private Map<Integer, List<EntityMention>> listEntityMentionBySentenceID(List<EntityMention> mentions) {
 		Map<Integer, List<EntityMention>> sentenceEntities = new HashMap<>();
