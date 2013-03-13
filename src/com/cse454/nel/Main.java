@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -50,21 +49,8 @@ public class Main {
 
 		System.out.println("Computing scores");
 		long start = System.currentTimeMillis();
-		Map<FeatureWeights, Double> scores = new HashMap<>();
-		for (Sentence sentence : results.keySet()) {
-			Map<FeatureWeights, String[]> entities = results.get(sentence);
-			for (Entry<FeatureWeights, String[]> entry : entities.entrySet()) {
-				double score = FeatureWeightScorer.score(sentence.getGold(), entry.getValue());
-				if (score == Double.NaN) {
-					System.out.println("hdsf");
-				}
-				if (scores.containsKey(entry.getKey())) {
-					scores.put(entry.getKey(), scores.get(entry.getKey()) + score);
-				} else {
-					scores.put(entry.getKey(), score);
-				}
-			}
-		}
+		FeatureWeightScorer scorer = new FeatureWeightScorer();
+		scorer.addDocumentScores(results);
 		long end = System.currentTimeMillis();
 		long duration = end - start;
 		System.out.println("Computing scores: " + duration);
@@ -72,6 +58,7 @@ public class Main {
 		System.out.println("Computing best feature weights");
 		start = System.currentTimeMillis();
 		double max = 0;
+		Map<FeatureWeights, Double> scores = scorer.getScores();
 		FeatureWeights chosenWeights = null;
 		for (FeatureWeights weights : scores.keySet()) {
 			double score = scores.get(weights);
