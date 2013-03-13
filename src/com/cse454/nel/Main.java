@@ -36,13 +36,16 @@ public class Main {
 	    for (int i = 0; i <= 10; i++) { // all words weight
 	    	for (int j = 0; j <= 10; j++) { // entity mention weight
 	    		for (int k = 0; k <= 10; k++) { // entity wiki mention weight
-	    			for (int l = 0; l <= 10; l++) { // inlinks weight
-	    				FeatureWeights weights = new FeatureWeights();
-	    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, i);
-	    				weights.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, j);
-	    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, k);
-	    				weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, l);
-	    				featureWeights.add(weights);
+	    			for (int l = 0; l <= 10; l++) { // entity wiki mention weight split
+	    				for (int m = 0; m <= 10; m++) { // inlinks weight
+	    					FeatureWeights weights = new FeatureWeights();
+		    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, i);
+		    				weights.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, j);
+		    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, k);
+		    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, l)
+		    				weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, m);
+		    				featureWeights.add(weights);
+	    				}
 	    			}
 	    		}
 	    	}
