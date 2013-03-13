@@ -3,6 +3,7 @@ package com.cse454.nel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -31,13 +32,23 @@ public class DocumentProcessor {
 		this.preprocessor = preprocessor;
 		this.wikiDb = new WikiConnect();
 	}
-
-	public List<Sentence> ProcessDocument(Set<FeatureWeights> weights, String text) throws Exception {
+	
+	public List<Sentence> ProcessDocument(FeatureWeights weights, String text) throws Exception {
 		List<Sentence> sentences = preprocessor.ProccessArticle(text);
-		return ProcessDocument(weights, sentences);
+		Set<FeatureWeights> weightTrials = new HashSet<>();
+		weightTrials.add(weights);
+		
+		Map<Sentence, Map<FeatureWeights, String[]>> evaluations = ProcessDocument(weightTrials, sentences);
+		
+		for (Sentence sentence : sentences) {
+			Map<FeatureWeights, String[]> nels = evaluations.get(sentence);
+			sentence.setEntities(nels.get(weightTrials));
+		}
+		
+		return sentences;
 	}
 
-	public List<Sentence> ProcessDocument(Set<FeatureWeights> weights, List<Sentence> sentences) throws Exception {
+	public Map<Sentence, Map<FeatureWeights, String[]>> ProcessDocument(Set<FeatureWeights> weightTrials, List<Sentence> sentences) throws Exception {
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
@@ -76,12 +87,25 @@ public class DocumentProcessor {
 			}
 		}
 
-		// Disambiguate
+		// Go through all weight trials
 		Disambiguator disambiguator = new Disambiguator();
-		disambiguator.disambiguate(mentions, featureWeights);
-
-		// Populate sentence entity data
 		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
+		
+		Map<Sentence, Map<FeatureWeights, String[]>> results = new HashMap<>();
+		for (FeatureWeights weights : weightTrials) {
+			// Disambiguate
+			disambiguator.disambiguate(mentions, featureWeights);
+			
+			// Collate data per sentence
+			for (Sentence sentence : sentences) {
+				results.
+			}
+			
+			for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
+
+			
+			
+		// Populate sentence entity data
 		for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
 			updateEntityColumn(entry.getKey(), entry.getValue());
 		}
