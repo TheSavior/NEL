@@ -8,6 +8,7 @@ import com.cse454.nel.CrossWikiData;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
 import com.cse454.nel.WikiConnect;
+import com.cse454.nel.features.Features;
 
 public class CrossWikiSearcher extends AbstractSearcher {
 
@@ -23,12 +24,12 @@ public class CrossWikiSearcher extends AbstractSearcher {
 
 		List<CrossWikiData> crossWikiData = wiki.GetCrossWikiDocs(query, true);
 
-		Map<Entity, Map<String, Double>> candidates = new HashMap<>();
+		Map<Entity, Features> candidates = new HashMap<>();
 
 		for (CrossWikiData data : crossWikiData) {
-			Map<String, Double> map = new HashMap<>();
-			map.put("crosswiki-prob", data.probability);
-			candidates.put(new Entity(data.URL), map);
+			Features features = new Features();
+			features.setFeature("crosswiki-prob", data.probability);
+			candidates.put(new Entity(data.URL), features);
 		}
 
 		mention.candidateFeatures = candidates;

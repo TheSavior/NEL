@@ -19,31 +19,28 @@ import com.cse454.nel.search.BasicSearcher;
 
 public class DocumentProcessor {
 
-	private final String docName;
-	private final DocumentConnect sentenceDb;
 	private final Map<String, Double> featureWeights;
-	private final NERClassifier nerClassifier;
+	private final DocPreProcessor preprocessor;
 	private final WikiConnect wikiDb;
 
-	public DocumentProcessor(String docName, DocumentConnect sentenceDb, Map<String, Double> featureWeights, NERClassifier nerClassifier) throws SQLException {
-		this.docName = docName;
-		this.sentenceDb = sentenceDb;
+	public DocumentProcessor(Map<String, Double> featureWeights, DocPreProcessor preprocessor) throws SQLException {
 		this.featureWeights = featureWeights;
-		this.nerClassifier = nerClassifier;
+		this.preprocessor = preprocessor;
 		this.wikiDb = new WikiConnect();
 	}
 
-	public void run() throws Exception {
-		// Retrieve document
-		// TODO: generisize this for mitchel
-		List<Sentence> sentences = sentenceDb.getDocumentByName(docName);
+	public List<Sentence> ProcessDocument(String text) throws Exception {
+		List<Sentence> sentences = preprocessor.ProccessArticle(text);
+		return ProcessDocument(sentences);
+	}
 
+	public List<Sentence> ProcessDocument(List<Sentence> sentences) throws Exception {
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		// Generate candidate entities
-		AbstractSearcher searcher = new BasicSearcher(new WikiConnect());
+		AbstractSearcher searcher = new BasicSearcher(wikiDb);
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
@@ -58,7 +55,7 @@ public class DocumentProcessor {
 		featureGenerators.put(feature2.GetFeatureName(), feature2);
 
 		// TODO: command line arg instead of 'true'?
-		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, nerClassifier, true);
+		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
 		featureGenerators.put(feature3.GetFeatureName(), feature3);
 
 		InLinkFeatureGenerator feature4 = new InLinkFeatureGenerator(wikiDb);
@@ -84,6 +81,7 @@ public class DocumentProcessor {
 		Map<Integer, List<EntityMention>> mentionSentenceList =
 				listEntityMentionBySentenceID(mentions);
 
+		return sentences;
 	}
 
 	private void updateEntityColumn(int sentenceID, List<Entity> entities) {
@@ -96,7 +94,7 @@ public class DocumentProcessor {
 			}
 			count++;
 		}
-		sentenceDb.EntityUpdate(sentenceID, entityString.toString());
+		// sentenceDb.EntityUpdate(sentenceID, entityString.toString());
 	}
 
 	private Map<Integer, List<EntityMention>> listEntityMentionBySentenceID(List<EntityMention> mentions) {

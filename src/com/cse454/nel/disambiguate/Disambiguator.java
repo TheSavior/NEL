@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
+import com.cse454.nel.features.Features;
 
 public class Disambiguator {
 
@@ -16,8 +17,7 @@ public class Disambiguator {
 			} else {
 				double bestScore = -1;
 				Entity best = null;
-
-				for (Entry<Entity, Map<String, Double>> entity : mention.candidateFeatures.entrySet()) {
+				for (Entry<Entity, Features> entity : mention.candidateFeatures.entrySet()) {
 					double score = 0;
 					for (Entry<String, Double> feature : entity.getValue().entrySet()) {
 						double weight = 0.0;

@@ -20,7 +20,7 @@ public class Test {
 		DocumentConnect docs = new DocumentConnect();
 		BasicSearcher searcher = new BasicSearcher(wiki);
 
-		NERClassifier classifier = new NERClassifier();
+		DocPreProcessor classifier = new DocPreProcessor();
 
 		while (true) {
 			System.out.print("Enter a query: ");

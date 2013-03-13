@@ -33,6 +33,28 @@ public class DocumentConnect extends MySQLConnect {
 			}
 		}
 	}
+	
+	public void SetGoldData(int sentenceId, String gold) {
+		String sql = "UPDATE sentences SET gold = ? where sentenceID = ?";
+		PreparedStatement st = null;
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, gold);
+			st.setInt(2, sentenceId);
+			st.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 
 	public String getArticleId(int docID) throws SQLException {
 		PreparedStatement st = null;

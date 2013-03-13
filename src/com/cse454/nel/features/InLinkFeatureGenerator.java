@@ -27,9 +27,9 @@ public class InLinkFeatureGenerator implements FeatureGenerator {
 
 	@Override
 	public void GenerateFeatures(EntityMention mention) throws Exception {
-		Map<Entity, Map<String, Double>> candidateFeatures = mention.candidateFeatures;
+		Map<Entity, Features> candidateFeatures = mention.candidateFeatures;
 
-		for (Entry<Entity, Map<String, Double>> entry : candidateFeatures.entrySet()) {
+		for (Entry<Entity, Features> entry : candidateFeatures.entrySet()) {
 			Entity candidate = entry.getKey();
 			if (inLinkCache.containsKey(candidate.wikiTitle)) {
 				candidate.inlinks = inLinkCache.get(candidate.wikiTitle);
@@ -37,7 +37,7 @@ public class InLinkFeatureGenerator implements FeatureGenerator {
 				candidate.inlinks = wiki.GetInlinks(candidate.wikiTitle);
 				inLinkCache.put(candidate.wikiTitle, candidate.inlinks);
 			}
-			entry.getValue().put(GetFeatureName(), (double) candidate.inlinks);
+			entry.getValue().setFeature(GetFeatureName(), (double) candidate.inlinks);
 		}
 	}
 

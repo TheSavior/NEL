@@ -11,7 +11,7 @@ import java.util.Set;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
 import com.cse454.nel.Histogram;
-import com.cse454.nel.NERClassifier;
+import com.cse454.nel.DocPreProcessor;
 import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
 import com.cse454.nel.WikiConnect;
@@ -22,11 +22,11 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 	private Map<Entity, Map<String, Double>> wikiCache;
 	private WikiConnect wiki;
 	private NerExtractor extractor;
-	private NERClassifier classifier;
+	private DocPreProcessor classifier;
 	private Map<String, Double> docHist;
 	private boolean splitMentions;
 	
-	public EntityWikiMentionHistogramFeatureGenerator(WikiConnect wiki, List<Sentence> sentences, List<EntityMention> mentions, NERClassifier classifier, boolean splitMentions) {
+	public EntityWikiMentionHistogramFeatureGenerator(WikiConnect wiki, List<Sentence> sentences, List<EntityMention> mentions, DocPreProcessor classifier, boolean splitMentions) {
 		this.wiki = wiki;
 		this.classifier = classifier;
 		this.splitMentions = splitMentions;
@@ -45,10 +45,10 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 			return;
 		}
 		
-		for (Entry<Entity, Map<String, Double>> candidate : mention.candidateFeatures.entrySet()) {
+		for (Entry<Entity, Features> candidate : mention.candidateFeatures.entrySet()) {
 			Map<String, Double> entHist = GetWikiHist(candidate.getKey());
 			double score = Util.computeDotProduct(docHist, entHist);
-			candidate.getValue().put(GetFeatureName(), score);
+			candidate.getValue().setFeature(GetFeatureName(), score);
 		}
 	}
 	
