@@ -1,16 +1,16 @@
 package com.cse454.nel.disambiguate;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
+import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.Features;
 
 public class Disambiguator {
 
-	public void disambiguate(List<EntityMention> mentions, Map<String, Double> featureWeights) {
+	public void disambiguate(List<EntityMention> mentions, FeatureWeights featureWeights) {
 		for (EntityMention mention : mentions) {
 			if (mention.candidateFeatures == null || mention.candidateFeatures.isEmpty()) {
 				mention.chosenEntity = null;
@@ -21,8 +21,8 @@ public class Disambiguator {
 					double score = 0;
 					for (Entry<String, Double> feature : entity.getValue().entrySet()) {
 						double weight = 0.0;
-						if (featureWeights.containsKey(feature.getKey())) {
-							weight = featureWeights.get(feature.getKey());
+						if (featureWeights.hasFeature(feature.getKey())) {
+							weight = featureWeights.getWeight(feature.getKey());
 						}
 
 						score += weight * feature.getValue();

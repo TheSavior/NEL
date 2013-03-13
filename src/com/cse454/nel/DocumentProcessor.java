@@ -23,12 +23,10 @@ import com.cse454.nel.search.BasicSearcher;
 
 public class DocumentProcessor {
 
-	private final Map<String, Double> featureWeights;
 	private final DocPreProcessor preprocessor;
 	private final WikiConnect wikiDb;
 
-	public DocumentProcessor(Map<String, Double> featureWeights, DocPreProcessor preprocessor) throws SQLException {
-		this.featureWeights = featureWeights;
+	public DocumentProcessor(DocPreProcessor preprocessor) throws SQLException {
 		this.preprocessor = preprocessor;
 		this.wikiDb = new WikiConnect();
 	}
@@ -76,14 +74,9 @@ public class DocumentProcessor {
 		featureGenerators.put(feature4.GetFeatureName(), feature4);
 
 		// Generate features
-		for (String feature : featureWeights.keySet()) {
-			FeatureGenerator generator = featureGenerators.get(feature);
-			if (generator == null) {
-				throw new Exception("No Feature Generator For Feature: '" + feature + "'");
-			}
-
+		for (Entry<String, FeatureGenerator> generator : featureGenerators.entrySet()) {
 			for (EntityMention mention : mentions) {
-				generator.GenerateFeatures(mention);
+				generator.getValue().GenerateFeatures(mention);
 			}
 		}
 
@@ -94,43 +87,40 @@ public class DocumentProcessor {
 		Map<Sentence, Map<FeatureWeights, String[]>> results = new HashMap<>();
 		for (FeatureWeights weights : weightTrials) {
 			// Disambiguate
-			disambiguator.disambiguate(mentions, featureWeights);
+			disambiguator.disambiguate(mentions, weights);
 			
 			// Collate data per sentence
 			for (Sentence sentence : sentences) {
-				results.
+				List<EntityMention> sentMentions = sentenceEntities.get(sentence.getSentenceId());
+				
+				// Initialize entities string
+				String[] ents = new String[sentence.getTokens().length];
+				for (int i = 0; i < ents.length; ++i) {
+					ents[i] = "0";
+				}
+				
+				// Process mentions
+				for (EntityMention mention : sentMentions) {
+					if (mention.chosenEntity != null) {
+						for (int i = 0; i < mention.numToks; ++i) {
+							ents[i + mention.tokStart] = mention.chosenEntity.wikiTitle;
+						}
+					}
+				}
+				
+				// Add to results
+				Map<FeatureWeights, String[]> sentResults = results.get(sentence);
+				if (sentResults == null) {
+					sentResults = new HashMap<>();
+					results.put(sentence, sentResults);
+				}
+				
+				sentResults.put(weights, ents);
 			}
-			
-			for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
-
-			
-			
-		// Populate sentence entity data
-		for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
-			updateEntityColumn(entry.getKey(), entry.getValue());
 		}
 		
-		// Evaluate each sentence, ratio of entities found to entities in list
-		Map<Integer, List<EntityMention>> mentionSentenceList =
-				listEntityMentionBySentenceID(mentions);
-		for (Sentence sentence : sentences) {
-
-		}
-		return sentences;
+		return results;
 	}
-
-	/*private void updateEntityColumn(int sentenceID, List<Entity> entities) {
-		StringBuffer entityString = new StringBuffer();
-		int count = 0;
-		for (Entity entity : entities) {
-			entityString.append(entity.wikiTitle);
-			if (count != entities.size() - 1) {
-				entityString.append("\t");
-			}
-			count++;
-		}
-		// sentenceDb.EntityUpdate(sentenceID, entityString.toString());
-	}*/
 
 	private Map<Integer, List<EntityMention>> listEntityMentionBySentenceID(List<EntityMention> mentions) {
 		Map<Integer, List<EntityMention>> sentenceEntities = new HashMap<>();

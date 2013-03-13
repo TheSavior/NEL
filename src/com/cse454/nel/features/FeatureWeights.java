@@ -12,7 +12,11 @@ public class FeatureWeights {
 		weights = new HashMap<String, Double>();
 	}
 	
-	public double getFeature(String name) {
+	public boolean hasFeature(String name) {
+		return weights.containsKey(name);
+	}
+	
+	public double getWeight(String name) {
 		return weights.get(name);
 	}
 	
