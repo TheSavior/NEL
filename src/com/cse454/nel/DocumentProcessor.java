@@ -85,7 +85,7 @@ public class DocumentProcessor {
 		for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
 			updateEntityColumn(entry.getKey(), entry.getValue());
 		}
-		
+
 		// Evaluate each sentence, ratio of entities found to entities in list
 		Map<Integer, List<EntityMention>> mentionSentenceList =
 				listEntityMentionBySentenceID(mentions);
