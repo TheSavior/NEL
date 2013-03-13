@@ -42,7 +42,7 @@ public class Main {
 		    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, i);
 		    				weights.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, j);
 		    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, k);
-		    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, l)
+		    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, l);
 		    				weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, m);
 		    				featureWeights.add(weights);
 	    				}
