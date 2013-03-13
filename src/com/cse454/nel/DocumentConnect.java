@@ -33,7 +33,7 @@ public class DocumentConnect extends MySQLConnect {
 			}
 		}
 	}
-	
+
 	public void SetGoldData(int sentenceId, String gold) {
 		String sql = "UPDATE sentences SET gold = ? where sentenceID = ?";
 		PreparedStatement st = null;
@@ -82,7 +82,7 @@ public class DocumentConnect extends MySQLConnect {
 	public List<Sentence> getDocumentById(int docID) throws SQLException {
 		PreparedStatement st = null;
 		try {
-			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docID = ? ORDER BY sentenceID");
+			st = connection.prepareStatement("SELECT sentenceID, tokens, ner, gold FROM sentences WHERE docID = ? ORDER BY sentenceID");
 			st.setInt(1,docID);
 		} catch (Exception e) {
 			throw e;
@@ -93,7 +93,7 @@ public class DocumentConnect extends MySQLConnect {
 	public List<Sentence> getDocumentByName(String name) throws SQLException {
 		PreparedStatement st = null;
 		try {
-			st = connection.prepareStatement("SELECT sentenceID, tokens, ner FROM sentences WHERE docName = ? ORDER BY sentenceID");
+			st = connection.prepareStatement("SELECT sentenceID, tokens, ner, gold FROM sentences WHERE docName = ? ORDER BY sentenceID");
 			st.setString(1, name);
 		} catch (Exception e) {
 			throw e;
@@ -109,7 +109,7 @@ public class DocumentConnect extends MySQLConnect {
 
 			List<Sentence> sentences = new ArrayList<Sentence>();
 			while (rs.next()) {
-				Sentence sentence = new Sentence(rs.getInt(1), rs.getString(2), rs.getString(3));
+				Sentence sentence = new Sentence(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4));
 				sentences.add(sentence);
 			}
 
