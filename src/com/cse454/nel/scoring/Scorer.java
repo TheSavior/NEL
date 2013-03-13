@@ -13,9 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
-
 import com.cse454.nel.DocumentConnect;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;

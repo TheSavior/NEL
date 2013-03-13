@@ -29,6 +29,9 @@ public class CrossWikiSearcher extends AbstractSearcher {
 		Map<Entity, Features> candidates = new HashMap<>();
 
 		for (CrossWikiData data : crossWikiData) {
+			if (!wiki.doesWikiPageExist(data.URL)) {
+				continue;
+			}
 			Features features = new Features();
 			features.setFeature(FEATURE_STRING, data.probability);
 			candidates.put(new Entity(data.URL), features);

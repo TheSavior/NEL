@@ -55,6 +55,9 @@ public class Main {
 			Map<FeatureWeights, String[]> entities = results.get(sentence);
 			for (Entry<FeatureWeights, String[]> entry : entities.entrySet()) {
 				double score = FeatureWeightScorer.score(sentence.getGold(), entry.getValue());
+				if (score == Double.NaN) {
+					System.out.println("hdsf");
+				}
 				if (scores.containsKey(entry.getKey())) {
 					scores.put(entry.getKey(), scores.get(entry.getKey()) + score);
 				} else {

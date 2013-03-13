@@ -19,7 +19,7 @@ import com.cse454.nel.features.FeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.search.AbstractSearcher;
-import com.cse454.nel.search.BasicSearcher;
+import com.cse454.nel.search.CrossWikiSearcher;
 
 public class DocumentProcessor {
 
@@ -60,7 +60,7 @@ public class DocumentProcessor {
 		// Generate candidate entities
 		System.out.println("Generate candidate entities");
 		start = System.currentTimeMillis();
-		AbstractSearcher searcher = new BasicSearcher(wikiDb);
+		AbstractSearcher searcher = new CrossWikiSearcher(wikiDb);//new BasicSearcher(wikiDb);
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
@@ -120,10 +120,12 @@ public class DocumentProcessor {
 				}
 
 				// Process mentions
-				for (EntityMention mention : sentMentions) {
-					if (mention.chosenEntity != null) {
-						for (int i = 0; i < mention.numToks; ++i) {
-							ents[i + mention.tokStart] = mention.chosenEntity.wikiTitle;
+				if (sentMentions != null) {
+					for (EntityMention mention : sentMentions) {
+						if (mention.chosenEntity != null) {
+							for (int i = 0; i < mention.numToks; ++i) {
+								ents[i + mention.tokStart] = mention.chosenEntity.wikiTitle;
+							}
 						}
 					}
 				}

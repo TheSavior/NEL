@@ -57,6 +57,9 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 		for (Entry<Entity, Features> candidate : mention.candidateFeatures.entrySet()) {
 			Map<String, Double> entHist = GetWikiHist(candidate.getKey());
 			double score = Util.computeDotProduct(docHist, entHist);
+			if (score == Double.NaN) {
+				System.out.println("nan");
+			}
 			candidate.getValue().setFeature(GetFeatureName(), score);
 		}
 	}

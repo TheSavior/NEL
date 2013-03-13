@@ -1,5 +1,7 @@
 package com.cse454.nel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.cse454.nel.features.FeatureWeights;
@@ -13,19 +15,20 @@ public class FeatureWeightScorer {
 	}
 
 	public static double score(String[] gold, String[] entities) {
-		if (gold.length != entities.length) {
-			throw new IllegalArgumentException("Gold data and entity data not same length");
-		}
-		double numerator = 0; // the entities we get right
-		double denominator = 0; // the total amount of entities
-		for (int i = 0; i < gold.length; i++) {
-			if (!gold[i].equals("0")) {
-				denominator++;
-				if (gold[i].equals(entities[i])) {
-					numerator++;
-				}
+		List<String> goldEnts = new ArrayList<>();
+		List<String> ents = new ArrayList<>();
+		for (String g : gold) {
+			if (!g.equals("0")) {
+				goldEnts.add(g);
 			}
 		}
+		for (String ent : entities) {
+			if (!ent.equals("0") && goldEnts.contains(ent)) {
+				ents.add(ent);
+			}
+		}
+		double numerator = ents.size(); // the entities we get right
+		double denominator = goldEnts.size(); // the total amount of entities
 		return numerator / denominator;
 	}
 }

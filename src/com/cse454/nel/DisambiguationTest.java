@@ -1,12 +1,8 @@
 package com.cse454.nel;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Scanner;
 
-import com.cse454.nel.disambiguate.AbstractDisambiguator;
-import com.cse454.nel.disambiguate.SimpleDisambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.search.AbstractSearcher;
@@ -35,7 +31,7 @@ public class DisambiguationTest {
 				searcher.GetCandidateEntities(mention);
 			}
 
-			AbstractDisambiguator disambiguator = new SimpleDisambiguator();
+		/*	AbstractDisambiguator disambiguator = new SimpleDisambiguator();
 			Map<EntityMention, Entity> map = disambiguator.disambiguate(mentions, sentences);
 
 			for (Entry<EntityMention, Entity> entry : map.entrySet()) {
@@ -44,7 +40,7 @@ public class DisambiguationTest {
 				}
 				String wikiId = entry.getValue().wikiTitle;
 				System.out.printf("%s\t\t%s\n", entry.getKey().mentionString, wikiId);
-			}
+			}*/
 
 		}
 	}
