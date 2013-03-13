@@ -8,10 +8,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.cse454.nel.DocPreProcessor;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
 import com.cse454.nel.Histogram;
-import com.cse454.nel.DocPreProcessor;
 import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
 import com.cse454.nel.WikiConnect;
@@ -19,13 +19,15 @@ import com.cse454.nel.extract.NerExtractor;
 
 public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenerator {
 
+	public static String FEATURE_STRING = "entity-wiki-mention-histo";
+
 	private Map<Entity, Map<String, Double>> wikiCache;
 	private WikiConnect wiki;
 	private NerExtractor extractor;
 	private DocPreProcessor classifier;
 	private Map<String, Double> docHist;
 	private boolean splitMentions;
-	
+
 	public EntityWikiMentionHistogramFeatureGenerator(WikiConnect wiki, List<Sentence> sentences, List<EntityMention> mentions, DocPreProcessor classifier, boolean splitMentions) {
 		this.wiki = wiki;
 		this.classifier = classifier;
@@ -36,7 +38,7 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 
 	@Override
 	public String GetFeatureName() {
-		return "entity-wiki-mention-histo";
+		return FEATURE_STRING;
 	}
 
 	@Override
@@ -44,14 +46,14 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 		if (mention.candidateFeatures == null) {
 			return;
 		}
-		
+
 		for (Entry<Entity, Features> candidate : mention.candidateFeatures.entrySet()) {
 			Map<String, Double> entHist = GetWikiHist(candidate.getKey());
 			double score = Util.computeDotProduct(docHist, entHist);
 			candidate.getValue().setFeature(GetFeatureName(), score);
 		}
 	}
-	
+
 	private Map<String, Double> HistogramFromMentions(List<EntityMention> mentions, List<Sentence> sentences) {
 		Set<String> mentionWords = new HashSet<String>();
 		for (EntityMention mention : mentions) {
@@ -64,7 +66,7 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 				mentionWords.add(mention.mentionString);
 			}
 		}
-		
+
 		List<Sentence> cleanedSentences = new ArrayList<Sentence>();
 		for (Sentence sentence : sentences) {
 			String[] tokens = sentence.getTokens();
@@ -74,16 +76,16 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 			}
 			cleanedSentences.add(new Sentence(sentence.getSentenceId(), newTokens, sentence.getNer()));
 		}
-		
+
 		Histogram hist = Histogram.extractFromSentenceArray(cleanedSentences, mentionWords);
 		return hist.getNormalizedMap();
 	}
-	
+
 	private Map<String, Double> GetWikiHist(Entity ent) throws SQLException {
 		if (wikiCache.containsKey(ent)) {
 			return wikiCache.get(ent);
 		}
-		
+
 		String text = wiki.GetCleanedWikiText(ent.wikiTitle);
 		List<Sentence> sentences = classifier.ProccessArticle(text);
 		List<EntityMention> mentions = extractor.extract(sentences);

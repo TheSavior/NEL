@@ -32,19 +32,19 @@ public class DocumentProcessor {
 		this.preprocessor = preprocessor;
 		this.wikiDb = new WikiConnect();
 	}
-	
+
 	public List<Sentence> ProcessDocument(FeatureWeights weights, String text) throws Exception {
 		List<Sentence> sentences = preprocessor.ProccessArticle(text);
 		Set<FeatureWeights> weightTrials = new HashSet<>();
 		weightTrials.add(weights);
-		
+
 		Map<Sentence, Map<FeatureWeights, String[]>> evaluations = ProcessDocument(weightTrials, sentences);
-		
+
 		for (Sentence sentence : sentences) {
 			Map<FeatureWeights, String[]> nels = evaluations.get(sentence);
 			sentence.setEntities(nels.get(weightTrials));
 		}
-		
+
 		return sentences;
 	}
 
@@ -90,21 +90,21 @@ public class DocumentProcessor {
 		// Go through all weight trials
 		Disambiguator disambiguator = new Disambiguator();
 		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
-		
+
 		Map<Sentence, Map<FeatureWeights, String[]>> results = new HashMap<>();
 		for (FeatureWeights weights : weightTrials) {
 			// Disambiguate
 			disambiguator.disambiguate(mentions, featureWeights);
-			
+
 			// Collate data per sentence
 			for (Sentence sentence : sentences) {
-				results.
+				// results.
 			}
-			
+
 			for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
 
-			
-			
+
+
 		// Populate sentence entity data
 		for (Entry<Integer, List<EntityMention>> entry : sentenceEntities.entrySet()) {
 			updateEntityColumn(entry.getKey(), entry.getValue());

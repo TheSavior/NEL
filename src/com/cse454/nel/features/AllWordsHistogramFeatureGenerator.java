@@ -16,7 +16,7 @@ import com.cse454.nel.WikiConnect;
 
 public class AllWordsHistogramFeatureGenerator implements FeatureGenerator {
 
-	private static String FEATURE_NAME = "all_words_histogram";
+	public static String FEATURE_NAME = "all_words_histogram";
 
 	private final WikiConnect wiki;
 	private final List<Sentence> document;

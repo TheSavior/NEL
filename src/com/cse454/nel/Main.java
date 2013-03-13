@@ -1,18 +1,21 @@
 package com.cse454.nel;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
+import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
+import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
+import com.cse454.nel.features.FeatureWeights;
+import com.cse454.nel.features.InLinkFeatureGenerator;
 
 
 public class Main {
@@ -27,6 +30,28 @@ public class Main {
     private final static ThreadPoolExecutor executor =new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
 	public static void main(String[] args) throws InterruptedException, SQLException {
+
+		Set<FeatureWeights> featureWeights = new HashSet<>();
+
+	    for (int i = 0; i <= 10; i++) { // all words weight
+	    	for (int j = 0; j <= 10; j++) { // entity mention weight
+	    		for (int k = 0; k <= 10; k++) { // entity wiki mention weight
+	    			for (int l = 0; l <= 10; l++) { // inlinks weight
+	    				FeatureWeights weights = new FeatureWeights();
+	    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, i);
+	    				weights.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, j);
+	    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, k);
+	    				weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, l);
+	    				featureWeights.add(weights);
+	    			}
+	    		}
+	    	}
+	    }
+
+		System.exit(0);
+	}
+
+	public void getArgs(String[] args) {
 		Map<String, String> options = new HashMap<String, String>();
 		Map<String, String> doubleOptions = new HashMap<String, String>();
 		List<String> argsList = new ArrayList<String>();
@@ -60,96 +85,6 @@ public class Main {
 	            break;
 	        }
 	    }
-		// Get feature weights
-		// TODO: this should come from command line or something
-		Map<String, Double> featureWeights = new HashMap<String, Double>();
-		featureWeights.put("inlinks", 1.0);
-
-		final BlockingQueue<String> docNames = new ArrayBlockingQueue<>(100);
-		for (int i = 0; i < 16; i++) {
-			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), featureWeights);
-			executor.execute(worker);
-		}
-
-		// open the doc_gold, and feed each doc name to docNames
-		String path = "./doc_gold.txt";
-		try {
-			// Open file
-			BufferedReader reader = null;
-			if (new File(path).exists()) {
-				reader = new BufferedReader(
-					new InputStreamReader(
-						new FileInputStream(path), "UTF-8"));
-			} else {
-				throw new Exception("Could not open file: " + path);
-			}
-
-			// read lines
-			String line;
-			while ((line = reader.readLine()) != null) {
-				synchronized (lock) {
-					count++;
-					if (count % 100 == 0) {
-						System.out.println("Count: " + count);
-					}
-				}
-				String docName = line.split("\t")[0];
-				docNames.put(docName);
-			}
-			while (!docNames.isEmpty()) {
-				Thread.sleep(0);
-			}
-			Thread.sleep(100);
-			// Wait for threads to finish
-			while (THREADS_WORKING > 0) {
-				Thread.sleep(0);
-			}
-			executor.shutdownNow();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		System.exit(0);
-	}
-
-	static class DocumentProcessWorker implements Runnable {
-
-		private final BlockingQueue<String> docs;
-		private final Map<String, Double> featureWeights;
-		private final DocumentConnect documentConnect;
-
-		public DocumentProcessWorker(BlockingQueue<String> docs, DocumentConnect documentConnect, Map<String, Double> featureWeights) {
-			this.docs = docs;
-			this.documentConnect = documentConnect;
-			this.featureWeights = featureWeights;
-		}
-
-		@Override
-		public void run() {
-			DocPreProcessor nerClassifier = new DocPreProcessor(); // Make one per thread, because these are very costly to initialize
-			String docName = null;
-			while (true) {
-				try {
-					DocumentProcessor process;
-
-					docName = docs.take();
-					synchronized (lock) {
-						THREADS_WORKING++;
-					}
-					long startTime = System.currentTimeMillis();
-					process = new DocumentProcessor(featureWeights, nerClassifier);
-					long endTime = System.currentTimeMillis();
-					long duration = endTime - startTime;
-					synchronized (lock) {
-						THREADS_WORKING--;
-					}
-				} catch (InterruptedException e) {
-					// ignore
-				} catch (Exception e) {
-					System.err.println("Error processing document: " + docName);
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	public static void usage() {

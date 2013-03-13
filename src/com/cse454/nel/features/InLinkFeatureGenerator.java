@@ -11,7 +11,7 @@ import com.cse454.nel.WikiConnect;
 
 public class InLinkFeatureGenerator implements FeatureGenerator {
 
-	private static final String FEATURE_STRING = "inlink_feature";
+	public static final String FEATURE_STRING = "inlink_feature";
 
 	private final WikiConnect wiki;
 	private final Map<String, Integer> inLinkCache = new HashMap<String, Integer>();
@@ -28,7 +28,7 @@ public class InLinkFeatureGenerator implements FeatureGenerator {
 	@Override
 	public void GenerateFeatures(EntityMention mention) throws Exception {
 		Map<Entity, Features> candidateFeatures = mention.candidateFeatures;
-
+		double total = 0;
 		for (Entry<Entity, Features> entry : candidateFeatures.entrySet()) {
 			Entity candidate = entry.getKey();
 			if (inLinkCache.containsKey(candidate.wikiTitle)) {
@@ -37,8 +37,13 @@ public class InLinkFeatureGenerator implements FeatureGenerator {
 				candidate.inlinks = wiki.GetInlinks(candidate.wikiTitle);
 				inLinkCache.put(candidate.wikiTitle, candidate.inlinks);
 			}
-			entry.getValue().setFeature(GetFeatureName(), (double) candidate.inlinks);
+			total += candidate.inlinks;
+		}
+		for (Entry<Entity, Features> entry : candidateFeatures.entrySet()) {
+			Entity candidate = entry.getKey();
+			int inlinks = candidate.inlinks;
+			double normalized = inlinks / total;
+			entry.getValue().setFeature(GetFeatureName(), normalized);
 		}
 	}
-
 }
