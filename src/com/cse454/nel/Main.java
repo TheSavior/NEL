@@ -33,15 +33,15 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		DocPreProcessor preProcessor = new DocPreProcessor();
-		Set<FeatureWeights> featureWeights = new HashSet<>();
-		FeatureWeights w = new FeatureWeights();
-		w.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 0);
-		w.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 0);
-		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 3);
-		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 3);
-		w.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 2);
-		w.setFeature(CrossWikiSearcher.FEATURE_STRING, 2);
-		featureWeights.add(w);
+		Set<FeatureWeights> featureWeights = allPossibleWeights();
+//		FeatureWeights w = new FeatureWeights();
+//		w.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 0);
+//		w.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 0);
+//		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 3);
+//		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 3);
+//		w.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 2);
+//		w.setFeature(CrossWikiSearcher.FEATURE_STRING, 2);
+//		featureWeights.add(w);
 		DocumentProcessor processor = new DocumentProcessor(preProcessor);
 		DocumentConnect docConnect = new DocumentConnect();
 		List<Sentence> sentences = docConnect.getDocumentById(0);
@@ -91,13 +91,13 @@ public class Main {
 
 	public static Set<FeatureWeights> allPossibleWeights() {
 		Set<FeatureWeights> featureWeights = new HashSet<>();
-	    for (int i = 0; i <= 10; i++) { // all words weight
-	    	for (int j = 0; j <= 10; j++) { // entity mention weight
-	    		System.out.println("In feature: " + j * 10000);
-	    		for (int k = 0; k <= 10; k++) { // entity wiki mention weight
-	    			for (int l = 0; l <= 10; l++) { // entity wiki mention weight split
-	    				for (int m = 0; m <= 10; m++) { // inlinks weight
-	    					for (int n = 0; n <= 10; n++) {
+	    for (int i = 0; i <= 5; i++) { // all words weight
+	    	for (int j = 0; j <= 5; j++) { // entity mention weight
+	    		System.out.println("In feature: " + i * j * 10000);
+	    		for (int k = 0; k <= 5; k++) { // entity wiki mention weight
+	    			for (int l = 0; l <= 5; l++) { // entity wiki mention weight split
+	    				for (int m = 0; m <= 5; m++) { // inlinks weight
+	    					for (int n = 0; n <= 5; n++) {
 	    						FeatureWeights weights = new FeatureWeights();
 			    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, i);
 			    				weights.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, j);
