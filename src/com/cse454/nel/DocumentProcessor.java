@@ -66,12 +66,14 @@ public class DocumentProcessor {
 		EntityMentionHistogramFeatureGenerator feature2 = new EntityMentionHistogramFeatureGenerator(wikiDb, sentences, mentions);
 		featureGenerators.put(feature2.GetFeatureName(), feature2);
 
-		// TODO: command line arg instead of 'true'?
 		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
 		featureGenerators.put(feature3.GetFeatureName(), feature3);
-
-		InLinkFeatureGenerator feature4 = new InLinkFeatureGenerator(wikiDb);
+		
+		EntityWikiMentionHistogramFeatureGenerator feature4 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, false);
 		featureGenerators.put(feature4.GetFeatureName(), feature4);
+
+		InLinkFeatureGenerator feature5 = new InLinkFeatureGenerator(wikiDb);
+		featureGenerators.put(feature4.GetFeatureName(), feature5);
 
 		// Generate features
 		for (Entry<String, FeatureGenerator> generator : featureGenerators.entrySet()) {
