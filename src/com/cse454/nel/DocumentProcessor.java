@@ -21,33 +21,28 @@ import com.cse454.nel.search.BasicSearcher;
 
 public class DocumentProcessor {
 
-	private final String docName;
-	private final Scorer scorer;
-	private final DocumentConnect sentenceDb;
 	private final Map<String, Double> featureWeights;
-	private final NERClassifier nerClassifier;
+	private final DocPreProcessor preprocessor;
 	private final WikiConnect wikiDb;
 
-	public DocumentProcessor(String docName, DocumentConnect sentenceDb, Scorer scorer, Map<String, Double> featureWeights, NERClassifier nerClassifier) throws SQLException {
-		this.docName = docName;
-		this.scorer = scorer;
-		this.sentenceDb = sentenceDb;
+	public DocumentProcessor(Map<String, Double> featureWeights, DocPreProcessor preprocessor) throws SQLException {
 		this.featureWeights = featureWeights;
-		this.nerClassifier = nerClassifier;
+		this.preprocessor = preprocessor;
 		this.wikiDb = new WikiConnect();
 	}
-
-	public void run() throws Exception {
-		// Retrieve document
-		// TODO: generisize this for mitchel
-		List<Sentence> sentences = sentenceDb.getDocumentByName(docName);
-
+	
+	public List<Sentence> ProcessDocument(String text) throws Exception {
+		List<Sentence> sentences = preprocessor.ProccessArticle(text);
+		return ProcessDocument(sentences);
+	}
+	
+	public List<Sentence> ProcessDocument(List<Sentence> sentences) throws Exception {
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		// Generate candidate entities
-		AbstractSearcher searcher = new BasicSearcher(new WikiConnect());
+		AbstractSearcher searcher = new BasicSearcher(wikiDb);
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
@@ -62,7 +57,7 @@ public class DocumentProcessor {
 		featureGenerators.put(feature2.GetFeatureName(), feature2);
 		
 		// TODO: command line arg instead of 'true'?
-		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, nerClassifier, true);
+		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
 		featureGenerators.put(feature3.GetFeatureName(), feature3);
 		
 		InLinkFeatureGenerator feature4 = new InLinkFeatureGenerator(wikiDb);
@@ -86,14 +81,12 @@ public class DocumentProcessor {
 
 
 		// Update the entity column
-		// TODO: generisize this for mitchel
-		Map<Integer, List<Entity>> sentenceEntities = convertToIdEntityListMap(entities);
+		Map<Integer, List<EntityMention>> sentenceEntities = convertToIdEntityListMap(entities);
 		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
 			updateEntityColumn(entry.getKey(), entry.getValue());
 		}
-
-		// Score our results (if necessary)
-		scorer.ScoreResults(disambiguator.getClass(), docName, entities);
+		
+		return sentences;
 	}
 
 	private void updateEntityColumn(int sentenceID, List<Entity> entities) {
@@ -109,21 +102,25 @@ public class DocumentProcessor {
 		sentenceDb.EntityUpdate(sentenceID, entityString.toString());
 	}
 
-	private Map<Integer, List<Entity>> convertToIdEntityListMap(Map<EntityMention, Entity> entities) {
-		Map<Integer, List<Entity>> sentenceEntities = new HashMap<>();
+	private Map<Integer, List<EntityMention>> convertToIdEntityListMap(Map<EntityMention, Entity> entities) {
+		Map<Integer, List<EntityMention>> sentenceEntities = new HashMap<>();
 
 		for (Entry<EntityMention, Entity> entry : entities.entrySet()) {
 			if (entry.getValue() == null) {
 				continue;
 			}
+
 			Integer id = Integer.valueOf(entry.getKey().sentenceID);
-			if (sentenceEntities.containsKey(id)) {
-				sentenceEntities.get(id).add(entry.getValue());
+			List<EntityMention> sentenceMentions = null;
+			
+			if (!sentenceEntities.containsKey(id)) {
+				sentenceMentions = new ArrayList<>();
+				sentenceEntities.put(id, sentenceMentions);
 			} else {
-				List<Entity> entityList = new ArrayList<Entity>();
-				entityList.add(entry.getValue());
-				sentenceEntities.put(id, entityList);
+				sentenceMentions = sentenceEntities.get(id);
 			}
+			
+			sentenceMentions.add(entry.getKey());
 		}
 		return sentenceEntities;
 	}

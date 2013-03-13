@@ -9,6 +9,7 @@ import java.util.Set;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
 import com.cse454.nel.WikiConnect;
+import com.cse454.nel.features.Features;
 
 public class BasicSearcher extends AbstractSearcher {
 
@@ -20,10 +21,10 @@ public class BasicSearcher extends AbstractSearcher {
 		candidatesCache = new HashMap<String, Set<Entity>>();
 	}
 	
-	private Map<Entity, Map<String, Double>> ConvertToEmptyFeatures(Set<Entity> ents) {
-		Map<Entity, Map<String, Double>> ret = new HashMap<>();
+	private Map<Entity, Features> ConvertToEmptyFeatures(Set<Entity> ents) {
+		Map<Entity, Features> ret = new HashMap<>();
 		for (Entity ent : ents) {
-			ret.put(ent, new HashMap<String, Double>());
+			ret.put(ent, new Features());
 		}
 		return ret;
 	}

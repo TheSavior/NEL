@@ -40,13 +40,13 @@ public class AllWordsHistogramFeatureGenerator implements FeatureGenerator {
 		// get a histogram of all words in sentences
 		Histogram documentHistogram = Histogram.extractFromSentenceArray(document, words);
 
-		Map<Entity, Map<String, Double>> candidateFeatures = mention.candidateFeatures;
-		for (Entry<Entity, Map<String,Double>> entry : candidateFeatures.entrySet()) {
+		Map<Entity, Features> candidateFeatures = mention.candidateFeatures;
+		for (Entry<Entity, Features> entry : candidateFeatures.entrySet()) {
 			Entity candidate = entry.getKey();
 			String[] tokens = Util.tokenizeText(wiki.GetCleanedWikiText(candidate.wikiTitle));
 			Histogram hist = Histogram.fromTokens(tokens);
 			double dotProduct = Util.computeDotProduct(documentHistogram, hist);
-			entry.getValue().put(GetFeatureName(), dotProduct);
+			entry.getValue().setFeature(GetFeatureName(), dotProduct);
 		}
 	}
 

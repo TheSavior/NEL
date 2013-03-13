@@ -2,11 +2,13 @@ package com.cse454.nel;
 
 import java.util.Map;
 
+import com.cse454.nel.features.Features;
+
 public class EntityMention {
 	public int sentenceID;
 	int tokStart, numToks;
 	public String mentionString;
-	public Map<Entity, Map<String, Double>> candidateFeatures;
+	public Map<Entity, Features> candidateFeatures;
 
 	public EntityMention(int sentenceID, String mention, int tokStart, int numToks) {
 		this.sentenceID = sentenceID;
