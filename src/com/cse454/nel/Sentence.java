@@ -36,4 +36,12 @@ public class Sentence {
 	public String[] getEntities() {
 		return entities;
 	}
+	
+	public String[] getGold() {
+		return gold;
+	}
+	
+	public void setEntities(String[] entities) {
+		this.entities = entities;
+	}
 }
