@@ -10,9 +10,9 @@ public class Sentence {
 
 	public Sentence(int sentenceID, String tokens, String ner, String gold) {
 		this.sentenceID = sentenceID;
-		this.tokens = tokens.split("\\s");
-		this.ner = ner.split("\\s");
-		this.gold = gold.split("\\s");
+		this.tokens = tokens == null ? null : tokens.split("\\s");
+		this.ner = ner == null ? null : ner.split("\\s");
+		this.gold = gold == null ? null : gold.split("\\s");
 	}
 
 	public Sentence(int sentenceID, String[] tokens, String[] ner) {
