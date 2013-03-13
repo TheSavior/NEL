@@ -3,17 +3,16 @@ package com.cse454.nel;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
-import com.cse454.nel.scoring.Scorer;
 
 
 public class Main {
@@ -25,31 +24,50 @@ public class Main {
     private static int NUM_DOCUMENTS = 100;
     private static boolean FINISHED_READING_DOCNAMES = false;
     private static int THREADS_WORKING = 0;
+    private final static ThreadPoolExecutor executor =new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
-	@SuppressWarnings("resource")
 	public static void main(String[] args) throws InterruptedException, SQLException {
-		System.out.println("Start");
+		Map<String, String> options = new HashMap<String, String>();
+		Map<String, String> doubleOptions = new HashMap<String, String>();
+		List<String> argsList = new ArrayList<String>();
+	    for (int i = 0; i < args.length; i++) {
+	        switch (args[i].charAt(0)) {
 
-		final Scorer scorer;
-		try {
-			scorer = new Scorer();
-		} catch (IOException e1) {
-			System.out.println("Cannot load gold data file");
-			e1.printStackTrace();
-			return;
-		}
-		
+	        case '-':
+	            if (args[i].length() < 2)
+	                throw new IllegalArgumentException("Not a valid argument: " + args[i]);
+	            if (args[i].charAt(1) == '-') {
+	                if (args[i].length() < 3)
+	                    throw new IllegalArgumentException("Not a valid argument: "+args[i]);
+	                // --opt
+	                String opt = args[i].substring(2, args[i].length());
+	                // arg
+	                if (args.length - 1 == i)
+	                	throw new IllegalArgumentException("Expected arg after: "+args[i]);
+	                doubleOptions.put(opt, args[i+1]);
+	                i++;
+	            } else {
+	                if (args.length-1 == i)
+	                    throw new IllegalArgumentException("Expected arg after: "+args[i]);
+	                // -opt
+	                options.put(args[i], args[i+1]);
+	                i++;
+	            }
+	            break;
+	        default:
+	            // arg
+	            argsList.add(args[i]);
+	            break;
+	        }
+	    }
 		// Get feature weights
 		// TODO: this should come from command line or something
 		Map<String, Double> featureWeights = new HashMap<String, Double>();
 		featureWeights.put("inlinks", 1.0);
 
-		// Setup thread pool
-		final ThreadPoolExecutor executor = new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
-
 		final BlockingQueue<String> docNames = new ArrayBlockingQueue<>(100);
 		for (int i = 0; i < 16; i++) {
-			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), scorer, featureWeights);
+			DocumentProcessWorker worker = new DocumentProcessWorker(docNames, new DocumentConnect(), featureWeights);
 			executor.execute(worker);
 		}
 
@@ -90,8 +108,6 @@ public class Main {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// Now that we have results from the docs, evaluate the scorer
-		scorer.ScoreOverall();
 		System.exit(0);
 	}
 
@@ -100,12 +116,10 @@ public class Main {
 		private final BlockingQueue<String> docs;
 		private final Map<String, Double> featureWeights;
 		private final DocumentConnect documentConnect;
-		private final Scorer scorer;
 
-		public DocumentProcessWorker(BlockingQueue<String> docs, DocumentConnect documentConnect, Scorer scorer, Map<String, Double> featureWeights) {
+		public DocumentProcessWorker(BlockingQueue<String> docs, DocumentConnect documentConnect, Map<String, Double> featureWeights) {
 			this.docs = docs;
 			this.documentConnect = documentConnect;
-			this.scorer = scorer;
 			this.featureWeights = featureWeights;
 		}
 
@@ -121,15 +135,10 @@ public class Main {
 					synchronized (lock) {
 						THREADS_WORKING++;
 					}
-					//System.out.println("starting process");
 					long startTime = System.currentTimeMillis();
-					process = new DocumentProcessor(docName, documentConnect, scorer, featureWeights, nerClassifier);
-					process.run();
+					process = new DocumentProcessor(featureWeights, nerClassifier);
 					long endTime = System.currentTimeMillis();
 					long duration = endTime - startTime;
-					scorer.AddTiming(process.getClass(), duration);
-					
-					//System.out.println("finishing process");
 					synchronized (lock) {
 						THREADS_WORKING--;
 					}
