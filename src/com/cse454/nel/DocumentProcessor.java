@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import com.cse454.nel.disambiguate.Disambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
@@ -13,6 +15,7 @@ import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureGenerator;
+import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.search.AbstractSearcher;
 import com.cse454.nel.search.BasicSearcher;
@@ -29,12 +32,12 @@ public class DocumentProcessor {
 		this.wikiDb = new WikiConnect();
 	}
 
-	public List<Sentence> ProcessDocument(String text) throws Exception {
+	public List<Sentence> ProcessDocument(Set<FeatureWeights> weights, String text) throws Exception {
 		List<Sentence> sentences = preprocessor.ProccessArticle(text);
-		return ProcessDocument(sentences);
+		return ProcessDocument(weights, sentences);
 	}
 
-	public List<Sentence> ProcessDocument(List<Sentence> sentences) throws Exception {
+	public List<Sentence> ProcessDocument(Set<FeatureWeights> weights, List<Sentence> sentences) throws Exception {
 		// Extract entity mentions
 		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
