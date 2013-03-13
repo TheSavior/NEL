@@ -12,6 +12,8 @@ import com.cse454.nel.features.Features;
 
 public class CrossWikiSearcher extends AbstractSearcher {
 
+	public static final String FEATURE_STRING = "crosswiki-prob";
+
 	private WikiConnect wiki;
 
 	public CrossWikiSearcher(WikiConnect wiki) {
@@ -28,7 +30,7 @@ public class CrossWikiSearcher extends AbstractSearcher {
 
 		for (CrossWikiData data : crossWikiData) {
 			Features features = new Features();
-			features.setFeature("crosswiki-prob", data.probability);
+			features.setFeature(FEATURE_STRING, data.probability);
 			candidates.put(new Entity(data.URL), features);
 		}
 

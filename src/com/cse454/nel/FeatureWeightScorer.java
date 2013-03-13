@@ -12,7 +12,7 @@ public class FeatureWeightScorer {
 		scores.put(weights, score);
 	}
 
-	public double score(String[] gold, String[] entities) {
+	public static double score(String[] gold, String[] entities) {
 		if (gold.length != entities.length) {
 			throw new IllegalArgumentException("Gold data and entity data not same length");
 		}
