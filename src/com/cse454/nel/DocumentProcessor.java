@@ -79,7 +79,7 @@ public class DocumentProcessor {
 		Disambiguator disambiguator = new Disambiguator();
 		Map<EntityMention, Entity> entities = disambiguator.disambiguate(mentions, featureWeights);
 
-
+		// Populate sentence entity data
 		// Update the entity column
 		Map<Integer, List<EntityMention>> sentenceEntities = convertToIdEntityListMap(entities);
 		for (Entry<Integer, List<Entity>> entry : sentenceEntities.entrySet()) {
