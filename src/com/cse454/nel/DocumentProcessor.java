@@ -94,13 +94,10 @@ public class DocumentProcessor {
 		System.out.println("Generating Features: " + duration);
 
 		// Go through all weight trials
-		System.out.println("Disambiguating");
-		start = System.currentTimeMillis();
 		Disambiguator disambiguator = new Disambiguator();
 		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
 		end = System.currentTimeMillis();
 		duration = end - start;
-		System.out.println("Disambiguating: " + duration);
 
 		System.out.println("Generate entity sentences");
 		start = System.currentTimeMillis();
