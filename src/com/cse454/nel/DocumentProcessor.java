@@ -19,6 +19,7 @@ import com.cse454.nel.features.FeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.search.AbstractSearcher;
+import com.cse454.nel.search.CrossWikiSearcher;
 
 public class DocumentProcessor {
 
@@ -51,7 +52,7 @@ public class DocumentProcessor {
 		List<EntityMention> mentions = extractor.extract(sentences);
 
 		// Generate candidate entities
-		AbstractSearcher searcher = new CrosswikiSearcher(wikiDb);//new BasicSearcher(wikiDb);
+		AbstractSearcher searcher = new CrossWikiSearcher(wikiDb);//new BasicSearcher(wikiDb);
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
