@@ -8,7 +8,6 @@ public class Sentence {
 	private String[] gold;
 	private String[] entities;
 
-
 	public Sentence(int sentenceID, String tokens, String ner, String gold) {
 		this.sentenceID = sentenceID;
 		this.tokens = tokens.split("\\s");
@@ -33,7 +32,7 @@ public class Sentence {
 	public String[] getNer() {
 		return ner;
 	}
-	
+
 	public String[] getEntities() {
 		return entities;
 	}
