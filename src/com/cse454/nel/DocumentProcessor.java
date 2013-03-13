@@ -86,7 +86,9 @@ public class DocumentProcessor {
 		// Evaluate each sentence, ratio of entities found to entities in list
 		Map<Integer, List<EntityMention>> mentionSentenceList =
 				listEntityMentionBySentenceID(mentions);
+		for (Sentence sentence : sentences) {
 
+		}
 		return sentences;
 	}
 
