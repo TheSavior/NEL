@@ -192,7 +192,9 @@ public class WikiConnect extends MySQLConnect {
 
 	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
-
+		if (text == null) {
+			return "";
+		}
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
 		text = RemoveRecursiveStruct(text, "{{", "}}");
@@ -239,6 +241,7 @@ public class WikiConnect extends MySQLConnect {
 				page_textCache.put(pageTitle, text);
 				return text;
 			}
+			System.err.println("No wiki text returned from: " + pageTitle);
 			return null;
 		} catch (Exception e) {
 			throw e;

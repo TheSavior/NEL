@@ -33,14 +33,23 @@ public class Main {
 	public static void main(String[] args) throws Exception {
 
 		DocPreProcessor preProcessor = new DocPreProcessor();
-		Set<FeatureWeights> featureWeights = allPossibleWeights();
-
+		Set<FeatureWeights> featureWeights = new HashSet<>();
+		FeatureWeights w = new FeatureWeights();
+		w.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 0);
+		w.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 0);
+		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 3);
+		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 3);
+		w.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 2);
+		w.setFeature(CrossWikiSearcher.FEATURE_STRING, 2);
+		featureWeights.add(w);
 		DocumentProcessor processor = new DocumentProcessor(preProcessor);
 		DocumentConnect docConnect = new DocumentConnect();
 		List<Sentence> sentences = docConnect.getDocumentById(0);
 		Map<Sentence, Map<FeatureWeights, String[]>> results =
 				processor.ProcessDocument(featureWeights, sentences);
 
+		System.out.println("Computing scores");
+		long start = System.currentTimeMillis();
 		Map<FeatureWeights, Double> scores = new HashMap<>();
 		for (Sentence sentence : results.keySet()) {
 			Map<FeatureWeights, String[]> entities = results.get(sentence);
@@ -53,7 +62,12 @@ public class Main {
 				}
 			}
 		}
+		long end = System.currentTimeMillis();
+		long duration = end - start;
+		System.out.println("Computing scores: " + duration);
 
+		System.out.println("Computing best feature weights");
+		start = System.currentTimeMillis();
 		double max = 0;
 		FeatureWeights chosenWeights = null;
 		for (FeatureWeights weights : scores.keySet()) {
@@ -63,6 +77,10 @@ public class Main {
 				chosenWeights = weights;
 			}
 		}
+		end = System.currentTimeMillis();
+		duration = end - start;
+		System.out.println("Computing best feature weights: " + duration);
+
 		System.out.println(chosenWeights);
 		System.out.println("Score: " + max);
 		System.exit(0);
@@ -72,6 +90,7 @@ public class Main {
 		Set<FeatureWeights> featureWeights = new HashSet<>();
 	    for (int i = 0; i <= 10; i++) { // all words weight
 	    	for (int j = 0; j <= 10; j++) { // entity mention weight
+	    		System.out.println("In feature: " + j * 10000);
 	    		for (int k = 0; k <= 10; k++) { // entity wiki mention weight
 	    			for (int l = 0; l <= 10; l++) { // entity wiki mention weight split
 	    				for (int m = 0; m <= 10; m++) { // inlinks weight

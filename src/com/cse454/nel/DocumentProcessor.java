@@ -47,45 +47,63 @@ public class DocumentProcessor {
 	}
 
 	public Map<Sentence, Map<FeatureWeights, String[]>> ProcessDocument(Set<FeatureWeights> weightTrials, List<Sentence> sentences) throws Exception {
+
 		// Extract entity mentions
+		System.out.println("Extraact entity mentions");
+		long start = System.currentTimeMillis();
 		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
+		long end = System.currentTimeMillis();
+		long duration = end - start;
+		System.out.println("Extraact entity mentions: " + duration);
 
 		// Generate candidate entities
+		System.out.println("Generate candidate entities");
+		start = System.currentTimeMillis();
 		AbstractSearcher searcher = new BasicSearcher(wikiDb);
 		for (EntityMention mention : mentions) {
 			searcher.GetCandidateEntities(mention);
 		}
+		end = System.currentTimeMillis();
+		duration = end - start;
+		System.out.println("Generate candidate entities: " + duration);
 
 		// Setup feature generators
 		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
-
 		AllWordsHistogramFeatureGenerator feature1 = new AllWordsHistogramFeatureGenerator(wikiDb, sentences);
 		featureGenerators.put(feature1.GetFeatureName(), feature1);
-
 		EntityMentionHistogramFeatureGenerator feature2 = new EntityMentionHistogramFeatureGenerator(wikiDb, sentences, mentions);
 		featureGenerators.put(feature2.GetFeatureName(), feature2);
-
 		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
 		featureGenerators.put(feature3.GetFeatureName(), feature3);
-		
 		EntityWikiMentionHistogramFeatureGenerator feature4 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, false);
 		featureGenerators.put(feature4.GetFeatureName(), feature4);
-
 		InLinkFeatureGenerator feature5 = new InLinkFeatureGenerator(wikiDb);
 		featureGenerators.put(feature4.GetFeatureName(), feature5);
 
 		// Generate features
+		System.out.println("Generating Features");
+		start = System.currentTimeMillis();
 		for (Entry<String, FeatureGenerator> generator : featureGenerators.entrySet()) {
 			for (EntityMention mention : mentions) {
 				generator.getValue().GenerateFeatures(mention);
 			}
 		}
+		end = System.currentTimeMillis();
+		duration = end - start;
+		System.out.println("Generating Features: " + duration);
 
 		// Go through all weight trials
+		System.out.println("Disambiguating");
+		start = System.currentTimeMillis();
 		Disambiguator disambiguator = new Disambiguator();
 		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
+		end = System.currentTimeMillis();
+		duration = end - start;
+		System.out.println("Disambiguating: " + duration);
 
+		System.out.println("Generate entity sentences");
+		start = System.currentTimeMillis();
 		Map<Sentence, Map<FeatureWeights, String[]>> results = new HashMap<>();
 		for (FeatureWeights weights : weightTrials) {
 			// Disambiguate
@@ -120,6 +138,9 @@ public class DocumentProcessor {
 				sentResults.put(weights, ents);
 			}
 		}
+		end = System.currentTimeMillis();
+		duration = end - start;
+		System.out.println("Generating entity sentences: " + duration);
 
 		return results;
 	}
