@@ -29,6 +29,6 @@ public class FeatureWeightScorer {
 		}
 		double numerator = ents.size(); // the entities we get right
 		double denominator = goldEnts.size(); // the total amount of entities
-		return numerator / denominator;
+		return denominator == 0 ? 0 : numerator / denominator;
 	}
 }
