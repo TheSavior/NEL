@@ -28,7 +28,7 @@ public class Test {
 
 			try {
 				// 1. Get wiki text
-				//System.out.println(wiki.GetCleanedWikiText(query));
+				// System.out.println(wiki.GetCleanedWikiText(query));
 
 				// 2. Candidate lists
 				/*EntityMention mention = new EntityMention(0, query, 0, 0);

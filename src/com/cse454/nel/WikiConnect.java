@@ -192,7 +192,9 @@ public class WikiConnect extends MySQLConnect {
 
 	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
-
+		if (text == null) {
+			return "";
+		}
 		text = text.replaceAll("#REDIRECT", "");			// Redirects
 		text = text.replaceAll("(?s:\\{\\|.*?\\|\\})", ""); // Tables {| ... |}
 		text = RemoveRecursiveStruct(text, "{{", "}}");
@@ -209,6 +211,27 @@ public class WikiConnect extends MySQLConnect {
 		return text;
 	}
 
+	public boolean doesWikiPageExist(final String pageTitle) throws Exception {
+		String query = "SELECT page_title from page where page_title = ?";
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		try {
+			st = connection.prepareStatement(query);
+			st.setString(1, pageTitle);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+			return false;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
+		}
+	}
 	/**
 	 * Returns the wiki article text for the given id. Does not sanitize pageID
 	 * @param pageID
@@ -239,6 +262,7 @@ public class WikiConnect extends MySQLConnect {
 				page_textCache.put(pageTitle, text);
 				return text;
 			}
+			System.err.println("No wiki text returned from: " + pageTitle);
 			return null;
 		} catch (Exception e) {
 			throw e;

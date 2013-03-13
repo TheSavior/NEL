@@ -2,6 +2,7 @@ package com.cse454.nel.features;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -22,7 +23,8 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 	public static String FEATURE_STRING = "entity-wiki-mention-histo";
 	public static String FEATURE_STRING_SPLIT = "entity-wiki-mention-histo-split";
 
-	private Map<Entity, Map<String, Double>> wikiCache;
+	private final Map<Entity, Map<String, Double>> wikiCache = new HashMap<>();
+
 	private WikiConnect wiki;
 	private NerExtractor extractor;
 	private DocPreProcessor classifier;
@@ -55,6 +57,9 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 		for (Entry<Entity, Features> candidate : mention.candidateFeatures.entrySet()) {
 			Map<String, Double> entHist = GetWikiHist(candidate.getKey());
 			double score = Util.computeDotProduct(docHist, entHist);
+			if (score == Double.NaN) {
+				System.out.println("nan");
+			}
 			candidate.getValue().setFeature(GetFeatureName(), score);
 		}
 	}

@@ -25,9 +25,16 @@ public class Histogram {
 		Map<String, Double> map = new HashMap<String, Double>();
 		double total = 0;
 		for (Integer value : mMap.values()) {
+			if (value == 0) {
+				System.out.println("fasd");
+			}
 			total += value;
 		}
 		for (Entry<String, Integer> entry : mMap.entrySet()) {
+			double value = entry.getValue() / total;
+			if (value == Double.NaN) {
+				System.out.println("problem");
+			}
 			map.put(entry.getKey(), entry.getValue() / total);
 		}
 		return map;
@@ -47,11 +54,6 @@ public class Histogram {
 
 	public static Histogram extractFromSentenceArray(List<Sentence> sentences, Set<String> mentions) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
-		if (mentions != null) {
-			for (String mention : mentions) {
-				map.put(mention, 0);
-			}
-		}
 		for (Sentence sentence : sentences) {
 			for (String token : sentence.getTokens()) {
 				if (mentions != null && !mentions.contains(token)) {
