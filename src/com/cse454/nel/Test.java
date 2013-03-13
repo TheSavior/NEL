@@ -14,7 +14,7 @@ public class Test {
 	 * @throws SQLException
 	 */
 	@SuppressWarnings("unused")
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) throws Exception {
 		scanner = new Scanner(System.in);
 		WikiConnect wiki = new WikiConnect();
 		DocumentConnect docs = new DocumentConnect();

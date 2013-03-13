@@ -11,7 +11,7 @@ import com.cse454.nel.features.FeatureWeights;
 public class FeatureWeightScorer {
 
 	private Map<FeatureWeights, Double> scores = new HashMap<>();
-	
+
 	public Map<FeatureWeights, Double> getScores() {
 		return scores;
 	}
@@ -23,7 +23,7 @@ public class FeatureWeightScorer {
 			scores.put(weights, score);
 		}
 	}
-	
+
 	public void addDocumentScores(
 		Map<Sentence, Map<FeatureWeights, String[]>> results) {
 
@@ -33,12 +33,8 @@ public class FeatureWeightScorer {
 
 			for (Entry<FeatureWeights, String[]> entities : entityTrials.entrySet()) {
 				double score = FeatureWeightScorer.score(sentence.getGold(), entities.getValue());
-				if (score == Double.NaN) {
-					System.out.println("hdsf");
-				}
 				addFeatureWeightScore(entities.getKey(), score);
 			}
-			
 		}
 	}
 

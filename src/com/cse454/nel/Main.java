@@ -30,17 +30,9 @@ public class Main {
     private final static ThreadPoolExecutor executor =new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
 	public static void main(String[] args) throws Exception {
-
 		DocPreProcessor preProcessor = new DocPreProcessor();
+
 		Set<FeatureWeights> featureWeights = allPossibleWeights();
-//		FeatureWeights w = new FeatureWeights();
-//		w.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 0);
-//		w.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 0);
-//		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 3);
-//		w.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 3);
-//		w.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 2);
-//		w.setFeature(CrossWikiSearcher.FEATURE_STRING, 2);
-//		featureWeights.add(w);
 		DocumentProcessor processor = new DocumentProcessor(preProcessor);
 		DocumentConnect docConnect = new DocumentConnect();
 		List<Sentence> sentences = docConnect.getDocumentById(0);
