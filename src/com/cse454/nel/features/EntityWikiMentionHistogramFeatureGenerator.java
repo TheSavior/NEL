@@ -20,6 +20,7 @@ import com.cse454.nel.extract.NerExtractor;
 public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenerator {
 
 	public static String FEATURE_STRING = "entity-wiki-mention-histo";
+	public static String FEATURE_STRING_SPLIT = "entity-wiki-mention-histo-split";
 
 	private Map<Entity, Map<String, Double>> wikiCache;
 	private WikiConnect wiki;
@@ -38,7 +39,11 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 
 	@Override
 	public String GetFeatureName() {
-		return FEATURE_STRING;
+		if (splitMentions) {
+			return FEATURE_STRING_SPLIT;
+		} else {
+			return FEATURE_STRING;
+		}
 	}
 
 	@Override
