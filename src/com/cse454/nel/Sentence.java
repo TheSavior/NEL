@@ -5,6 +5,7 @@ public class Sentence {
 	private int sentenceID;
 	private String[] tokens;
 	private String[] ner;
+	private String[] entities;
 
 	public Sentence(int sentenceID, String tokens, String ner) {
 		this.sentenceID = sentenceID;

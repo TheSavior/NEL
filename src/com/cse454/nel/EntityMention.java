@@ -7,6 +7,7 @@ public class EntityMention {
 	int tokStart, numToks;
 	public String mentionString;
 	public Map<Entity, Map<String, Double>> candidateFeatures;
+	public Entity chosenEntity;
 
 	public EntityMention(int sentenceID, String mention, int tokStart, int numToks) {
 		this.sentenceID = sentenceID;
