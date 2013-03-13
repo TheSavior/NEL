@@ -4,10 +4,26 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
+// TODO:
+// print sentence id and (7/32)
+// start at sentence Id
+
 public class GoldGenerator {
 
 	private static Scanner scanner;
 
+	private static void PrintSentence(String[] words, int highlight) {
+		for (int i = 0; i < words.length; ++i) {
+			if (i == highlight)
+				System.out.print("[");
+			System.out.print(words[i]);
+			if (i == highlight)
+				System.out.print("]");
+			System.out.print(" ");
+		}
+		System.out.println();
+	}
+	
 	/**
 	 * @param args
 	 * @throws SQLException
@@ -22,28 +38,43 @@ public class GoldGenerator {
 
 			try {
 				List<Sentence> sentences = docs.getDocumentById(Integer.parseInt(query));
+				int sentenceCount = 0;
 				
 				for (Sentence sentence : sentences) {
 					try {
-						System.out.print("\nSentence: ");
-						for (String token : sentence.getTokens()) {
-							System.out.print(token + " ");
-						}
-						System.out.println();
 						
 						boolean success = false;
 						while (!success) {
 							String gold = "";
-							for (String token : sentence.getTokens()) {
-								System.out.print(token + " => ");
-								String gold_tok = scanner.nextLine();
-								gold += gold_tok + " ";
+							for (int i = 0; i < sentence.getTokens().length; ++i) {
+								System.out.println();
+								System.out.print("\nSentence (" + query + ":" + sentence.getSentenceId() + ") (" + (sentenceCount+1) + "/" + sentences.size() + "): ");
+								PrintSentence(sentence.getTokens(), i);
+								while (true) {
+									System.out.print(sentence.getTokens()[i] + " => ");
+									String gold_tok = scanner.nextLine();
+									if (gold_tok.isEmpty()) {
+										gold_tok = "0";
+									}
+									if (gold_tok.contains(" ")) {
+										System.out.println("Must not contain spaces");
+									} else {
+										gold += gold_tok + " ";
+										break;
+									}
+								}
 							}
 						
 							System.out.println("Is this correct? '" + gold + "'");
-							System.out.print("(y/n):");
-							String resp = scanner.nextLine().toLowerCase();
-							if (resp.charAt(0) == 'y') {
+							char choice = 0;
+							while (choice != 'y' && choice != 'n') {
+								System.out.print("(y/n):");
+								String resp = scanner.nextLine().toLowerCase();
+								if (!resp.isEmpty()) {
+									choice = resp.charAt(0);
+								}
+							}
+							if (choice == 'y') {
 								docs.SetGoldData(sentence.getSentenceId(), gold);
 								success = true;
 							}
@@ -52,6 +83,7 @@ public class GoldGenerator {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					++sentenceCount;
 				}
 			} catch (Throwable t) {
 				t.printStackTrace();
