@@ -65,7 +65,7 @@ public class Main {
 	    				for (int m = 0; m <= 5; m++) { // inlinks weight
 	    					for (int n = 0; n <= 5; n++) {
 	    						FeatureWeights weights = new FeatureWeights();
-			    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, i);
+			    				weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, i);
 			    				weights.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, j);
 			    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, k);
 			    				weights.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, l);
