@@ -314,7 +314,15 @@ public class WikiConnect extends MySQLConnect {
 				throw new Exception("Failed to generate revision key");
 			}
 			
-			System.out.println("key: " + rev_id);
+			rs.close();
+			st.close();
+			
+			// Insert page
+			st = connection.prepareStatement("INSERT INTO page (page_namespace, page_title, page_restrictions, page_counter, page_is_redirect, page_is_new, page_random, page_touched, page_latest, page_len) " +
+											 " VALUES          (0,              ?,          ' ',               0,            0,                0,           0,           ' ',          ?,           0)");
+			st.setString(1, name);
+			st.setInt(2, rev_id);
+			st.executeUpdate();
 
 		} catch (Exception e) {
 			throw e;

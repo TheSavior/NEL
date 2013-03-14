@@ -28,7 +28,7 @@ public class Test {
 
 			try {
 				// 1. Get wiki text
-				// System.out.println(wiki.GetCleanedWikiText(query));
+				 System.out.println(wiki.GetCleanedWikiText(query));
 
 				// 2. Candidate lists
 				/*EntityMention mention = new EntityMention(0, query, 0, 0);
@@ -57,7 +57,8 @@ public class Test {
 //				}
 				
 				// 7. Add Page
-				wiki.AddPage("FAKEFAKEFAKEFAKEFAKE", query);
+			/*	wiki.AddPage(query, "FAKEFAKEFAKEFAKEFAKE");
+				System.out.println(wiki.GetWikiText(query));*/
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
