@@ -66,7 +66,7 @@ public class MultiDocumentProcessor {
 				DocPreProcessor preProcessor = new DocPreProcessor();
 				DocumentProcessor processor = new DocumentProcessor(preProcessor);
 			
-				System.out.println("Beginning processing");
+				System.out.println("Thread Begin Processing.");
 				while (true) {
 					// Get Next Document
 					AbstractDocument document;
@@ -76,28 +76,23 @@ public class MultiDocumentProcessor {
 
 					// If no doc, we're done
 					if (document == null) {
-						System.out.println("Done");
 						break;
 					}
 					
 					List<Sentence> sentences = document.GetSentences();
-					System.out.println("Got Doc: " + document.GetName());
 
 					try {
 						// Process Document
 						Map<Sentence, Map<FeatureWeights, String[]>> results =
 								processor.ProcessDocument(featureWeights, sentences);
-						System.out.println("Scored Doc: " + document.GetName());
 						// Score Document
 						for (Entry<Sentence, Map<FeatureWeights, String[]>> entry : results.entrySet()) {
 							Sentence sentence = entry.getKey();
 							Map<FeatureWeights, String[]> entityTrials = entry.getValue();
 
-							synchronized (scoreLock) {
-								for (Entry<FeatureWeights, String[]> entities : entityTrials.entrySet()) {
-								
+							for (Entry<FeatureWeights, String[]> entities : entityTrials.entrySet()) {
+								synchronized (scoreLock) {
 									scorer.Score(document, entities.getKey(), sentence, entities.getValue());
-								
 								}
 							}
 						}

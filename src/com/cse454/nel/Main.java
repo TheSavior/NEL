@@ -30,12 +30,24 @@ public class Main {
 		}
 		
 		// Prevent errors from standford ner
-	/*	System.setErr(new PrintStream(new OutputStream() {
+		final PrintStream err = System.err;
+		
+		System.setErr(new PrintStream(new OutputStream() {
+			private StringBuffer buf = new StringBuffer();
+			
 			@Override
 			public void write(int b) throws IOException {
-
+				if (b == '\n') {
+					String line = buf.toString();
+					if (!(line.contains("edu.stanford.nlp.process.PTBLexer") || line.contains("WARNING: Untokenizable"))) {
+						err.println(buf.toString());
+					}
+					buf.delete(0, buf.length());
+				} else {
+					buf.append((char)b);
+				}
 			}
-		}));*/
+		}));
 		
 		// Setup Documents
 		// TODO: these could be loaded from a file
@@ -51,26 +63,26 @@ public class Main {
 		// Setup Feature Weights
 		Set<FeatureWeights> weightTrials = new HashSet<FeatureWeights>();
 		
-		FeatureWeights weights1 = new FeatureWeights();
+/*		FeatureWeights weights1 = new FeatureWeights();
 		weights1.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 1);
 		weightTrials.add(weights1);
 		
-/*		FeatureWeights weights2 = new FeatureWeights();
+		FeatureWeights weights2 = new FeatureWeights();
 		weights2.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
 		weightTrials.add(weights2);*/
 		
-/*		FeatureWeights weights3 = new FeatureWeights();
+		FeatureWeights weights3 = new FeatureWeights();
 		weights3.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
 		weightTrials.add(weights3);
 		
-		FeatureWeights weights4 = new FeatureWeights();
+/*		FeatureWeights weights4 = new FeatureWeights();
 		weights4.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 1);
 		weightTrials.add(weights4);*/
 		
 		// Scorer
 		FeatureWeightScorer scorer = new FeatureWeightScorer();
 		
-		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(/*Math.min(16, maxFile + 1)*/1);
+		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(Math.min(16, maxFile + 1));
 		docProcessor.ProcessDocuments(docs, weightTrials, scorer);
 		
 		// Show scores
