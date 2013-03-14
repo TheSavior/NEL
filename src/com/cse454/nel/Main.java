@@ -15,6 +15,7 @@ import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
+import com.cse454.nel.scoring.FeatureWeightScorer;
 import com.cse454.nel.search.CrossWikiSearcher;
 
 

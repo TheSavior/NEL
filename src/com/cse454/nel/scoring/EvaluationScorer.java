@@ -82,8 +82,9 @@ public class EvaluationScorer implements AbstractScorer {
 		public ScoreCard(FeatureWeights weights) {
 			this.weights = weights;
 			this.goldEnts = new HashMap<Sentence, Set<String>>();
-			this.correctEnts =  new HashMap<Sentence, Set<String>>();
-			this.incorrectEnts =  new HashMap<Sentence, Set<String>>();
+			this.correctEnts = new HashMap<Sentence, Set<String>>();
+			this.incorrectEnts = new HashMap<Sentence, Set<String>>();
+			this.allEnts = new HashMap<Sentence, Set<String>>();
 		}
 
 		public void addGoldEnts(Sentence sentence, Set<String> gold) {
