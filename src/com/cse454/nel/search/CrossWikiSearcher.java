@@ -23,15 +23,15 @@ public class CrossWikiSearcher extends AbstractSearcher {
 	@Override
 	public void GetCandidateEntities(EntityMention mention) throws Exception {
 		String query = mention.mentionString;
-
+		
+		if (mention.mentionString.equals("Fujio Mitarai")) {
+			System.out.println("asdf");
+		}
 		List<CrossWikiData> crossWikiData = wiki.GetCrossWikiDocs(query, true);
 
 		Map<Entity, Features> candidates = new HashMap<>();
 
 		for (CrossWikiData data : crossWikiData) {
-			if (!wiki.doesWikiPageExist(data.URL)) {
-				continue;
-			}
 			Features features = new Features();
 			features.setFeature(FEATURE_STRING, data.probability);
 			candidates.put(new Entity(data.URL), features);
