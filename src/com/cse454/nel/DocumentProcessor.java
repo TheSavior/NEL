@@ -49,7 +49,7 @@ public class DocumentProcessor {
 
 		for (Sentence sentence : sentences) {
 			Map<FeatureWeights, String[]> nels = evaluations.get(sentence);
-			sentence.setEntities(nels.get(weightTrials));
+			sentence.setEntities(nels.get(weights));
 		}
 
 		return sentences;
