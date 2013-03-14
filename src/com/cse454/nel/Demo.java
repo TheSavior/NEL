@@ -99,11 +99,14 @@ public class Demo {
 			}
 			
 			for(int i = 0; i < tokens.length; i++) {
-				if (ents[i] != "0") {
+				// Start a tag if we are an entity and the one before us wasn't the same entity
+				if (ents[i] != "0" && ((i-1 > 0) && (ents[i] != ents[i-1]))) {
 					builder.append("<a href=\""+wikipedia+ents[i]+"\">");
 				}
 				builder.append(tokens[i]);
-				if (ents[i] != "0") {
+				
+				// If the current token is entity AND we have a next token, and that next token isn't the same as this one
+				if (ents[i] != "0" && ((i+1 < ents.length) && (ents[i] != ents[i+1]))) {
 					builder.append("</a>");
 				}
 				builder.append(" ");
