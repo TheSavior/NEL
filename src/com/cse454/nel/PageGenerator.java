@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.cse454.nel.mysql.WikiConnect;
+
 public class PageGenerator {
 
 	/**
