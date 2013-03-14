@@ -1,9 +1,11 @@
 package com.cse454.nel;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.document.SentenceDbDocFactory;
@@ -33,6 +35,10 @@ public class FullySupervisedHumanLearner {
 		public Range(double min, double max) {
 			this.min = min;
 			this.max = max;
+		}
+		
+		public double getMid() {
+			return min + (max - min) / 2;
 		}
 	}
 	
@@ -85,25 +91,43 @@ public class FullySupervisedHumanLearner {
 		docs.AddDocIDs(docIDs);
 		
 		// Features: these are dummy weights so the processor creates the right features
-		FeatureWeights weights = new FeatureWeights();
-		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
-		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
-		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 1);
+		FeatureWeights dummyWeights = new FeatureWeights();
+		dummyWeights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		dummyWeights.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
+		dummyWeights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, 1);
 		
 		// Finally setup the scorer: also mostly just a dummy, to track the learned features for use later
 		FeatureTrackingScorer scorer = new FeatureTrackingScorer();
 		
 		System.out.println("Processing Documents");
 		MultiDocumentProcessor processor = new MultiDocumentProcessor(Math.min(docIDs.size(), 16));
-		processor.ProcessDocuments(docs, weights, scorer);
+		processor.ProcessDocuments(docs, dummyWeights, scorer);
 		
 		// Now begin supervised learning
 		System.out.println("Documents Processed\nBegin Supervised Learning");
 		
 		while (true) {
+			// Get desired trial range
 			Range allWordsRange = ReadRange("AllWords Feature Range: ");
 			Range crossWikiRange = ReadRange("Crosswiki Feature Range: ");
-			Range inlinkRange = ReadRange("Inlink Feature Range: ");
+			Range inLinkRange = ReadRange("Inlink Feature Range: ");
+			
+			// Setup trials
+			Set<FeatureWeights> weightTrials = new HashSet<>();
+			for (int i = 0; i <= 2; ++i) {
+				for (int t = 0; t <= 2; ++t) {
+					for (int v = 0; v <= 2; ++v) {
+						double allWords = allWordsRange.min + i*allWordsRange.getMid();
+						double crossWiki = crossWikiRange.min + t*crossWikiRange.getMid();
+						double inlinks = inLinkRange.min + v*inLinkRange.getMid();
+						
+						FeatureWeights weights = new FeatureWeights();
+						weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, allWords);
+						weights.setFeature(CrossWikiSearcher.FEATURE_STRING, crossWiki);
+						weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, inlinks);
+					}
+				}
+			}
 		}
 	}
 }

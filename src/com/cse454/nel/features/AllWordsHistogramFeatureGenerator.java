@@ -15,7 +15,7 @@ import com.cse454.nel.mysql.WikiConnect;
 
 public class AllWordsHistogramFeatureGenerator implements FeatureGenerator {
 
-	public static String FEATURE_NAME = "all_words_histogram";
+	public static String FEATURE_STRING = "all_words_histogram";
 
 	private final WikiConnect wiki;
 	private final List<Sentence> document;
@@ -27,7 +27,7 @@ public class AllWordsHistogramFeatureGenerator implements FeatureGenerator {
 
 	@Override
 	public String GetFeatureName() {
-		return FEATURE_NAME;
+		return FEATURE_STRING;
 	}
 
 	@Override
