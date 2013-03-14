@@ -51,13 +51,10 @@ public class SentenceDbDocFactory implements DocumentFactory {
 
 		@Override
 		protected List<Sentence> GenerateSentences() throws Exception {
-			System.out.println("Generate Sentences");
 			DocumentConnect docs = new DocumentConnect();
 			if (dbName != null) {
-				System.out.println("Generate Sentences By Name");
 				return docs.getDocumentByName(dbName);
 			} else {
-				System.out.println("Generate Sentences By Id");
 				return docs.getDocumentById(docID);
 			}
 		}

@@ -63,21 +63,21 @@ public class Main {
 		// Setup Feature Weights
 		Set<FeatureWeights> weightTrials = new HashSet<FeatureWeights>();
 		
-/*		FeatureWeights weights1 = new FeatureWeights();
+		FeatureWeights weights1 = new FeatureWeights();
 		weights1.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 1);
 		weightTrials.add(weights1);
 		
 		FeatureWeights weights2 = new FeatureWeights();
 		weights2.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
-		weightTrials.add(weights2);*/
+		weightTrials.add(weights2);
 		
 		FeatureWeights weights3 = new FeatureWeights();
 		weights3.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
 		weightTrials.add(weights3);
 		
-/*		FeatureWeights weights4 = new FeatureWeights();
+		FeatureWeights weights4 = new FeatureWeights();
 		weights4.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 1);
-		weightTrials.add(weights4);*/
+		weightTrials.add(weights4);
 		
 		// Scorer
 		FeatureWeightScorer scorer = new FeatureWeightScorer();

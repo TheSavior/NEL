@@ -273,5 +273,12 @@ public class WikiConnect extends MySQLConnect {
 				rs.close();
 		}
 	}
+	
+	public void AddPage(String name, String text) throws Exception {
+		if (doesWikiPageExist(name)) {
+			System.err.println("Already Exists");
+			return;
+		}
+	}
 
 }

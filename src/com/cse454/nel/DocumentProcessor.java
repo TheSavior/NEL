@@ -1,5 +1,8 @@
 package com.cse454.nel;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,18 +52,28 @@ public class DocumentProcessor {
 	}
 
 	public Map<Sentence, Map<FeatureWeights, String[]>> ProcessDocument(Set<FeatureWeights> weightTrials, List<Sentence> sentences) throws Exception {
-
+		final boolean logTiming = false;
+		
+		PrintStream timeLog = new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+				if (logTiming) {
+					System.out.write(b);
+				}
+			}
+		});
+		
 		// Extract entity mentions
-		System.out.println("Extraact entity mentions");
+		timeLog.println("Extraact entity mentions");
 		long start = System.currentTimeMillis();
 		AbstractEntityExtractor extractor = new NerExtractor();
 		List<EntityMention> mentions = extractor.extract(sentences);
 		long end = System.currentTimeMillis();
 		long duration = end - start;
-		System.out.println("Extraact entity mentions: " + duration);
+		timeLog.println("Extraact entity mentions: " + duration);
 
 		// Generate candidate entities
-		System.out.println("Generate candidate entities");
+		timeLog.println("Generate candidate entities");
 		start = System.currentTimeMillis();
 		AbstractSearcher searcher = new CrossWikiSearcher(wikiDb);//new BasicSearcher(wikiDb);
 		for (EntityMention mention : mentions) {
@@ -68,7 +81,7 @@ public class DocumentProcessor {
 		}
 		end = System.currentTimeMillis();
 		duration = end - start;
-		System.out.println("Generate candidate entities: " + duration);
+		timeLog.println("Generate candidate entities: " + duration);
 
 		// Setup feature generators
 		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
@@ -96,20 +109,20 @@ public class DocumentProcessor {
 		}
 		
 		// Generate features
-		System.out.println("Generating Features");
+		timeLog.println("Generating Features");
 		start = System.currentTimeMillis();
 		for (String feature : features) {
-			System.out.println("\t" + feature);
+			timeLog.println("\t" + feature);
 			FeatureGenerator generator = featureGenerators.get(feature);
 			long substart = System.currentTimeMillis();
 			for (EntityMention mention : mentions) {
 				generator.GenerateFeatures(mention);
 			}
-			System.out.println("\t" + feature + ": " + (System.currentTimeMillis() - substart));
+			timeLog.println("\t" + feature + ": " + (System.currentTimeMillis() - substart));
 		}
 		end = System.currentTimeMillis();
 		duration = end - start;
-		System.out.println("Generating Features: " + duration);
+		timeLog.println("Generating Features: " + duration);
 
 		// Go through all weight trials
 		Disambiguator disambiguator = new Disambiguator();
@@ -117,7 +130,7 @@ public class DocumentProcessor {
 		end = System.currentTimeMillis();
 		duration = end - start;
 
-		System.out.println("Generate entity sentences");
+		timeLog.println("Generate entity sentences");
 		start = System.currentTimeMillis();
 		SortedMap<Sentence, Map<FeatureWeights, String[]>> results = new TreeMap<>();
 		for (FeatureWeights weights : weightTrials) {
@@ -157,7 +170,7 @@ public class DocumentProcessor {
 		}
 		end = System.currentTimeMillis();
 		duration = end - start;
-		System.out.println("Generating entity sentences: " + duration);
+		timeLog.println("Generating entity sentences: " + duration);
 
 		return results;
 	}

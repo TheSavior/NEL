@@ -42,7 +42,6 @@ public class MultiDocumentProcessor {
 		}
 		
 		// Wait for them to finish
-		System.out.println("Awaiting Shutdown");
 		executor.shutdown();
 		executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 		System.out.println("Processing Complete");
