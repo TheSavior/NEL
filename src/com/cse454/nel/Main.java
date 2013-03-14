@@ -27,13 +27,13 @@ public class Main {
 			System.out.println("Must Specify max file to process");
 			return;
 		}
-		
+
 		// Prevent errors from standford ner
 		final PrintStream err = System.err;
-		
+
 		System.setErr(new PrintStream(new OutputStream() {
 			private StringBuffer buf = new StringBuffer();
-			
+
 			@Override
 			public void write(int b) throws IOException {
 				if (b == '\n') {
@@ -47,7 +47,7 @@ public class Main {
 				}
 			}
 		}));
-		
+
 		// Setup Documents
 		// TODO: these could be loaded from a file
 		int maxFile = Integer.parseInt(args[0]);
@@ -55,78 +55,24 @@ public class Main {
 		for (int i = 0; i <= maxFile; ++i) {
 			docIDs.add(i);
 		}
-		
+
 		SentenceDbDocFactory docs = new SentenceDbDocFactory();
 		docs.AddDocIDs(docIDs);
-		
+
 		// Setup Feature Weights
 		Set<FeatureWeights> weightTrials = new HashSet<FeatureWeights>();
-		
-		FeatureWeights weights1 = new FeatureWeights();
-		weights1.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 1);
-		weightTrials.add(weights1);
-		
-	/*	FeatureWeights weights2 = new FeatureWeights();
-		weights2.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
-		weightTrials.add(weights2);
-		
-		FeatureWeights weights3 = new FeatureWeights();
-		weights3.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
-		weightTrials.add(weights3);
-		
-		FeatureWeights weights4 = new FeatureWeights();
-		weights4.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 1);
-		weightTrials.add(weights4);*/
-		
+
 		// Scorer
 		//FeatureWeightScorer scorer = new FeatureWeightScorer();
 		EvaluationScorer scorer = new EvaluationScorer();
-		
 		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(Math.min(16, maxFile + 1));
 		docProcessor.ProcessDocuments(docs, weightTrials, scorer);
-		
+
 		// Show scores
 		System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
-		/*for (Entry<FeatureWeights, Double> score : scorer.getScores().entrySet()) {
+		/* for (Entry<FeatureWeights, Double> score : scorer.getScores().entrySet()) {
 			System.out.println(score.getValue() + " => " + score.getKey());
-		}*/
-		
-
-	/*	DocPreProcessor preProcessor = new DocPreProcessor();
-		Set<FeatureWeights> featureWeights = allPossibleWeights();
-		DocumentProcessor processor = new DocumentProcessor(preProcessor);
-		DocumentConnect docConnect = new DocumentConnect();
-		List<Sentence> sentences = docConnect.getDocumentById(0);
-		Map<Sentence, Map<FeatureWeights, String[]>> results =
-				processor.ProcessDocument(featureWeights, sentences);
-
-		System.out.println("Computing scores");
-		long start = System.currentTimeMillis();
-		FeatureWeightScorer scorer = new FeatureWeightScorer();
-		scorer.addDocumentScores(results);
-		long end = System.currentTimeMillis();
-		long duration = end - start;
-		System.out.println("Computing scores: " + duration);
-
-		System.out.println("Computing best feature weights");
-		start = System.currentTimeMillis();
-		double max = 0;
-		Map<FeatureWeights, Double> scores = scorer.getScores();
-		FeatureWeights chosenWeights = null;
-		for (FeatureWeights weights : scores.keySet()) {
-			double score = scores.get(weights);
-			if (score > max) {
-				max = score;
-				chosenWeights = weights;
-			}
-		}
-		end = System.currentTimeMillis();
-		duration = end - start;
-		System.out.println("Computing best feature weights: " + duration);
-
-		System.out.println(chosenWeights);
-		System.out.println("Score: " + max);
-		System.exit(0);*/
+		} */
 	}
 
 	public static Set<FeatureWeights> allPossibleWeights() {
