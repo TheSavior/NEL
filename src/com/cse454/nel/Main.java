@@ -1,14 +1,14 @@
 package com.cse454.nel;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import com.cse454.nel.document.SentenceDbDocFactory;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
@@ -22,16 +22,15 @@ import com.cse454.nel.search.CrossWikiSearcher;
 
 public class Main {
 
-	//private static final String sentencesFile = "sentences.entities";
-    private static Object lock = new Object();
-    private static int count = 0;
-    private static int counter = 0;
-    private static int NUM_DOCUMENTS = 100;
-    private static boolean FINISHED_READING_DOCNAMES = false;
-    private static int THREADS_WORKING = 0;
-    private final static ThreadPoolExecutor executor =new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
-
 	public static void main(String[] args) throws Exception {
+		// Prevent errors from standford ner
+		System.setErr(new PrintStream(new OutputStream() {
+			@Override
+			public void write(int b) throws IOException {
+
+			}
+		}));
+		
 		// Setup Documents
 		// TODO: these could be loaded from a file
 		List<Integer> docIDs = new ArrayList<>();
