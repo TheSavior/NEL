@@ -46,9 +46,22 @@ public class Demo {
 	private JTextField weight3;
 
 	// Default weights to use
-	private int inLinkWeight = 1;
-	private int crossWikiWeight = 1;
-	private int histogramWeight = 1;
+	private int inLinkWeight = 25;
+	private int crossWikiWeight = 36;
+	private int histogramWeight = 39;
+	
+	private static final String INPUT_DEFAULT = 
+			 "TOKYO , Aug. 19 -LRB- Xinhua -RRB-                                                                                                                                                                                                                                   " +
+			 " Japanese Prime Minister Shinzo Abe left Tokyo Sunday morning for a weeklong visits to Indonesia , India and Malaysia .                                                                                                                                               " +
+			 " In Jakarta , his first stop , Abe is scheduled to meet with Indonesian President Susilo Bambang Yudhoyono and deliver a speech on Japan 's future policy toward the Association of Southeast Asian Nations -LRB- ASEAN -RRB- on Monday , according to Kyodo News .   " +
+			 " Besides the signing of a free trade agreement , the two leaders will issue a joint statement calling for cooperation on environment and energy , Japanese officials were quoted as saying .                                                                          " +
+			 " Abe will arrive in New Delhi on Wednesday .                                                                                                                                                                                                                          " +
+			 " He is scheduled to make a policy speech at the Indian parliament shortly after arrival and meet with Indian Prime Minister Manmohan Singh later in the day .                                                                                                         " +
+			 " To seek India 's cooperation on Japan 's environment-protection initiative to halve global greenhouse emissions from current levels by 2050 is on the premier 's agenda , Japanese officials said .                                                                  " +
+			 " In Kuala Lumpur , his last leg , Abe and Malaysian Prime Minister Abdullah Ahmad Badawi is slated to meet on Friday and sign a joint statement calling for cooperation in various areas ranging from politics and security to economy and environment , Kyodo said . " +
+			 " When meeting with the press before departure , Abe described the relationship between Japan and India as the most promising bilateral tie and expressed his willingness to send a message during the tour that Japan and ASEAN share the future .                    " +
+			 " A business mission of 250-member scale , led by the Japan Business Federation Chairman Fujio Mitarai , will accompany Abe throughout the tour ending Saturday ." +
+			 "";
 
 	public Demo() throws Exception {
 		DocPreProcessor preProcessor = new DocPreProcessor();
@@ -219,7 +232,7 @@ public class Demo {
 		input.setLineWrap(true);
 		input.setMinimumSize(new Dimension(100, 22));
 		input.setPreferredSize(new Dimension(250, 22));
-		input.setText("input");
+		input.setText(INPUT_DEFAULT);
 
 		JScrollPane scrollPane2 = new JScrollPane(input);
 		splitPane.setLeftComponent(scrollPane2);
