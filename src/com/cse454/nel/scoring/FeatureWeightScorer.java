@@ -11,20 +11,20 @@ import com.cse454.nel.features.FeatureWeights;
 
 public class FeatureWeightScorer implements AbstractScorer {
 
-	private Map<FeatureWeights, Double> scores = new HashMap<>();
+	private final Map<FeatureWeights, Double> scores = new HashMap<>();
 
 	public Map<FeatureWeights, Double> getScores() {
 		return scores;
 	}
 
 	public void addFeatureWeightScore(FeatureWeights weights, double score) {
-		if (scores.containsValue(weights)) {
+		if (scores.containsKey(weights)) {
 			scores.put(weights, scores.get(weights) + score);
 		} else {
 			scores.put(weights, score);
 		}
 	}
-	
+
 	@Override
 	public void Score(AbstractDocument doc, FeatureWeights weights, Sentence sentence, String[] entities) {
 		List<String> goldEnts = new ArrayList<>();

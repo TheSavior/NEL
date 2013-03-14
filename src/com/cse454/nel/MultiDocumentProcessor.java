@@ -19,52 +19,53 @@ public class MultiDocumentProcessor {
     private final ThreadPoolExecutor executor;
     private final Object docLock;
     private final Object scoreLock;
-    
+
     public MultiDocumentProcessor(int numThreads) {
     	this.numThreads = numThreads;
     	this.docLock = new Object();
     	this.scoreLock = new Object();
     	this.executor = new ThreadPoolExecutor(numThreads, numThreads, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
-    
-	public void ProcessDocuments(DocumentFactory docs, FeatureWeights weights, AbstractScorer scorer) throws InterruptedException {
+
+	public void ProcessDocuments(DocumentFactory docs, FeatureWeights weights, final AbstractScorer scorer) throws InterruptedException {
 		Set<FeatureWeights> weightsList = new HashSet<>(1);
 		weightsList.add(weights);
 		ProcessDocuments(docs, weightsList, scorer);
 	}
-	
+
 	public void ProcessDocuments(DocumentFactory docs, Set<FeatureWeights> weights, AbstractScorer scorer) throws InterruptedException {
 		// Setup Threads
 		System.out.println("Starting Threads");
 		for (int i = 0; i < numThreads; ++i) {
-			DocumentProcessThread thread = new DocumentProcessThread(docs, scorer, weights);
+			final Set<FeatureWeights> w = weights;
+			DocumentProcessThread thread = new DocumentProcessThread(docs, scorer, w);
 			executor.execute(thread);
 		}
-		
+
 		// Wait for them to finish
 		executor.shutdown();
 		executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
 		System.out.println("Processing Complete");
 	}
-	
+
 	private class DocumentProcessThread implements Runnable {
-		
+
 		private DocumentFactory docs;
-		private AbstractScorer scorer;
+		private final AbstractScorer scorer;
 		private Set<FeatureWeights> featureWeights;
-		
+
 		public DocumentProcessThread(DocumentFactory docs, AbstractScorer scorer, Set<FeatureWeights> featureWeights) {
 			this.docs = docs;
 			this.scorer = scorer;
 			this.featureWeights = featureWeights;
 		}
-		
+
 		@Override
 		public void run() {
 			try {
 				DocPreProcessor preProcessor = new DocPreProcessor();
 				DocumentProcessor processor = new DocumentProcessor(preProcessor);
-			
+
 				System.out.println("Thread Begin Processing.");
 				while (true) {
 					// Get Next Document
@@ -77,7 +78,7 @@ public class MultiDocumentProcessor {
 					if (document == null) {
 						break;
 					}
-					
+
 					List<Sentence> sentences = document.GetSentences();
 
 					try {
@@ -96,7 +97,7 @@ public class MultiDocumentProcessor {
 							}
 						}
 						System.out.println("Done Processing Doc: " + document.GetName());
-						
+
 					} catch (Exception e) {
 						System.out.println("Exception processing document: " + document.GetName());
 						e.printStackTrace(System.out);
