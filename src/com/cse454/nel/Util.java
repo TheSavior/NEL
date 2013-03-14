@@ -1,5 +1,8 @@
 package com.cse454.nel;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -41,5 +44,25 @@ public class Util {
 		Map<String, Double> hist1Norm = hist1.getNormalizedMap();
 		Map<String, Double> hist2Norm = hist2.getNormalizedMap();
 		return computeDotProduct(hist1Norm, hist2Norm);
+	}
+	
+	public static void PreventStanfordNERErrors() {
+		final PrintStream err = System.err;
+		System.setErr(new PrintStream(new OutputStream() {
+			private StringBuffer buf = new StringBuffer();
+			
+			@Override
+			public void write(int b) throws IOException {
+				if (b == '\n') {
+					String line = buf.toString();
+					if (!(line.contains("edu.stanford.nlp.process.PTBLexer") || line.contains("WARNING: Untokenizable"))) {
+						err.println(buf.toString());
+					}
+					buf.delete(0, buf.length());
+				} else {
+					buf.append((char)b);
+				}
+			}
+		}));
 	}
 }

@@ -176,6 +176,10 @@ public class DocumentProcessor {
 		for (String feature : features) {
 			timeLog.println("\t" + feature);
 			FeatureGenerator generator = featureGenerators.get(feature);
+			if (generator == null) {
+				throw new Exception("No Feature Named '" + feature + "'");
+			}
+			
 			long substart = System.currentTimeMillis();
 			for (EntityMention mention : mentions) {
 				generator.GenerateFeatures(mention);
