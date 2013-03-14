@@ -19,10 +19,10 @@ public class EvaluationScorer implements AbstractScorer {
 	public EvaluationScorer() {
 		documentScorecards = new HashMap<AbstractDocument, ScoreCard>();
 	}
-	
+
 	@Override
 	public void ScoreMentions(AbstractDocument doc, List<EntityMention> mentions) {
-		
+
 	}
 
 	@Override
@@ -110,7 +110,7 @@ public class EvaluationScorer implements AbstractScorer {
 		return num;
 	}
 
-	public double getDisambiguationScore() {
+	public double getPrecisionScore() {
 		return getTotalCorrect() / (getTotalGold() - getTotalMissed());
 	}
 
@@ -118,7 +118,7 @@ public class EvaluationScorer implements AbstractScorer {
 		return getTotalCorrect() / getTotalGold();
 	}
 
-	public double getSearchExtractScore() {
+	public double getRecallScore() {
 		return (getTotalGold() - getTotalMissed()) / getTotalGold();
 	}
 
