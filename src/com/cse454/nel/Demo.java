@@ -48,15 +48,16 @@ public class Demo {
 
 
 	public Demo() throws Exception {
-
+		DocPreProcessor preProcessor = new DocPreProcessor();
+		processor = new DocumentProcessor(preProcessor);
+		
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				createAndShowGUI();
 			}
 		});
 
-		DocPreProcessor preProcessor = new DocPreProcessor();
-		processor = new DocumentProcessor(preProcessor);
+		
 
 		// Here's necessary feature weight input (values will come from gui)
 
