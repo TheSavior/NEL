@@ -1,8 +1,5 @@
 package com.cse454.nel;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -29,24 +26,7 @@ public class Main {
 		}
 
 		// Prevent errors from standford ner
-		final PrintStream err = System.err;
-
-		System.setErr(new PrintStream(new OutputStream() {
-			private StringBuffer buf = new StringBuffer();
-
-			@Override
-			public void write(int b) throws IOException {
-				if (b == '\n') {
-					String line = buf.toString();
-					if (!(line.contains("edu.stanford.nlp.process.PTBLexer") || line.contains("WARNING: Untokenizable"))) {
-						err.println(buf.toString());
-					}
-					buf.delete(0, buf.length());
-				} else {
-					buf.append((char)b);
-				}
-			}
-		}));
+		Util.PreventStanfordNERErrors();
 
 		// Setup Documents
 		// TODO: these could be loaded from a file

@@ -7,6 +7,8 @@ import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.search.CrossWikiSearcher;
 
+import edu.stanford.nlp.util.StringUtils;
+
 import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -16,7 +18,11 @@ import java.awt.event.ActionEvent;
 
 public class Demo {
 	private static final JPanel panel = new JPanel();
-
+	private static DocumentProcessor processor;
+	private static FeatureWeights weights;
+	
+	private static JTextArea input;
+	
 	public static void main(String[] args) throws Exception {
 
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -24,32 +30,44 @@ public class Demo {
                 createAndShowGUI();
             }
         });
-		/*
+		
 		DocPreProcessor preProcessor = new DocPreProcessor();
-		DocumentProcessor processor = new DocumentProcessor(preProcessor);
-
-		// Here's the text to be linked (value to come from gui)
-		String text = "";
+		processor = new DocumentProcessor(preProcessor);
 
 		// Here's necessary feature weight input (values will come from gui)
 		int crossWikiWeight = 1;
 		int inLinkWeight = 1;
 		int histogramWeight = 1;
 
-		FeatureWeights weights = new FeatureWeights();
+		weights = new FeatureWeights();
 		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, inLinkWeight);
 		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, crossWikiWeight);
 		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, histogramWeight);
 
 		// Process the document
-		List<Sentence> results = processor.ProcessDocument(weights, text);
 
 		// now you could compare each  { token | entity } in a scroll bar on the gui or something
-		 */
+		 
 	}
 	
 	public static void Link() {
+		// Here's the text to be linked (value to come from gui)
+		String text = input.getText();
+		List<Sentence> results;
+		try {
+			results = processor.ProcessDocument(weights, text);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//JOptionPane.showMessageDialog(null, e.getMessage());
+			return;
+		}
 		
+		System.out.println(results.size()+" sentences");
+		for(Sentence s : results) {
+			System.out.println(StringUtils.join(s.getEntities(), " "));
+		}
+		System.out.println();
 	}
 	
 	private static void createAndShowGUI() {
@@ -72,7 +90,8 @@ public class Demo {
                 splitPane.setResizeWeight(0.5);
                 panel.add(splitPane, BorderLayout.CENTER);
                 
-                JTextArea input = new JTextArea();
+                input = new JTextArea();
+                input.setLineWrap(true);
                 input.setMinimumSize(new Dimension(100, 22));
                 input.setPreferredSize(new Dimension(250, 22));
                 input.setText("input");
@@ -88,6 +107,7 @@ public class Demo {
                 JButton btnNewButton = new JButton("Link!");
                 btnNewButton.addActionListener(new ActionListener() {
                 	public void actionPerformed(ActionEvent e) {
+                		System.out.println("Linking");
                 		Link();
                 	}
                 });

@@ -18,6 +18,7 @@ public class PageGenerator {
 	public static void main(String[] args) throws Exception  {
 		WikiConnect wiki = new WikiConnect();
 		Scanner scanner = new Scanner(System.in);
+		PullFromWikipedia wikipedia = new PullFromWikipedia();
 		
 		while(true) {
 			System.out.print("Page Title: ");
@@ -30,7 +31,21 @@ public class PageGenerator {
 				}
 				// overwrite
 			}
+			String strLine;
+			try{
+				strLine = wikipedia.GetWikipediaText(page);
+			}
+			catch (Exception e) {
+				System.err.println("Error");
+				e.printStackTrace();
+				continue;
+			}
 			
+			if (strLine == null) {
+				System.err.println("No Data for that page");
+				continue;
+			}
+			/*
 			FileInputStream fstream = new FileInputStream("doc.txt");
 			System.out.println("Loading text: ");
 			// Get the object of DataInputStream
@@ -43,7 +58,7 @@ public class PageGenerator {
 				strLine.append(line+"\n");
 			}
 			in.close();
-			
+			*/
 			System.out.println(strLine.substring(0, 200));
 			
 			System.out.print("Correct?");
