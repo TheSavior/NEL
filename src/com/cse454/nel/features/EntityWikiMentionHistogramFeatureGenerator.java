@@ -12,11 +12,10 @@ import java.util.Set;
 import com.cse454.nel.DocPreProcessor;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
-import com.cse454.nel.Histogram;
 import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
-import com.cse454.nel.WikiConnect;
 import com.cse454.nel.extract.NerExtractor;
+import com.cse454.nel.mysql.WikiConnect;
 
 public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenerator {
 

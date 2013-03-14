@@ -3,6 +3,8 @@ package com.cse454.nel;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.cse454.nel.features.Histogram;
+
 
 public class Util {
 

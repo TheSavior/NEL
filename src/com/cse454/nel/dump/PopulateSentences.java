@@ -8,9 +8,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import com.cse454.nel.MySQLConnect;
 import com.cse454.nel.kbp.ProcessedCorpus;
 import com.cse454.nel.kbp.SFConstants;
+import com.cse454.nel.mysql.MySQLConnect;
 
 public class PopulateSentences {
 

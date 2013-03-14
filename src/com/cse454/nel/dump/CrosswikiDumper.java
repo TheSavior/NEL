@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.cse454.nel.MySQLConnect;
+import com.cse454.nel.mysql.MySQLConnect;
 
 public class CrosswikiDumper {
 

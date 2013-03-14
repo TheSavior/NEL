@@ -1,5 +1,6 @@
 package com.cse454.nel;
 
+import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -83,8 +84,17 @@ public class MultiDocumentProcessor {
 
 					try {
 						// Process Document
+
+						PrintStream timeLog = processor.EnabledPrintStream(null);
+						List<EntityMention> mentions =
+								processor.ProcessDocumentFeatures(timeLog, featureWeights, sentences);
 						Map<Sentence, Map<FeatureWeights, String[]>> results =
-								processor.ProcessDocument(featureWeights, sentences);
+								processor.ScoreWeightTrials(timeLog, sentences, mentions, featureWeights);
+						
+						synchronized (scoreLock) {
+							scorer.ScoreMentions(document, mentions);
+						}
+						
 						// Score Document
 						for (Entry<Sentence, Map<FeatureWeights, String[]>> entry : results.entrySet()) {
 							Sentence sentence = entry.getKey();

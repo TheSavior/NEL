@@ -1,10 +1,12 @@
-package com.cse454.nel;
+package com.cse454.nel.mysql;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.cse454.nel.Sentence;
 
 public class DocumentConnect extends MySQLConnect {
 

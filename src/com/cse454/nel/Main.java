@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.cse454.nel.document.SentenceDbDocFactory;
@@ -17,7 +16,7 @@ import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
-import com.cse454.nel.scoring.FeatureWeightScorer;
+import com.cse454.nel.scoring.EvaluationScorer;
 import com.cse454.nel.search.CrossWikiSearcher;
 
 
@@ -67,7 +66,7 @@ public class Main {
 		weights1.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 1);
 		weightTrials.add(weights1);
 		
-		FeatureWeights weights2 = new FeatureWeights();
+	/*	FeatureWeights weights2 = new FeatureWeights();
 		weights2.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
 		weightTrials.add(weights2);
 		
@@ -77,19 +76,20 @@ public class Main {
 		
 		FeatureWeights weights4 = new FeatureWeights();
 		weights4.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 1);
-		weightTrials.add(weights4);
+		weightTrials.add(weights4);*/
 		
 		// Scorer
-		FeatureWeightScorer scorer = new FeatureWeightScorer();
+		//FeatureWeightScorer scorer = new FeatureWeightScorer();
+		EvaluationScorer scorer = new EvaluationScorer();
 		
 		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(Math.min(16, maxFile + 1));
 		docProcessor.ProcessDocuments(docs, weightTrials, scorer);
 		
 		// Show scores
-		//System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
-		for (Entry<FeatureWeights, Double> score : scorer.getScores().entrySet()) {
+		System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
+		/*for (Entry<FeatureWeights, Double> score : scorer.getScores().entrySet()) {
 			System.out.println(score.getValue() + " => " + score.getKey());
-		}
+		}*/
 		
 
 	/*	DocPreProcessor preProcessor = new DocPreProcessor();

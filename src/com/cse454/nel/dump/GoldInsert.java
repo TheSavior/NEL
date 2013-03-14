@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.dump;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.SQLException;
 import java.util.HashSet;
+
+import com.cse454.nel.mysql.DocumentConnect;
 
 public class GoldInsert {
 

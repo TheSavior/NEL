@@ -1,10 +1,12 @@
-package com.cse454.nel;
+package com.cse454.nel.features;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.cse454.nel.Sentence;
 
 public class Histogram {
 
