@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cse454.nel.Sentence;
+import com.cse454.nel.Util;
 import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.features.FeatureWeights;
 
@@ -18,15 +19,18 @@ public class FeatureWeightScorer implements AbstractScorer {
 	}
 
 	public void addFeatureWeightScore(FeatureWeights weights, double score) {
+		System.out.println("adding score: " + score);
 		if (scores.containsValue(weights)) {
 			scores.put(weights, scores.get(weights) + score);
 		} else {
 			scores.put(weights, score);
 		}
 	}
-
+	
 	@Override
 	public void Score(AbstractDocument doc, FeatureWeights weights, Sentence sentence, String[] entities) {
+		System.out.println("Scoring ents: " + Util.toksToStr(entities));
+		System.out.println("vs Gold: " + Util.toksToStr(sentence.getGold()));
 		List<String> goldEnts = new ArrayList<>();
 		List<String> ents = new ArrayList<>();
 		for (String g : sentence.getGold()) {

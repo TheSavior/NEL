@@ -1,6 +1,6 @@
 package com.cse454.nel;
 
-public class Sentence {
+public class Sentence implements Comparable<Sentence> {
 
 	private int sentenceID;
 	private String[] tokens;
@@ -43,5 +43,9 @@ public class Sentence {
 	
 	public void setEntities(String[] entities) {
 		this.entities = entities;
+	}
+	
+	public int compareTo(Sentence sentence) {
+		return this.sentenceID - sentence.sentenceID;
 	}
 }

@@ -57,9 +57,11 @@ public class FeatureWeights {
 	@Override
 	public String toString() {
 		StringBuffer buf = new StringBuffer();
+		buf.append("{\n");
 		for (String weightName : weights.keySet()) {
-			buf.append(weightName + " " + weights.get(weightName) + "\n");
+			buf.append("\t" + weightName + " " + weights.get(weightName) + "\n");
 		}
+		buf.append("}");
 		return buf.toString();
 	}
 

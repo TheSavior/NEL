@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import com.cse454.nel.disambiguate.Disambiguator;
 import com.cse454.nel.extract.AbstractEntityExtractor;
@@ -117,7 +119,7 @@ public class DocumentProcessor {
 
 		System.out.println("Generate entity sentences");
 		start = System.currentTimeMillis();
-		Map<Sentence, Map<FeatureWeights, String[]>> results = new HashMap<>();
+		SortedMap<Sentence, Map<FeatureWeights, String[]>> results = new TreeMap<>();
 		for (FeatureWeights weights : weightTrials) {
 			// Disambiguate
 			disambiguator.disambiguate(mentions, weights);

@@ -10,6 +10,15 @@ public class Util {
 		return str.replaceAll("[^a-zA-Z0-9_\\s]", "");
 	}
 	
+	public static String toksToStr(String[] toks) {
+		String str = "";
+		for (String tok : toks) {
+			str += tok + " ";
+		}
+		return str;
+	}
+
+	
 	public static String[] tokenizeText(String text) {
 		return cleanString(text).split(" ");
 	}

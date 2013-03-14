@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import com.cse454.nel.document.SentenceDbDocFactory;
@@ -16,7 +17,6 @@ import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
-import com.cse454.nel.scoring.EvaluationScorer;
 import com.cse454.nel.scoring.FeatureWeightScorer;
 import com.cse454.nel.search.CrossWikiSearcher;
 
@@ -24,35 +24,60 @@ import com.cse454.nel.search.CrossWikiSearcher;
 public class Main {
 
 	public static void main(String[] args) throws Exception {
+		if (args.length != 1) {
+			System.out.println("Must Specify max file to process");
+			return;
+		}
+		
 		// Prevent errors from standford ner
-		System.setErr(new PrintStream(new OutputStream() {
+	/*	System.setErr(new PrintStream(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
 
 			}
-		}));
+		}));*/
 		
 		// Setup Documents
 		// TODO: these could be loaded from a file
+		int maxFile = Integer.parseInt(args[0]);
 		List<Integer> docIDs = new ArrayList<>();
-		docIDs.add(0);
-		//docIDs.add(1);
+		for (int i = 0; i <= maxFile; ++i) {
+			docIDs.add(i);
+		}
 		
 		SentenceDbDocFactory docs = new SentenceDbDocFactory();
 		docs.AddDocIDs(docIDs);
 		
 		// Setup Feature Weights
-		FeatureWeights weights = new FeatureWeights();
-		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		Set<FeatureWeights> weightTrials = new HashSet<FeatureWeights>();
+		
+		FeatureWeights weights1 = new FeatureWeights();
+		weights1.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME, 1);
+		weightTrials.add(weights1);
+		
+/*		FeatureWeights weights2 = new FeatureWeights();
+		weights2.setFeature(EntityMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
+		weightTrials.add(weights2);*/
+		
+/*		FeatureWeights weights3 = new FeatureWeights();
+		weights3.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING, 1);
+		weightTrials.add(weights3);
+		
+		FeatureWeights weights4 = new FeatureWeights();
+		weights4.setFeature(EntityWikiMentionHistogramFeatureGenerator.FEATURE_STRING_SPLIT, 1);
+		weightTrials.add(weights4);*/
 		
 		// Scorer
 		FeatureWeightScorer scorer = new FeatureWeightScorer();
 		
-		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(1);
-		docProcessor.ProcessDocuments(docs, weights, scorer);
+		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(/*Math.min(16, maxFile + 1)*/1);
+		docProcessor.ProcessDocuments(docs, weightTrials, scorer);
 		
 		// Show scores
 		//System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
+		for (Entry<FeatureWeights, Double> score : scorer.getScores().entrySet()) {
+			System.out.println(score.getValue() + " => " + score.getKey());
+		}
 		
 
 	/*	DocPreProcessor preProcessor = new DocPreProcessor();

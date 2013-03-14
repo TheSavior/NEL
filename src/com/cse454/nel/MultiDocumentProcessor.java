@@ -18,10 +18,12 @@ public class MultiDocumentProcessor {
 	private final int numThreads;
     private final ThreadPoolExecutor executor;
     private final Object docLock;
+    private final Object scoreLock;
     
     public MultiDocumentProcessor(int numThreads) {
     	this.numThreads = numThreads;
     	this.docLock = new Object();
+    	this.scoreLock = new Object();
     	this.executor = new ThreadPoolExecutor(numThreads, numThreads, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
     
@@ -91,8 +93,12 @@ public class MultiDocumentProcessor {
 							Sentence sentence = entry.getKey();
 							Map<FeatureWeights, String[]> entityTrials = entry.getValue();
 
-							for (Entry<FeatureWeights, String[]> entities : entityTrials.entrySet()) {
-								scorer.Score(document, entities.getKey(), sentence, entities.getValue());
+							synchronized (scoreLock) {
+								for (Entry<FeatureWeights, String[]> entities : entityTrials.entrySet()) {
+								
+									scorer.Score(document, entities.getKey(), sentence, entities.getValue());
+								
+								}
 							}
 						}
 						System.out.println("Done Processing Doc: " + document.GetName());
