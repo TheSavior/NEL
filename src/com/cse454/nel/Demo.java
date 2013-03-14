@@ -1,34 +1,30 @@
 package com.cse454.nel;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.net.URI;
 import java.util.List;
+
+import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.search.CrossWikiSearcher;
-
-import edu.stanford.nlp.util.StringUtils;
-
-import javax.swing.*;
-import java.awt.BorderLayout;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-
-import javax.swing.event.HyperlinkEvent;
-import javax.swing.event.HyperlinkListener;
-import javax.swing.text.html.HTMLEditorKit;
-import java.awt.FlowLayout;
-import java.awt.Component;
 
 public class Demo {
 	private boolean isNeedCursorChange = true;
@@ -39,12 +35,12 @@ public class Demo {
 
 	private JTextArea input;
 	private JTextPane output;
-	
+
 	private final String wikipedia = "http://en.wikipedia.org/wiki/";
 	private JTextField weight1;
 	private JTextField weight2;
 	private JTextField weight3;
-	
+
 	// Default weights to use
 	private int inLinkWeight = 1;
 	private int crossWikiWeight = 1;
@@ -64,7 +60,7 @@ public class Demo {
 
 		// Here's necessary feature weight input (values will come from gui)
 
-		
+
 
 		// Process the document
 
@@ -76,43 +72,43 @@ public class Demo {
 	public static void main(String[] args) throws Exception {
 		new Demo();
 	}
-	
+
 
 	public void Link() {
 		weights = new FeatureWeights();
 		int in;
 		int cross;
 		int hist;
-		
+
 		try {
 			in = Integer.parseInt(weight1.getText());
 		}
 		catch(Exception e) {
 			in = inLinkWeight;
 		}
-		
+
 		try {
 			cross = Integer.parseInt(weight2.getText());
 		}
 		catch(Exception e) {
 			cross = crossWikiWeight;
 		}
-		
+
 		try {
 			hist = Integer.parseInt(weight3.getText());
 		}
 		catch(Exception e) {
 			hist = histogramWeight;
 		}
-		
+
 		System.out.println("In: "+Integer.toString(in));
 		System.out.println("Cross: "+Integer.toString(cross));
 		System.out.println("Hist: "+Integer.toString(hist));
-		
+
 		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, in);
 		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, cross);
 		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, hist);
-		
+
 		// Here's the text to be linked (value to come from gui)
 		String text = input.getText();
 		List<Sentence> results;
@@ -126,7 +122,7 @@ public class Demo {
 		}
 
 		StringBuilder builder = new StringBuilder();
-		
+
 		System.out.println(results.size() + " sentences");
 		for (Sentence s : results) {
 			String[] ents = s.getEntities();
@@ -135,14 +131,14 @@ public class Demo {
 				System.out.println("Entities is null");
 				continue;
 			}
-			
+
 			for(int i = 0; i < tokens.length; i++) {
 				// Start a tag if we are an entity and the one before us wasn't the same entity
 				if (ents[i] != "0" && ((i-1 > 0) && (ents[i] != ents[i-1]))) {
 					builder.append("<a href=\""+wikipedia+ents[i]+"\">");
 				}
 				builder.append(tokens[i]);
-				
+
 				// If the current token is entity AND we have a next token, and that next token isn't the same as this one
 				if (ents[i] != "0" && ((i+1 < ents.length) && (ents[i] != ents[i+1]))) {
 					builder.append("</a>");
@@ -150,7 +146,7 @@ public class Demo {
 				builder.append(" ");
 			}
 			builder.append("<br />");
-			
+
 		}
 		output.setText(builder.toString());
 		System.out.println();
@@ -171,7 +167,7 @@ public class Demo {
 		frmNamedEntityLinker.pack();
 		frmNamedEntityLinker.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_1 = new JPanel();
 		panel.add(panel_1, BorderLayout.NORTH);
 		panel_1.setLayout(new BorderLayout(0, 0));
@@ -210,36 +206,36 @@ public class Demo {
 
 		JButton btnNewButton = new JButton("Link!");
 		panel_1.add(btnNewButton, BorderLayout.SOUTH);
-		
+
 		JPanel panel_2 = new JPanel();
 		panel.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
 		JLabel lblWeight = new JLabel("InLink:");
 		panel_2.add(lblWeight);
-		
+
 		weight1 = new JTextField();
 		weight1.setText(Integer.toString(inLinkWeight));
 		panel_2.add(weight1);
 		weight1.setColumns(2);
-		
+
 		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
 		panel_2.add(horizontalStrut_1);
-		
+
 		JLabel lblWeightW = new JLabel("CrossWiki:");
 		panel_2.add(lblWeightW);
-		
+
 		weight2 = new JTextField();
 		weight2.setText(Integer.toString(crossWikiWeight));
 		weight2.setColumns(2);
 		panel_2.add(weight2);
-		
+
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		panel_2.add(horizontalStrut);
-		
+
 		JLabel lblWeight_1 = new JLabel("Histogram:");
 		panel_2.add(lblWeight_1);
-		
+
 		weight3 = new JTextField();
 		panel_2.add(weight3);
 		weight3.setText(Integer.toString(histogramWeight));
@@ -252,18 +248,18 @@ public class Demo {
 		});
 		frmNamedEntityLinker.setVisible(true);
 	}
-	
+
 	private void browseTo(URI url) {
 		if( !java.awt.Desktop.isDesktopSupported() ) {
             System.err.println( "Desktop is not supported (fatal)" );
             System.exit( 1 );
-        }   
+        }
         java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
         if( !desktop.isSupported( java.awt.Desktop.Action.BROWSE ) ) {
             System.err.println( "Desktop doesn't support the browse action (fatal)" );
             System.exit( 1 );
         }
-        
+
             try {
                 desktop.browse( url );
             }
