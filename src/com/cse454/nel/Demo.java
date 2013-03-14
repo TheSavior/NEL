@@ -27,6 +27,8 @@ import java.net.URL;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
+import java.awt.FlowLayout;
+import java.awt.Component;
 
 public class Demo {
 	private boolean isNeedCursorChange = true;
@@ -39,6 +41,14 @@ public class Demo {
 	private JTextPane output;
 	
 	private final String wikipedia = "http://en.wikipedia.org/wiki/";
+	private JTextField weight1;
+	private JTextField weight2;
+	private JTextField weight3;
+	
+	// Default weights to use
+	private int inLinkWeight = 1;
+	private int crossWikiWeight = 1;
+	private int histogramWeight = 1;
 
 
 	public Demo() throws Exception {
@@ -53,15 +63,8 @@ public class Demo {
 		processor = new DocumentProcessor(preProcessor);
 
 		// Here's necessary feature weight input (values will come from gui)
-		int crossWikiWeight = 1;
-		int inLinkWeight = 1;
-		int histogramWeight = 1;
 
-		weights = new FeatureWeights();
-		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, inLinkWeight);
-		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, crossWikiWeight);
-		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING,
-				histogramWeight);
+		
 
 		// Process the document
 
@@ -73,8 +76,43 @@ public class Demo {
 	public static void main(String[] args) throws Exception {
 		new Demo();
 	}
+	
 
 	public void Link() {
+		weights = new FeatureWeights();
+		int in;
+		int cross;
+		int hist;
+		
+		try {
+			in = Integer.parseInt(weight1.getText());
+		}
+		catch(Exception e) {
+			in = inLinkWeight;
+		}
+		
+		try {
+			cross = Integer.parseInt(weight2.getText());
+		}
+		catch(Exception e) {
+			cross = crossWikiWeight;
+		}
+		
+		try {
+			hist = Integer.parseInt(weight3.getText());
+		}
+		catch(Exception e) {
+			hist = histogramWeight;
+		}
+		
+		System.out.println("In: "+Integer.toString(in));
+		System.out.println("Cross: "+Integer.toString(cross));
+		System.out.println("Hist: "+Integer.toString(hist));
+		
+		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, in);
+		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, cross);
+		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, hist);
+		
 		// Here's the text to be linked (value to come from gui)
 		String text = input.getText();
 		List<Sentence> results;
@@ -133,12 +171,16 @@ public class Demo {
 		frmNamedEntityLinker.pack();
 		frmNamedEntityLinker.getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_1 = new JPanel();
+		panel.add(panel_1, BorderLayout.NORTH);
+		panel_1.setLayout(new BorderLayout(0, 0));
 
 		JSplitPane splitPane = new JSplitPane();
+		panel_1.add(splitPane, BorderLayout.NORTH);
 		splitPane.setPreferredSize(new Dimension(500, 300));
 		splitPane.setMinimumSize(new Dimension(300, 150));
 		splitPane.setResizeWeight(0.5);
-		panel.add(splitPane, BorderLayout.CENTER);
 
 		input = new JTextArea();
 		input.setLineWrap(true);
@@ -167,13 +209,47 @@ public class Demo {
 		splitPane.setRightComponent(output);
 
 		JButton btnNewButton = new JButton("Link!");
+		panel_1.add(btnNewButton, BorderLayout.SOUTH);
+		
+		JPanel panel_2 = new JPanel();
+		panel.add(panel_2, BorderLayout.SOUTH);
+		panel_2.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel lblWeight = new JLabel("InLink:");
+		panel_2.add(lblWeight);
+		
+		weight1 = new JTextField();
+		weight1.setText(Integer.toString(inLinkWeight));
+		panel_2.add(weight1);
+		weight1.setColumns(2);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
+		panel_2.add(horizontalStrut_1);
+		
+		JLabel lblWeightW = new JLabel("CrossWiki:");
+		panel_2.add(lblWeightW);
+		
+		weight2 = new JTextField();
+		weight2.setText(Integer.toString(crossWikiWeight));
+		weight2.setColumns(2);
+		panel_2.add(weight2);
+		
+		Component horizontalStrut = Box.createHorizontalStrut(20);
+		panel_2.add(horizontalStrut);
+		
+		JLabel lblWeight_1 = new JLabel("Histogram:");
+		panel_2.add(lblWeight_1);
+		
+		weight3 = new JTextField();
+		panel_2.add(weight3);
+		weight3.setText(Integer.toString(histogramWeight));
+		weight3.setColumns(2);
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Linking");
 				Link();
 			}
 		});
-		panel.add(btnNewButton, BorderLayout.SOUTH);
 		frmNamedEntityLinker.setVisible(true);
 	}
 	
