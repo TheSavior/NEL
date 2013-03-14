@@ -17,6 +17,7 @@ import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.scoring.EvaluationScorer;
+import com.cse454.nel.scoring.FeatureWeightScorer;
 import com.cse454.nel.search.CrossWikiSearcher;
 
 
@@ -45,13 +46,13 @@ public class Main {
 		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
 		
 		// Scorer
-		EvaluationScorer scorer = new EvaluationScorer();
+		FeatureWeightScorer scorer = new FeatureWeightScorer();
 		
 		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(1);
 		docProcessor.ProcessDocuments(docs, weights, scorer);
 		
 		// Show scores
-		System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
+		//System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
 		
 
 	/*	DocPreProcessor preProcessor = new DocPreProcessor();

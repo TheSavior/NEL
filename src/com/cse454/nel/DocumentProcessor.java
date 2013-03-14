@@ -72,14 +72,18 @@ public class DocumentProcessor {
 		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
 		AllWordsHistogramFeatureGenerator feature1 = new AllWordsHistogramFeatureGenerator(wikiDb, sentences);
 		featureGenerators.put(feature1.GetFeatureName(), feature1);
+		
 		EntityMentionHistogramFeatureGenerator feature2 = new EntityMentionHistogramFeatureGenerator(wikiDb, sentences, mentions);
 		featureGenerators.put(feature2.GetFeatureName(), feature2);
+		
 		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, false);
 		featureGenerators.put(feature3.GetFeatureName(), feature3);
+		
 		EntityWikiMentionHistogramFeatureGenerator feature4 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
 		featureGenerators.put(feature4.GetFeatureName(), feature4);
+		
 		InLinkFeatureGenerator feature5 = new InLinkFeatureGenerator(wikiDb);
-		featureGenerators.put(feature4.GetFeatureName(), feature5);
+		featureGenerators.put(feature5.GetFeatureName(), feature5);
 
 		// Pick which features we need to generate
 		Set<String> features = new HashSet<String>();

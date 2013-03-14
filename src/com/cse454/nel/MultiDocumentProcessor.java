@@ -99,13 +99,13 @@ public class MultiDocumentProcessor {
 						
 					} catch (Exception e) {
 						System.out.println("Exception processing document: " + document.GetName());
-						e.printStackTrace();
+						e.printStackTrace(System.out);
 					}
 
 				}
 			} catch (Exception e) {
 				System.out.println("Exception in thread:");
-				e.printStackTrace();
+				e.printStackTrace(System.out);
 			}
 		}
 	}
