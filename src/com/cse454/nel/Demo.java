@@ -20,27 +20,26 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.text.html.HTMLEditorKit;
 
 public class Demo {
-	private  boolean isNeedCursorChange = true;
+	private boolean isNeedCursorChange = true;
 
-	private  final JPanel panel = new JPanel();
-	private  DocumentProcessor processor;
-	private  FeatureWeights weights;
+	private final JPanel panel = new JPanel();
+	private DocumentProcessor processor;
+	private FeatureWeights weights;
 
-	private  JTextArea input;
-	private  JEditorPane output;
+	private JTextArea input;
+	private JTextPane output;
+	
+	private final String wikipedia = "http://en.wikipedia.org/wiki/";
 
-	public static String HTML = "<html>\n" + "<body>\n"
-			+ "Click on the link in the editale JEditorPane <br>\n"
-			+
-			// "<a href=\"http://java.sun.com\">\nlink</a>" +
-			"<a href=\"file:///c:/temp/test.html\">\nlink</a>" + "</body>\n"
-			+ "</html>";
 
 	public Demo() throws Exception {
 
@@ -70,6 +69,7 @@ public class Demo {
 		// gui or something
 
 	}
+
 	public static void main(String[] args) throws Exception {
 		new Demo();
 	}
@@ -87,14 +87,31 @@ public class Demo {
 			return;
 		}
 
+		StringBuilder builder = new StringBuilder();
+		
 		System.out.println(results.size() + " sentences");
 		for (Sentence s : results) {
-			if (s.getEntities() == null) {
+			String[] ents = s.getEntities();
+			String[] tokens = s.getTokens();
+			if (ents == null) {
 				System.out.println("Entities is null");
 				continue;
 			}
-			System.out.println(StringUtils.join(s.getEntities(), " "));
+			
+			for(int i = 0; i < tokens.length; i++) {
+				if (ents[i] != "0") {
+					builder.append("<a href=\""+wikipedia+ents[i]+"\">");
+				}
+				builder.append(tokens[i]);
+				if (ents[i] != "0") {
+					builder.append("</a>");
+				}
+				builder.append(" ");
+			}
+			builder.append("<br />");
+			
 		}
+		output.setText(builder.toString());
 		System.out.println();
 	}
 
@@ -127,20 +144,23 @@ public class Demo {
 		input.setText("input");
 		splitPane.setLeftComponent(input);
 
-		MyHTMLEditorKit kit = new MyHTMLEditorKit();
-		output = new JTextPane() {
-			public void setCursor(Cursor cursor) {
-				if (isNeedCursorChange) {
-					super.setCursor(cursor);
-				}
-			}
-		};
-		output.setEditorKit(kit);
+		output = new JTextPane();
+		output.setContentType("text/html");
 		output.setEditable(false);
 		output.setMinimumSize(new Dimension(100, 22));
 		output.setPreferredSize(new Dimension(250, 22));
-		output.setText(HTML);
-		output.addHyperlinkListener(new HTMLListener());
+		output.setText("output");
+		output.addHyperlinkListener(new HyperlinkListener() {
+			public void hyperlinkUpdate(HyperlinkEvent event) {
+				if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+					try {
+						browseTo(event.getURL().toURI());
+					} catch (Exception ioe) {
+						// Some warning to user
+					}
+				}
+			}
+		});
 		splitPane.setRightComponent(output);
 
 		JButton btnNewButton = new JButton("Link!");
@@ -153,79 +173,24 @@ public class Demo {
 		panel.add(btnNewButton, BorderLayout.SOUTH);
 		frmNamedEntityLinker.setVisible(true);
 	}
-
-	private class HTMLListener implements HyperlinkListener {
-		public void hyperlinkUpdate(HyperlinkEvent e) {
-			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
-				try {
-					output.setPage(e.getURL());
-				} catch (IOException e1) {
-					e1.printStackTrace();
-				}
-			}
-		}
+	
+	private void browseTo(URI url) {
+		if( !java.awt.Desktop.isDesktopSupported() ) {
+            System.err.println( "Desktop is not supported (fatal)" );
+            System.exit( 1 );
+        }   
+        java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+        if( !desktop.isSupported( java.awt.Desktop.Action.BROWSE ) ) {
+            System.err.println( "Desktop doesn't support the browse action (fatal)" );
+            System.exit( 1 );
+        }
+        
+            try {
+                desktop.browse( url );
+            }
+            catch ( Exception e ) {
+                System.err.println( e.getMessage() );
+            }
 	}
 
-	public class MyHTMLEditorKit extends HTMLEditorKit {
-
-		MyLinkController handler = new MyLinkController();
-
-		public void install(JEditorPane c) {
-			MouseListener[] oldMouseListeners = c.getMouseListeners();
-			MouseMotionListener[] oldMouseMotionListeners = c
-					.getMouseMotionListeners();
-			super.install(c);
-			// the following code removes link handler added by original
-			// HTMLEditorKit
-
-			for (MouseListener l : c.getMouseListeners()) {
-				c.removeMouseListener(l);
-			}
-			for (MouseListener l : oldMouseListeners) {
-				c.addMouseListener(l);
-			}
-
-			for (MouseMotionListener l : c.getMouseMotionListeners()) {
-				c.removeMouseMotionListener(l);
-			}
-			for (MouseMotionListener l : oldMouseMotionListeners) {
-				c.addMouseMotionListener(l);
-			}
-
-			// add out link handler instead of removed one
-			c.addMouseListener(handler);
-			c.addMouseMotionListener(handler);
-		}
-
-		public class MyLinkController extends LinkController {
-
-			public void mouseClicked(MouseEvent e) {
-				JEditorPane editor = (JEditorPane) e.getSource();
-
-				if (editor.isEditable() && SwingUtilities.isLeftMouseButton(e)) {
-					if (e.getClickCount() == 2) {
-						editor.setEditable(false);
-						super.mouseClicked(e);
-						editor.setEditable(true);
-					}
-				}
-
-			}
-
-			public void mouseMoved(MouseEvent e) {
-				JEditorPane editor = (JEditorPane) e.getSource();
-
-				if (editor.isEditable()) {
-					isNeedCursorChange = false;
-					editor.setEditable(false);
-					isNeedCursorChange = true;
-					super.mouseMoved(e);
-					isNeedCursorChange = false;
-					editor.setEditable(true);
-					isNeedCursorChange = true;
-				}
-			}
-
-		}
-	}
 }
