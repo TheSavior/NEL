@@ -159,6 +159,9 @@ public class Demo {
 	private void createAndShowGUI() {
 		// Create and set up the window.
 		JFrame frmNamedEntityLinker = new JFrame("HelloWorldSwing");
+		frmNamedEntityLinker.getContentPane().setMaximumSize(new Dimension(2147483647, 400));
+		frmNamedEntityLinker.setMaximumSize(new Dimension(2147483647, 400));
+		frmNamedEntityLinker.setMinimumSize(new Dimension(650, 400));
 		frmNamedEntityLinker.getContentPane().setName("Named Entity Linker");
 		frmNamedEntityLinker.setTitle("Named Entity Linker");
 		frmNamedEntityLinker.getContentPane().setPreferredSize(
