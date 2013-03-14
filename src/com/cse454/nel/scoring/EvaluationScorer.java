@@ -2,10 +2,12 @@ package com.cse454.nel.scoring;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import com.cse454.nel.EntityMention;
 import com.cse454.nel.Sentence;
 import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.features.FeatureWeights;
@@ -16,6 +18,11 @@ public class EvaluationScorer implements AbstractScorer {
 
 	public EvaluationScorer() {
 		documentScorecards = new HashMap<AbstractDocument, ScoreCard>();
+	}
+	
+	@Override
+	public void ScoreMentions(AbstractDocument doc, List<EntityMention> mentions) {
+		
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
-import com.cse454.nel.WikiConnect;
+import com.cse454.nel.mysql.WikiConnect;
 
 public class InLinkFeatureGenerator implements FeatureGenerator {
 

@@ -3,6 +3,8 @@ package com.cse454.nel;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import com.cse454.nel.mysql.DocumentConnect;
+import com.cse454.nel.mysql.WikiConnect;
 import com.cse454.nel.search.BasicSearcher;
 
 public class Test {

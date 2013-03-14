@@ -8,8 +8,8 @@ import java.util.Set;
 
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
-import com.cse454.nel.WikiConnect;
 import com.cse454.nel.features.Features;
+import com.cse454.nel.mysql.WikiConnect;
 
 public class BasicSearcher extends AbstractSearcher {
 

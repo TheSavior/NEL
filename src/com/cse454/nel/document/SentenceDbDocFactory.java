@@ -4,8 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import com.cse454.nel.DocumentConnect;
 import com.cse454.nel.Sentence;
+import com.cse454.nel.mysql.DocumentConnect;
 
 public class SentenceDbDocFactory implements DocumentFactory {
 	

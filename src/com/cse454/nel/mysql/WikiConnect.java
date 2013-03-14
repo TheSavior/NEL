@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.mysql;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.cse454.nel.CrossWikiData;
 
 public class WikiConnect extends MySQLConnect {
 	private static String defaultDB = "wikidb";

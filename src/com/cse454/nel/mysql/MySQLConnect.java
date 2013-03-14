@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.mysql;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

@@ -7,8 +7,8 @@ import java.util.Map;
 import com.cse454.nel.CrossWikiData;
 import com.cse454.nel.Entity;
 import com.cse454.nel.EntityMention;
-import com.cse454.nel.WikiConnect;
 import com.cse454.nel.features.Features;
+import com.cse454.nel.mysql.WikiConnect;
 
 public class CrossWikiSearcher extends AbstractSearcher {
 
