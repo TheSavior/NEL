@@ -279,7 +279,7 @@ public class WikiConnect extends MySQLConnect {
 			else
 			{
 				AddPage(pageTitle, text);
-				return GetWikiText(pageTitle);
+				return text;
 			}
 			
 			return null;
