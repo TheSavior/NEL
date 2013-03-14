@@ -17,7 +17,7 @@ public abstract class AbstractDocument {
 		return name;
 	}
 	
-	public List<Sentence> GetSentences() {
+	public List<Sentence> GetSentences() throws Exception {
 		if (sentences == null) {
 			sentences = GenerateSentences();
 		}	
@@ -25,5 +25,5 @@ public abstract class AbstractDocument {
 		return sentences;
 	}
 	
-	protected abstract List<Sentence> GenerateSentences();
+	protected abstract List<Sentence> GenerateSentences() throws Exception;
 }
