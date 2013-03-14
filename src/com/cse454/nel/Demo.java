@@ -46,9 +46,9 @@ public class Demo {
 	private JTextField weight3;
 
 	// Default weights to use
-	private int inLinkWeight = 25;
-	private int crossWikiWeight = 36;
-	private int histogramWeight = 39;
+	private int inLinkWeight = 2;
+	private int crossWikiWeight = 13;
+	private int histogramWeight = 85;
 	
 	private static final String INPUT_DEFAULT = 
 			 "TOKYO , Aug. 19 -LRB- Xinhua -RRB-                                                                                                                                                                                                                                   " +
