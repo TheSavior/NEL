@@ -1,5 +1,6 @@
 package com.cse454.nel.document;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -8,14 +9,14 @@ import com.cse454.nel.Sentence;
 
 public class SentenceDbDocFactory implements DocumentFactory {
 	
-	private Queue<String> docNames;
-	private Queue<Integer> docIDs;
+	private Queue<String> docNames = new LinkedList<>();
+	private Queue<Integer> docIDs = new LinkedList<>();
 	
 	public void AddDocNames(List<String> docs) {
 		docNames.addAll(docs);
 	}
 	
-	public void SetDocIDs(List<Integer> docs) {
+	public void AddDocIDs(List<Integer> docs) {
 		docIDs.addAll(docs);
 	}
 	
@@ -50,10 +51,13 @@ public class SentenceDbDocFactory implements DocumentFactory {
 
 		@Override
 		protected List<Sentence> GenerateSentences() throws Exception {
+			System.out.println("Generate Sentences");
 			DocumentConnect docs = new DocumentConnect();
-			if (dbName == null) {
+			if (dbName != null) {
+				System.out.println("Generate Sentences By Name");
 				return docs.getDocumentByName(dbName);
 			} else {
+				System.out.println("Generate Sentences By Id");
 				return docs.getDocumentById(docID);
 			}
 		}

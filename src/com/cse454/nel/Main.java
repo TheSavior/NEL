@@ -10,11 +10,13 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.cse454.nel.document.SentenceDbDocFactory;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
+import com.cse454.nel.scoring.EvaluationScorer;
 import com.cse454.nel.search.CrossWikiSearcher;
 
 
@@ -30,8 +32,30 @@ public class Main {
     private final static ThreadPoolExecutor executor =new ThreadPoolExecutor(16, 16, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
 
 	public static void main(String[] args) throws Exception {
-		DocPreProcessor preProcessor = new DocPreProcessor();
+		// Setup Documents
+		// TODO: these could be loaded from a file
+		List<Integer> docIDs = new ArrayList<>();
+		docIDs.add(0);
+		//docIDs.add(1);
+		
+		SentenceDbDocFactory docs = new SentenceDbDocFactory();
+		docs.AddDocIDs(docIDs);
+		
+		// Setup Feature Weights
+		FeatureWeights weights = new FeatureWeights();
+		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		
+		// Scorer
+		EvaluationScorer scorer = new EvaluationScorer();
+		
+		MultiDocumentProcessor docProcessor = new MultiDocumentProcessor(1);
+		docProcessor.ProcessDocuments(docs, weights, scorer);
+		
+		// Show scores
+		System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
+		
 
+	/*	DocPreProcessor preProcessor = new DocPreProcessor();
 		Set<FeatureWeights> featureWeights = allPossibleWeights();
 		DocumentProcessor processor = new DocumentProcessor(preProcessor);
 		DocumentConnect docConnect = new DocumentConnect();
@@ -65,7 +89,7 @@ public class Main {
 
 		System.out.println(chosenWeights);
 		System.out.println("Score: " + max);
-		System.exit(0);
+		System.exit(0);*/
 	}
 
 	public static Set<FeatureWeights> allPossibleWeights() {
