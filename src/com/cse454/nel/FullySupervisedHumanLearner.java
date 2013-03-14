@@ -146,7 +146,7 @@ public class FullySupervisedHumanLearner {
 		
 		DocPreProcessor preProcessor = new DocPreProcessor();
 		DocumentProcessor docProcessor = new DocumentProcessor(preProcessor);
-		while (true) {
+		//while (true) {
 			// Get desired trial range
 		/*	Range allWordsRange = ReadRange("AllWords Feature Range: ");
 			Range crossWikiRange = ReadRange("Crosswiki Feature Range: ");
@@ -175,13 +175,12 @@ public class FullySupervisedHumanLearner {
 			for (int i = 0; i <= 100; ++i) {
 				int tmax = 100 - i;
 				for (int t = 0; t <= tmax; ++t) {
-					int vmax = 100 - t;
-					for (int v = 0; v <= vmax; ++v) {
-						FeatureWeights weights = new FeatureWeights();
-						weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, i);
-						weights.setFeature(CrossWikiSearcher.FEATURE_STRING, t);
-						weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, v);
-					}
+					int v = 100 - t - i;
+					FeatureWeights weights = new FeatureWeights();
+					weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, i);
+					weights.setFeature(CrossWikiSearcher.FEATURE_STRING, t);
+					weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, v);
+					weightTrials.add(weights);
 				}
 			}
 			
@@ -210,11 +209,13 @@ public class FullySupervisedHumanLearner {
 				scores.add(new WeightScorePair(featureScores.getKey(), featureScores.getValue()));
 			}
 			
+			System.out.println("Sorting");
 			Collections.sort(scores);
 			for (int i = 0; i < 15; ++i) {
 				WeightScorePair pair = scores.get(i);
 				System.out.println(pair.score + " => " + pair.weights);
 			}
+			System.out.println("done");
 			
 			
 			// Print results
@@ -241,6 +242,6 @@ public class FullySupervisedHumanLearner {
 					System.out.println();
 				}
 			}*/
-		}
+		//}
 	}
 }
