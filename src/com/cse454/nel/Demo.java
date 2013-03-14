@@ -156,8 +156,6 @@ public class Demo {
 	private void createAndShowGUI() {
 		// Create and set up the window.
 		JFrame frmNamedEntityLinker = new JFrame("HelloWorldSwing");
-		frmNamedEntityLinker.getContentPane().setMaximumSize(new Dimension(2147483647, 400));
-		frmNamedEntityLinker.setMaximumSize(new Dimension(2147483647, 400));
 		frmNamedEntityLinker.setMinimumSize(new Dimension(650, 400));
 		frmNamedEntityLinker.getContentPane().setName("Named Entity Linker");
 		frmNamedEntityLinker.setTitle("Named Entity Linker");
@@ -169,15 +167,15 @@ public class Demo {
 
 		// Display the window.
 		frmNamedEntityLinker.pack();
-		frmNamedEntityLinker.getContentPane().add(panel, BorderLayout.NORTH);
+		frmNamedEntityLinker.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(new BorderLayout(0, 0));
 
 		JPanel panel_1 = new JPanel();
-		panel.add(panel_1, BorderLayout.NORTH);
+		panel.add(panel_1, BorderLayout.CENTER);
 		panel_1.setLayout(new BorderLayout(0, 0));
 
 		JSplitPane splitPane = new JSplitPane();
-		panel_1.add(splitPane, BorderLayout.NORTH);
+		panel_1.add(splitPane, BorderLayout.CENTER);
 		splitPane.setPreferredSize(new Dimension(500, 300));
 		splitPane.setMinimumSize(new Dimension(300, 150));
 		splitPane.setResizeWeight(0.5);
