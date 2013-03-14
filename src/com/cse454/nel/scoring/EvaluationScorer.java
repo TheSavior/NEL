@@ -52,7 +52,6 @@ public class EvaluationScorer implements AbstractScorer {
 		scoreCard.addAllEnts(sentence, allEnts);
 		scoreCard.addCorrectEnt(sentence, correctEnts);
 		scoreCard.addIncorrectEnt(sentence, incorrectEnts);
-
 	}
 
 	public double getTotalCorrect() {

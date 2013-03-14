@@ -4,11 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
+import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.features.FeatureWeights;
+import com.cse454.nel.scoring.AbstractScorer;
 
-public class FeatureWeightScorer {
+public class FeatureWeightScorer implements AbstractScorer {
 
 	private Map<FeatureWeights, Double> scores = new HashMap<>();
 
@@ -24,27 +25,17 @@ public class FeatureWeightScorer {
 		}
 	}
 
-	public void addDocumentScores(
-		Map<Sentence, Map<FeatureWeights, String[]>> results) {
-
-		for (Entry<Sentence, Map<FeatureWeights, String[]>> entry : results.entrySet()) {
-			Sentence sentence = entry.getKey();
-			Map<FeatureWeights, String[]> entityTrials = entry.getValue();
-
-			for (Entry<FeatureWeights, String[]> entities : entityTrials.entrySet()) {
-				double score = FeatureWeightScorer.score(sentence.getGold(), entities.getValue());
-				addFeatureWeightScore(entities.getKey(), score);
-			}
-		}
-	}
-
-	public static double score(String[] gold, String[] entities) {
+	@Override
+	public void Score(AbstractDocument doc, FeatureWeights weights, Sentence sentence, String[] entities) {
 		List<String> goldEnts = new ArrayList<>();
 		List<String> ents = new ArrayList<>();
-		for (String g : gold) {
+		for (String g : sentence.getGold()) {
 			if (!g.equals("0")) {
 				goldEnts.add(g);
 			}
+		}
+		if (goldEnts.size() == 0) { // no gold just return
+			return;
 		}
 		for (String ent : entities) {
 			if (!ent.equals("0") && goldEnts.contains(ent)) {
@@ -53,6 +44,6 @@ public class FeatureWeightScorer {
 		}
 		double numerator = ents.size(); // the entities we get right
 		double denominator = goldEnts.size(); // the total amount of entities
-		return denominator == 0 ? 0 : numerator / denominator;
+		addFeatureWeightScore(weights, numerator / denominator);
 	}
 }
