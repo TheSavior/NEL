@@ -1,6 +1,7 @@
 package com.cse454.nel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -75,6 +76,27 @@ public class FullySupervisedHumanLearner {
 		double max = ReadDouble("\tmax: ");
 		return new Range(min, max);
 	}
+	
+	private static class WeightScorePair implements Comparable<WeightScorePair> {
+		public FeatureWeights weights;
+		public double score;
+		
+		public WeightScorePair(FeatureWeights weights, double score) {
+			this.weights = weights;
+			this.score = score;
+		}
+		
+		public boolean equals(WeightScorePair other) {
+			return score == other.score;
+		}
+
+		@Override
+		public int compareTo(WeightScorePair o) {
+			return (score > o.score) ? -1 : (score < o.score) ? 1 : 0;
+		}
+		
+		
+	}
 
 	public static void main(String[] args) throws Exception {
 		Util.PreventStanfordNERErrors();
@@ -124,9 +146,9 @@ public class FullySupervisedHumanLearner {
 		
 		DocPreProcessor preProcessor = new DocPreProcessor();
 		DocumentProcessor docProcessor = new DocumentProcessor(preProcessor);
-		while (true) {
+		//while (true) {
 			// Get desired trial range
-			Range allWordsRange = ReadRange("AllWords Feature Range: ");
+		/*	Range allWordsRange = ReadRange("AllWords Feature Range: ");
 			Range crossWikiRange = ReadRange("Crosswiki Feature Range: ");
 			Range inLinkRange = ReadRange("Inlink Feature Range: ");
 			
@@ -147,7 +169,21 @@ public class FullySupervisedHumanLearner {
 						weightTrials.add(weights);
 					}
 				}
+			}*/
+
+			Set<FeatureWeights> weightTrials = new HashSet<>();
+			for (int i = 0; i <= 100; ++i) {
+				int tmax = 100 - i;
+				for (int t = 0; t <= tmax; ++t) {
+					int v = 100 - t - i;
+					FeatureWeights weights = new FeatureWeights();
+					weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, i);
+					weights.setFeature(CrossWikiSearcher.FEATURE_STRING, t);
+					weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, v);
+					weightTrials.add(weights);
+				}
 			}
+			
 			
 			// Run trials
 			FeatureWeightScorer scorer = new FeatureWeightScorer();
@@ -168,8 +204,22 @@ public class FullySupervisedHumanLearner {
 				}
 			}
 			
+			List<WeightScorePair> scores = new ArrayList<>();
+			for (Entry<FeatureWeights, Double> featureScores : scorer.getScores().entrySet()) {
+				scores.add(new WeightScorePair(featureScores.getKey(), featureScores.getValue()));
+			}
+			
+			System.out.println("Sorting");
+			Collections.sort(scores);
+			for (int i = 0; i < 15; ++i) {
+				WeightScorePair pair = scores.get(i);
+				System.out.println(pair.score + " => " + pair.weights);
+			}
+			System.out.println("done");
+			
+			
 			// Print results
-			double[][][] scores = new double[3][3][3];
+		/*	double[][][] scores = new double[3][3][3];
 			for (Entry<FeatureWeights, Double> featureScores : scorer.getScores().entrySet()) {
 				FSHLFeatureWeights weights = (FSHLFeatureWeights) featureScores.getKey();
 				double score = featureScores.getValue();
@@ -191,7 +241,7 @@ public class FullySupervisedHumanLearner {
 					}
 					System.out.println();
 				}
-			}
-		}
+			}*/
+		//}
 	}
 }

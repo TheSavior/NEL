@@ -98,9 +98,9 @@ public class Demo {
 		}
 
 		/*
-		System.out.println("In: " + Integer.toString(in));
-		System.out.println("Cross: " + Integer.toString(cross));
-		System.out.println("Hist: " + Integer.toString(hist));
+		 * System.out.println("In: " + Integer.toString(in));
+		 * System.out.println("Cross: " + Integer.toString(cross));
+		 * System.out.println("Hist: " + Integer.toString(hist));
 		 */
 		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, in);
 		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, cross);
@@ -135,8 +135,11 @@ public class Demo {
 			for (int i = 0; i < tokens.length; i++) {
 				// Start a tag if we are an entity and the one before us wasn't
 				// the same entity
-				if (ents[i] != "0" && !isTagOpen) { // && ((i - 1 > 0) && (ents[i] != ents[i - 1]))) {
-					builder.append("<a href=\"" + wikipedia + ents[i] + "\">");
+				if (ents[i] != "0" && !isTagOpen) { // && ((i - 1 > 0) &&
+													// (ents[i] != ents[i -
+													// 1]))) {
+					builder.append("<a href=\"" + wikipedia + ents[i]
+							+ "\">");
 					isTagOpen = true;
 				}
 				builder.append(tokens[i]);
@@ -144,7 +147,8 @@ public class Demo {
 				// If the current token is entity AND we have a next token, and
 				// that next token isn't the same as this one
 				// OR there are no more tokens
-				if (ents[i] != "0" && (((i + 1 < ents.length) && (ents[i] != ents[i + 1])) || (i+1 >= ents.length) )) {
+				if (ents[i] != "0"
+						&& (((i + 1 < ents.length) && (ents[i] != ents[i + 1])) || (i + 1 >= ents.length))) {
 					builder.append("</a>");
 					isTagOpen = false;
 				}
@@ -153,7 +157,7 @@ public class Demo {
 			builder.append("<br />");
 
 		}
-		
+		System.out.println(builder.toString());
 		output.setText(builder.toString());
 		System.out.println();
 	}
@@ -193,7 +197,13 @@ public class Demo {
 		output.setText("output");
 		output.addHyperlinkListener(new HyperlinkListener() {
 			public void hyperlinkUpdate(HyperlinkEvent event) {
-				if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+				if (event.getEventType() == HyperlinkEvent.EventType.ENTERED) {
+					String tooltip = event.getURL().toExternalForm();
+					output.setToolTipText(tooltip.substring(wikipedia.length()));
+				} else if (event.getEventType() == HyperlinkEvent.EventType.EXITED) {
+					// Reset tooltip
+					output.setToolTipText(null);
+				} else if (event.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 					try {
 						browseTo(event.getURL().toURI());
 					} catch (Exception ioe) {
