@@ -33,6 +33,9 @@ public class EvaluationScorer implements AbstractScorer {
 		}
 		ScoreCard scoreCard = documentScorecards.get(document);
 
+		if (sentence.getSentenceId() == 2229) {
+			System.out.println("dsf");
+		}
 		String[] gold = sentence.getGold();
 		Set<String> goldEnts = new HashSet<String>();
 		Set<String> correctEnts = new HashSet<String>();
@@ -41,6 +44,9 @@ public class EvaluationScorer implements AbstractScorer {
 		Integer missedEntities = new Integer(0);
 		if (gold.length == entities.length) {
 			for (int i = 0; i < gold.length; i++) {
+				if (i == 14) {
+					System.out.println("adsf");
+				}
 				if (gold[i].equals("0")) {
 					// check for one's we're incorrectly entity linking
 					if (!entities[i].equals("0")) {
@@ -81,6 +87,7 @@ public class EvaluationScorer implements AbstractScorer {
 		scoreCard.addCorrectEnt(sentence, correctEnts);
 		scoreCard.addIncorrectEnt(sentence, incorrectEnts);
 		scoreCard.addBadEnts(sentence, badEntities);
+		scoreCard.addMissedEnts(sentence, missedEntities);
 	}
 
 	public double getTotalCorrect() {

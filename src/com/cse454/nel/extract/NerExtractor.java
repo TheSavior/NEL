@@ -28,8 +28,7 @@ public class NerExtractor extends AbstractEntityExtractor {
 				if (ner[i].length() == 1
 						|| ner[i].equals("DATE")
 						|| ner[i].equals("PERCENT")
-						|| ner[i].equals("NUMBER")
-						|| ner[i].equals("MISC")) {
+						|| ner[i].equals("NUMBER")) {
 					continue;
 				}
 				int startIndex = i;
