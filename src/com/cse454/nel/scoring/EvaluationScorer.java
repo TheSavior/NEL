@@ -37,12 +37,10 @@ public class EvaluationScorer implements AbstractScorer {
 		Set<String> goldEnts = new HashSet<String>();
 		Set<String> correctEnts = new HashSet<String>();
 		Set<String> incorrectEnts = new HashSet<String>();
-		Set<String> allEnts = new HashSet<String>();
 		Set<String> badEntities = new HashSet<String>();
 		Integer missedEntities = new Integer(0);
 		if (gold.length == entities.length) {
 			for (int i = 0; i < gold.length; i++) {
-
 				if (gold[i].equals("0")) {
 					// check for one's we're incorrectly entity linking
 					if (!entities[i].equals("0")) {
@@ -71,7 +69,6 @@ public class EvaluationScorer implements AbstractScorer {
 			scoreCard.addGoldEnts(sentence, goldEnts);
 			for (String ent : entities) {
 				if (!ent.equals("0")) {
-					allEnts.add(ent);
 					if (goldEnts.contains(ent)) {
 						correctEnts.add(ent);
 					} else {
@@ -80,7 +77,7 @@ public class EvaluationScorer implements AbstractScorer {
 				}
 			}
 		}
-		scoreCard.addAllEnts(sentence, allEnts);
+		scoreCard.addGoldEnts(sentence, goldEnts);
 		scoreCard.addCorrectEnt(sentence, correctEnts);
 		scoreCard.addIncorrectEnt(sentence, incorrectEnts);
 		scoreCard.addBadEnts(sentence, badEntities);
