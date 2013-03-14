@@ -74,20 +74,32 @@ public class DocumentProcessor {
 		featureGenerators.put(feature1.GetFeatureName(), feature1);
 		EntityMentionHistogramFeatureGenerator feature2 = new EntityMentionHistogramFeatureGenerator(wikiDb, sentences, mentions);
 		featureGenerators.put(feature2.GetFeatureName(), feature2);
-		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
+		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, false);
 		featureGenerators.put(feature3.GetFeatureName(), feature3);
-		EntityWikiMentionHistogramFeatureGenerator feature4 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, false);
+		EntityWikiMentionHistogramFeatureGenerator feature4 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
 		featureGenerators.put(feature4.GetFeatureName(), feature4);
 		InLinkFeatureGenerator feature5 = new InLinkFeatureGenerator(wikiDb);
 		featureGenerators.put(feature4.GetFeatureName(), feature5);
 
+		// Pick which features we need to generate
+		Set<String> features = new HashSet<String>();
+		for (FeatureWeights weights : weightTrials) {
+			for (Entry<String, Double> weight : weights.entrySet()) {
+				features.add(weight.getKey());
+			}
+		}
+		
 		// Generate features
 		System.out.println("Generating Features");
 		start = System.currentTimeMillis();
-		for (Entry<String, FeatureGenerator> generator : featureGenerators.entrySet()) {
+		for (String feature : features) {
+			System.out.println("\t" + feature);
+			FeatureGenerator generator = featureGenerators.get(feature);
+			long substart = System.currentTimeMillis();
 			for (EntityMention mention : mentions) {
-				generator.getValue().GenerateFeatures(mention);
+				generator.GenerateFeatures(mention);
 			}
+			System.out.println("\t" + feature + ": " + (System.currentTimeMillis() - substart));
 		}
 		end = System.currentTimeMillis();
 		duration = end - start;
