@@ -5,9 +5,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.swing.text.AbstractDocument;
-
 import com.cse454.nel.Sentence;
+import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.features.FeatureWeights;
 
 public class EvaluationScorer implements AbstractScorer {
@@ -56,6 +55,22 @@ public class EvaluationScorer implements AbstractScorer {
 
 	}
 
+	public double getTotalCorrect() {
+		int num = 0;
+		for (ScoreCard card : documentScorecards.values()) {
+			num+=card.getTotalCorrect();
+		}
+		return num;
+	}
+
+	public double getTotalGold() {
+		int num = 0;
+		for (ScoreCard card : documentScorecards.values()) {
+			num+=card.getTotalGold();
+		}
+		return num;
+	}
+
 	// Scorecard per document evaluating how well it does on that document
 	static class ScoreCard {
 
@@ -88,7 +103,7 @@ public class EvaluationScorer implements AbstractScorer {
 			this.allEnts.put(sentence, allEnts);
 		}
 
-		public int getAmountCorrect() {
+		public int getTotalCorrect() {
 			int num = 0;
 			for(Set<String> set : correctEnts.values()) {
 				num += set.size();
@@ -114,6 +129,5 @@ public class EvaluationScorer implements AbstractScorer {
 			}
 			return numerator / denominator;
 		}
-
 	}
 }
