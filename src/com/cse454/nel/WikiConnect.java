@@ -2,6 +2,7 @@ package com.cse454.nel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -278,6 +279,58 @@ public class WikiConnect extends MySQLConnect {
 		if (doesWikiPageExist(name)) {
 			System.err.println("Already Exists");
 			return;
+		}
+
+		PreparedStatement st = null;
+		ResultSet rs = null;
+
+		try {
+			// Insert text
+			st = connection.prepareStatement("INSERT INTO text (old_text, old_flags) VALUES (?, ' ')", Statement.RETURN_GENERATED_KEYS);
+			st.setString(1, text);
+			st.executeUpdate();
+			
+			int old_text_id = -1;
+			rs = st.getGeneratedKeys();
+			if (rs.next()) {
+				old_text_id = rs.getInt(1);
+			} else {
+				throw new Exception("Failed to generate text key");
+			}
+			
+			rs.close();
+			st.close();
+			
+			// Insert revision
+			st = connection.prepareStatement("INSERT INTO revision (rev_text_id, rev_page, rev_comment, rev_user, rev_user_text, rev_timestamp, rev_minor_edit, rev_deleted, rev_len, rev_parent_id, rev_sha1) VALUES (?, 0, ' ', 0, ' ', ' ', 0, 0, 0, 0, ' ')", Statement.RETURN_GENERATED_KEYS);
+			st.setInt(1, old_text_id);
+			st.executeUpdate();
+			
+			int rev_id = -1;
+			rs = st.getGeneratedKeys();
+			if (rs.next()) {
+				rev_id = rs.getInt(1);
+			} else {
+				throw new Exception("Failed to generate revision key");
+			}
+			
+			rs.close();
+			st.close();
+			
+			// Insert page
+			st = connection.prepareStatement("INSERT INTO page (page_namespace, page_title, page_restrictions, page_counter, page_is_redirect, page_is_new, page_random, page_touched, page_latest, page_len) " +
+											 " VALUES          (0,              ?,          ' ',               0,            0,                0,           0,           ' ',          ?,           0)");
+			st.setString(1, name);
+			st.setInt(2, rev_id);
+			st.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
 		}
 	}
 
