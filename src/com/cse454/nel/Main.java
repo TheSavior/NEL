@@ -32,7 +32,7 @@ public class Main {
 		// TODO: these could be loaded from a file
 		int maxFile = Integer.parseInt(args[0]);
 		List<Integer> docIDs = new ArrayList<>();
-		for (int i = 0; i <= maxFile; ++i) {
+		for (int i = 200; i <= 214; ++i) {
 			docIDs.add(i);
 		}
 
@@ -41,7 +41,11 @@ public class Main {
 
 		// Setup Feature Weights
 		Set<FeatureWeights> weightTrials = new HashSet<FeatureWeights>();
-
+		FeatureWeights weights = new FeatureWeights();
+		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, 8);
+		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, 1);
+		weightTrials.add(weights);
 		// Scorer
 		//FeatureWeightScorer scorer = new FeatureWeightScorer();
 		EvaluationScorer scorer = new EvaluationScorer();
@@ -49,10 +53,10 @@ public class Main {
 		docProcessor.ProcessDocuments(docs, weightTrials, scorer);
 
 		// Show scores
-		System.out.println("Score: " + scorer.getTotalCorrect() + " / " + scorer.getTotalGold());
-		/* for (Entry<FeatureWeights, Double> score : scorer.getScores().entrySet()) {
-			System.out.println(score.getValue() + " => " + score.getKey());
-		} */
+		System.out.println("--- Evaluation ---");
+		System.out.printf("Precision: \t\t%f\n", scorer.getPrecisionScore());
+		System.out.printf("Recall: \t\t%f\n", scorer.getRecallScore());
+		System.out.printf("Overall ratio: \t\t%f / %f\t%f\n", scorer.getTotalCorrect(), scorer.getTotalGold(), scorer.getOverallRation());
 	}
 
 	public static Set<FeatureWeights> allPossibleWeights() {
