@@ -26,6 +26,10 @@ import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.search.CrossWikiSearcher;
 
+import edu.stanford.nlp.util.StringUtils;
+
+import javax.swing.JScrollPane;
+
 public class Demo {
 	private boolean isNeedCursorChange = true;
 
@@ -46,22 +50,17 @@ public class Demo {
 	private int crossWikiWeight = 1;
 	private int histogramWeight = 1;
 
-
 	public Demo() throws Exception {
 		DocPreProcessor preProcessor = new DocPreProcessor();
 		processor = new DocumentProcessor(preProcessor);
-		
+
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				createAndShowGUI();
 			}
 		});
 
-		
-
 		// Here's necessary feature weight input (values will come from gui)
-
-
 
 		// Process the document
 
@@ -74,7 +73,6 @@ public class Demo {
 		new Demo();
 	}
 
-
 	public void Link() {
 		weights = new FeatureWeights();
 		int in;
@@ -83,32 +81,31 @@ public class Demo {
 
 		try {
 			in = Integer.parseInt(weight1.getText());
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			in = inLinkWeight;
 		}
 
 		try {
 			cross = Integer.parseInt(weight2.getText());
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			cross = crossWikiWeight;
 		}
 
 		try {
 			hist = Integer.parseInt(weight3.getText());
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			hist = histogramWeight;
 		}
 
-		System.out.println("In: "+Integer.toString(in));
-		System.out.println("Cross: "+Integer.toString(cross));
-		System.out.println("Hist: "+Integer.toString(hist));
-
+		/*
+		System.out.println("In: " + Integer.toString(in));
+		System.out.println("Cross: " + Integer.toString(cross));
+		System.out.println("Hist: " + Integer.toString(hist));
+		 */
 		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, in);
 		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, cross);
-		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, hist);
+		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING,
+				hist);
 
 		// Here's the text to be linked (value to come from gui)
 		String text = input.getText();
@@ -132,23 +129,31 @@ public class Demo {
 				System.out.println("Entities is null");
 				continue;
 			}
+			System.out.println(StringUtils.join(ents, " "));
 
-			for(int i = 0; i < tokens.length; i++) {
-				// Start a tag if we are an entity and the one before us wasn't the same entity
-				if (ents[i] != "0" && ((i-1 > 0) && (ents[i] != ents[i-1]))) {
-					builder.append("<a href=\""+wikipedia+ents[i]+"\">");
+			boolean isTagOpen = false;
+			for (int i = 0; i < tokens.length; i++) {
+				// Start a tag if we are an entity and the one before us wasn't
+				// the same entity
+				if (ents[i] != "0" && !isTagOpen) { // && ((i - 1 > 0) && (ents[i] != ents[i - 1]))) {
+					builder.append("<a href=\"" + wikipedia + ents[i] + "\">");
+					isTagOpen = true;
 				}
 				builder.append(tokens[i]);
 
-				// If the current token is entity AND we have a next token, and that next token isn't the same as this one
-				if (ents[i] != "0" && ((i+1 < ents.length) && (ents[i] != ents[i+1]))) {
+				// If the current token is entity AND we have a next token, and
+				// that next token isn't the same as this one
+				// OR there are no more tokens
+				if (ents[i] != "0" && (((i + 1 < ents.length) && (ents[i] != ents[i + 1])) || (i+1 >= ents.length) )) {
 					builder.append("</a>");
+					isTagOpen = false;
 				}
 				builder.append(" ");
 			}
 			builder.append("<br />");
 
 		}
+		
 		output.setText(builder.toString());
 		System.out.println();
 	}
@@ -180,13 +185,6 @@ public class Demo {
 		splitPane.setMinimumSize(new Dimension(300, 150));
 		splitPane.setResizeWeight(0.5);
 
-		input = new JTextArea();
-		input.setLineWrap(true);
-		input.setMinimumSize(new Dimension(100, 22));
-		input.setPreferredSize(new Dimension(250, 22));
-		input.setText("input");
-		splitPane.setLeftComponent(input);
-
 		output = new JTextPane();
 		output.setContentType("text/html");
 		output.setEditable(false);
@@ -204,7 +202,17 @@ public class Demo {
 				}
 			}
 		});
-		splitPane.setRightComponent(output);
+		JScrollPane scrollPane = new JScrollPane(output);
+		splitPane.setRightComponent(scrollPane);
+
+		input = new JTextArea();
+		input.setLineWrap(true);
+		input.setMinimumSize(new Dimension(100, 22));
+		input.setPreferredSize(new Dimension(250, 22));
+		input.setText("input");
+
+		JScrollPane scrollPane2 = new JScrollPane(input);
+		splitPane.setLeftComponent(scrollPane2);
 
 		JButton btnNewButton = new JButton("Link!");
 		panel_1.add(btnNewButton, BorderLayout.SOUTH);
@@ -252,22 +260,22 @@ public class Demo {
 	}
 
 	private void browseTo(URI url) {
-		if( !java.awt.Desktop.isDesktopSupported() ) {
-            System.err.println( "Desktop is not supported (fatal)" );
-            System.exit( 1 );
-        }
-        java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
-        if( !desktop.isSupported( java.awt.Desktop.Action.BROWSE ) ) {
-            System.err.println( "Desktop doesn't support the browse action (fatal)" );
-            System.exit( 1 );
-        }
+		if (!java.awt.Desktop.isDesktopSupported()) {
+			System.err.println("Desktop is not supported (fatal)");
+			System.exit(1);
+		}
+		java.awt.Desktop desktop = java.awt.Desktop.getDesktop();
+		if (!desktop.isSupported(java.awt.Desktop.Action.BROWSE)) {
+			System.err
+					.println("Desktop doesn't support the browse action (fatal)");
+			System.exit(1);
+		}
 
-            try {
-                desktop.browse( url );
-            }
-            catch ( Exception e ) {
-                System.err.println( e.getMessage() );
-            }
+		try {
+			desktop.browse(url);
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 }
