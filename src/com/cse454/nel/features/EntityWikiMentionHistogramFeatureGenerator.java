@@ -90,7 +90,7 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 		return hist.getNormalizedMap();
 	}
 
-	private Map<String, Double> GetWikiHist(Entity ent) throws SQLException {
+	private Map<String, Double> GetWikiHist(Entity ent) throws Exception {
 		if (wikiCache.containsKey(ent)) {
 			return wikiCache.get(ent);
 		}

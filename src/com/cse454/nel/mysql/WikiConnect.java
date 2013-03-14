@@ -10,14 +10,19 @@ import java.util.Map;
 import java.util.Set;
 
 import com.cse454.nel.CrossWikiData;
+import com.cse454.nel.PullFromWikipedia;
 
 public class WikiConnect extends MySQLConnect {
 	private static String defaultDB = "wikidb";
+	
+	private PullFromWikipedia wikipedia;
 
 	private Map<String, String> page_textCache; // page_latest -> text
 
 	public WikiConnect() throws SQLException {
         super(defaultUrl, defaultDB);
+        
+        wikipedia = new PullFromWikipedia(); 
 
         page_textCache = new HashMap<String, String>();
 	}
@@ -193,7 +198,7 @@ public class WikiConnect extends MySQLConnect {
 		return ret;
 	}
 
-	public String GetCleanedWikiText(String pageID) throws SQLException {
+	public String GetCleanedWikiText(String pageID) throws Exception {
 		String text = GetWikiText(pageID);
 		if (text == null) {
 			return "";
@@ -241,7 +246,7 @@ public class WikiConnect extends MySQLConnect {
 	 * @return
 	 * @throws Exception
 	 */
-	public String GetWikiText(final String pageTitle) throws SQLException {
+	public String GetWikiText(final String pageTitle) throws Exception {
 		if (page_textCache.containsKey(pageTitle)) {
 			return page_textCache.get(pageTitle);
 		}
@@ -265,7 +270,18 @@ public class WikiConnect extends MySQLConnect {
 				page_textCache.put(pageTitle, text);
 				return text;
 			}
-			System.err.println("No wiki text returned from: " + pageTitle);
+			
+			System.out.println("Importing Wikipedia text for: "+pageTitle);
+			String text = wikipedia.GetWikipediaText(pageTitle);
+			if (text == null) {
+				System.err.println("No wiki text returned or found for: " + pageTitle);
+			}
+			else
+			{
+				AddPage(pageTitle, text);
+				return GetWikiText(pageTitle);
+			}
+			
 			return null;
 		} catch (Exception e) {
 			throw e;

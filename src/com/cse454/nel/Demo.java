@@ -60,7 +60,7 @@ public class Demo {
 		weights = new FeatureWeights();
 		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, inLinkWeight);
 		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, crossWikiWeight);
-		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_NAME,
+		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING,
 				histogramWeight);
 
 		// Process the document
