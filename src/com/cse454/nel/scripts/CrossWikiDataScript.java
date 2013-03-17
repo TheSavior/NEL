@@ -1,12 +1,12 @@
-package com.cse454.nel;
+package com.cse454.nel.scripts;
 
-public class CrossWikiData {
+public class CrossWikiDataScript {
 
 	public String mention;
 	public double probability;
 	public String URL;
 
-	public CrossWikiData(String mention, double probability, String URL) {
+	public CrossWikiDataScript(String mention, double probability, String URL) {
 		this.mention = mention;
 		this.probability = probability;
 		this.URL = URL;

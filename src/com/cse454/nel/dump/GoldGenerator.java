@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
-import com.cse454.nel.Sentence;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.mysql.DocumentConnect;
 
 // TODO:

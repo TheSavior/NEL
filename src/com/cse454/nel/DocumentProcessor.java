@@ -1,25 +1,22 @@
 package com.cse454.nel;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
+import com.cse454.nel.dataobjects.EntityMention;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.disambiguate.Disambiguator;
+import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
-import com.cse454.nel.features.EntityMentionHistogramFeatureGenerator;
-import com.cse454.nel.features.EntityWikiMentionHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
@@ -27,174 +24,169 @@ import com.cse454.nel.mysql.WikiConnect;
 import com.cse454.nel.search.AbstractSearcher;
 import com.cse454.nel.search.CrossWikiSearcher;
 
+/**
+ * This class is responsible for the core functionality of the NEL system.
+ *
+ * TODO: change passing of List<Sentence> to document
+ * TODO: create RawTextDocument for {@link #processDocument(String)}
+ *
+ */
 public class DocumentProcessor {
 
-	private final DocPreProcessor preprocessor;
-	private final WikiConnect wikiDb;
+	private final DocPreProcessor mPreProcessor;
+	private final WikiConnect mWikiDb;
 
-	public DocumentProcessor(DocPreProcessor preprocessor) throws SQLException {
-		this.preprocessor = preprocessor;
-		this.wikiDb = new WikiConnect();
+	private FeatureWeights mFeatureWeights;
+
+	/**
+	 * Constructs a new {@link DocumentProcessor}
+	 * @param preprocessor Used to when linking raw text in {@link #processDocument(String)}
+	 */
+	public DocumentProcessor(DocPreProcessor preprocessor) {
+		this.mPreProcessor = preprocessor;
+		try {
+			this.mWikiDb = new WikiConnect();
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	public List<Sentence> ProcessDocument(FeatureWeights weights, String text) throws Exception {
-		List<Sentence> sentences = preprocessor.ProccessArticle(text);
-		Set<FeatureWeights> weightTrials = new HashSet<>();
-		weightTrials.add(weights);
+	/**
+	 * Set the {@link FeatureWeights}s used during disambiguation.
+	 * @param weights The {@link FeatureWeights} to use during this document processing.
+	 */
+	public void setFeatureWeights(FeatureWeights weights) {
+		mFeatureWeights = weights;
+	}
 
-		boolean printTiming = false;
-		PrintStream timeLog = EnabledPrintStream(printTiming ? System.out : null);
-		List<EntityMention> mentions = ProcessDocumentFeatures(timeLog, weightTrials, sentences);
-		Map<Sentence, Map<FeatureWeights, String[]>> evaluations = ScoreWeightTrials(timeLog, sentences, mentions, weightTrials);
+	/**
+	 * Parses text into sentences, extracts entities from them and returns a list
+	 * of {@link Sentence}s with their entities field filled.
+	 */
+	public List<Sentence> processDocument(String text) {
+		List<Sentence> sentences = mPreProcessor.ProccessArticle(text);
+		return processDocument(sentences);
+	}
 
-		for (Sentence sentence : sentences) {
-			Map<FeatureWeights, String[]> nels = evaluations.get(sentence);
-			sentence.setEntities(nels.get(weights));
+	/**
+	 * Extracts entities from the given {@link AbstractDocument} and
+	 * mutates its inner list of {@link Sentence}s
+	 * @param document Document to extract entities from.
+	 * @return The same document object given, with it's inner list of sentences changed.
+	 */
+	public AbstractDocument processDocument(AbstractDocument document) {
+		List<Sentence> sentences = document.GetSentences();
+		processDocument(sentences);
+		return document;
+	}
+
+	/**
+	 * Changes out param sentences by adding their LinkedEntities field.
+	 */
+	private List<Sentence> processDocument(List<Sentence> sentences) {
+		// Extract entity mentions from sentences
+		List<EntityMention> mentions = extractEntityMentions(sentences);
+
+		// Generate candidate entities for each mention
+		generateCandidateEntities(mentions);
+
+		// Generate feature scores for each mention
+		Set<String> features = new HashSet<>();
+		for (Entry<String, Double> weight : mFeatureWeights.entrySet()) {
+			features.add(weight.getKey());
 		}
+		generateFeatureScores(mentions, sentences, features);
 
+		// Disambiguate
+		disambiguate(mentions, sentences);
 		return sentences;
 	}
-	
-	public PrintStream EnabledPrintStream(final PrintStream dst) {
-		return new PrintStream(new OutputStream() {
-			@Override
-			public void write(int b) throws IOException {
-				if (dst != null) {
-					System.out.write(b);
-				}
-			}
-		});
-	}
 
-	public List<EntityMention> ProcessDocumentFeatures(PrintStream timeLog, Set<FeatureWeights> weightTrials, List<Sentence> sentences) throws Exception {
-		
-		// Pick which features we need to generate
-		Set<String> features = new HashSet<String>();
-		for (FeatureWeights weights : weightTrials) {
-			for (Entry<String, Double> weight : weights.entrySet()) {
-				features.add(weight.getKey());
-			}
-		}
-
-		// Generate Features
-		return ProcessDocumentFeatures(timeLog, sentences, features);
-	}
-	
-	public Map<Sentence, Map<FeatureWeights, String[]>> ScoreWeightTrials(PrintStream timeLog, List<Sentence> sentences, List<EntityMention> mentions, Set<FeatureWeights> weightTrials) {
-		// Go through all weight trials
-		Disambiguator disambiguator = new Disambiguator();
-		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
-
-		timeLog.println("Generate entity sentences");
-		long start = System.currentTimeMillis();
-		SortedMap<Sentence, Map<FeatureWeights, String[]>> results = new TreeMap<>();
-		for (FeatureWeights weights : weightTrials) {
-			// Disambiguate
-			disambiguator.disambiguate(mentions, weights);
-
-			// Collate data per sentence
-			for (Sentence sentence : sentences) {
-				List<EntityMention> sentMentions = sentenceEntities.get(sentence.getSentenceId());
-
-				// Initialize entities string
-				String[] ents = new String[sentence.getTokens().length];
-				for (int i = 0; i < ents.length; ++i) {
-					ents[i] = "0";
-				}
-
-				// Process mentions
-				if (sentMentions != null) {
-					for (EntityMention mention : sentMentions) {
-						if (mention.chosenEntity != null) {
-							for (int i = 0; i < mention.numToks; ++i) {
-								ents[i + mention.tokStart] = mention.chosenEntity.wikiTitle;
-							}
-						}
-					}
-				}
-
-				// Add to results
-				Map<FeatureWeights, String[]> sentResults = results.get(sentence);
-				if (sentResults == null) {
-					sentResults = new HashMap<>();
-					results.put(sentence, sentResults);
-				}
-
-				sentResults.put(weights, ents);
-			}
-		}
-		long end = System.currentTimeMillis();
-		long duration = end - start;
-		timeLog.println("Generating entity sentences: " + duration);
-
-		return results;
-	}
-	
-	
-	public List<EntityMention> ProcessDocumentFeatures(PrintStream timeLog, List<Sentence> sentences, Set<String> features) throws Exception {
-		// Extract entity mentions
-		timeLog.println("Extraact entity mentions");
-		long start = System.currentTimeMillis();
+	/**
+	 * Extracts {@link EntityMention}s from the list of {@link Sentence}s.
+	 */
+	private List<EntityMention> extractEntityMentions(List<Sentence> sentences) {
 		AbstractEntityExtractor extractor = new NerExtractor();
-		List<EntityMention> mentions = extractor.extract(sentences);
-		long end = System.currentTimeMillis();
-		long duration = end - start;
-		timeLog.println("Extraact entity mentions: " + duration);
+		return extractor.extract(sentences);
+	}
 
-		// Generate candidate entities
-		timeLog.println("Generate candidate entities");
-		start = System.currentTimeMillis();
-		AbstractSearcher searcher = new CrossWikiSearcher(wikiDb);//new BasicSearcher(wikiDb);
+	private void generateCandidateEntities(Collection<EntityMention> mentions) {
+		AbstractSearcher searcher = new CrossWikiSearcher(mWikiDb);
 		for (EntityMention mention : mentions) {
-			searcher.GetCandidateEntities(mention);
+			try {
+				searcher.GetCandidateEntities(mention);
+			}	catch (SQLException e) {
+				throw new RuntimeException(e);
+			}	catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-		end = System.currentTimeMillis();
-		duration = end - start;
-		timeLog.println("Generate candidate entities: " + duration);
-		
-		timeLog.println("Generating Features");
-		start = System.currentTimeMillis();
-		
-		// Setup feature generators
+	}
+
+	/**
+	 * Generates features for each candidate in each entity mention.
+	 * @throws SQLException If there's a problem connecting to the DB
+	 * @throws IllegalArgumentException if there's a feature in features that doesn't exist
+	 */
+	private void generateFeatureScores(List<EntityMention> mentions, List<Sentence> sentences, Set<String> features)
+			throws IllegalArgumentException {
 		Map<String, FeatureGenerator> featureGenerators = new HashMap<String, FeatureGenerator>();
-		AllWordsHistogramFeatureGenerator feature1 = new AllWordsHistogramFeatureGenerator(wikiDb, sentences);
-		featureGenerators.put(feature1.GetFeatureName(), feature1);
-		
-		EntityMentionHistogramFeatureGenerator feature2 = new EntityMentionHistogramFeatureGenerator(wikiDb, sentences, mentions);
-		featureGenerators.put(feature2.GetFeatureName(), feature2);
-		
-		EntityWikiMentionHistogramFeatureGenerator feature3 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, false);
-		featureGenerators.put(feature3.GetFeatureName(), feature3);
-		
-		EntityWikiMentionHistogramFeatureGenerator feature4 = new EntityWikiMentionHistogramFeatureGenerator(wikiDb, sentences, mentions, preprocessor, true);
-		featureGenerators.put(feature4.GetFeatureName(), feature4);
-		
-		InLinkFeatureGenerator feature5 = new InLinkFeatureGenerator(wikiDb);
-		featureGenerators.put(feature5.GetFeatureName(), feature5);
-		
+
+		AllWordsHistogramFeatureGenerator allwords = new AllWordsHistogramFeatureGenerator(mWikiDb, sentences);
+		featureGenerators.put(allwords.GetFeatureName(), allwords);
+
+		InLinkFeatureGenerator inlinks = new InLinkFeatureGenerator(mWikiDb);
+		featureGenerators.put(inlinks.GetFeatureName(), inlinks);
+
 		// Generate features
 		for (String feature : features) {
 			if (feature == CrossWikiSearcher.FEATURE_STRING) {
 				continue;
 			}
-			
-			timeLog.println("\t" + feature);
+
 			FeatureGenerator generator = featureGenerators.get(feature);
 			if (generator == null) {
-				throw new Exception("No Feature Named '" + feature + "'");
+				System.err.println("No Feature Named '" + feature + "'");
 			}
-			
-			long substart = System.currentTimeMillis();
+
 			for (EntityMention mention : mentions) {
-				generator.GenerateFeatures(mention);
+				try {
+					generator.GenerateFeatures(mention);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
-			timeLog.println("\t" + feature + ": " + (System.currentTimeMillis() - substart));
 		}
-		end = System.currentTimeMillis();
-		duration = end - start;
-		timeLog.println("Generating Features: " + duration);
-		
-		return mentions;
+	}
+
+	private void disambiguate(List<EntityMention> mentions, List<Sentence> sentences) {
+		Disambiguator disambiguator = new Disambiguator();
+		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
+		// Disambiguate
+		disambiguator.disambiguate(mentions, mFeatureWeights);
+
+		// Collate data per sentence
+		for (Sentence sentence : sentences) {
+			List<EntityMention> sentMentions = sentenceEntities.get(sentence.getSentenceId());
+
+			// Initialize entities string
+			String[] ents = new String[sentence.getTokens().length];
+			for (int i = 0; i < ents.length; ++i) {
+				ents[i] = "0";
+			}
+
+			// Process mentions
+			if (sentMentions != null) {
+				for (EntityMention mention : sentMentions) {
+					if (mention.chosenEntity != null) {
+						for (int i = 0; i < mention.numToks; ++i) {
+							ents[i + mention.tokStart] = mention.chosenEntity.wikiTitle;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	private Map<Integer, List<EntityMention>> listEntityMentionBySentenceID(List<EntityMention> mentions) {

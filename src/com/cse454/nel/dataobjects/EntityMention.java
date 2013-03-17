@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.dataobjects;
 
 import java.util.Map;
 
@@ -6,7 +6,8 @@ import com.cse454.nel.features.Features;
 
 public class EntityMention {
 	public int sentenceID;
-	int tokStart, numToks;
+	public int tokStart;
+	public int numToks;
 	public String mentionString;
 	public Map<Entity, Features> candidateFeatures;
 	public Entity chosenEntity;

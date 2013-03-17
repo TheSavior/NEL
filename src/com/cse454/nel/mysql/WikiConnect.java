@@ -1,4 +1,5 @@
 package com.cse454.nel.mysql;
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,8 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.cse454.nel.CrossWikiData;
-import com.cse454.nel.PullFromWikipedia;
+import com.cse454.nel.scripts.CrossWikiDataScript;
+import com.cse454.nel.scripts.PullFromWikipedia;
 
 public class WikiConnect extends MySQLConnect {
 	private static String defaultDB = "wikidb";
@@ -32,13 +33,13 @@ public class WikiConnect extends MySQLConnect {
 	 * @param entityMention the string to lookup
 	 * @param removeDisambiguation true to remove obvious disambiguation pages from results
 	 */
-	public List<CrossWikiData> GetCrossWikiDocs(String entityMention, boolean removeDisambiguation) throws Exception {
+	public List<CrossWikiDataScript> GetCrossWikiDocs(String entityMention, boolean removeDisambiguation) throws SQLException {
 
 		String query = "Select * from crosswiki where mention = ? order by likelihood desc limit 10";
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
-		List<CrossWikiData> crossWikiData = new ArrayList<CrossWikiData>();
+		List<CrossWikiDataScript> crossWikiData = new ArrayList<CrossWikiDataScript>();
 		try {
 			st = connection.prepareStatement(query);
 			st.setString(1, entityMention);
@@ -47,10 +48,8 @@ public class WikiConnect extends MySQLConnect {
 				if (removeDisambiguation && rs.getString(3).contains("_(disambiguation)")) {
 					continue;
 				}
-				crossWikiData.add(new CrossWikiData(rs.getString(1), rs.getDouble(2), rs.getString(3)));
+				crossWikiData.add(new CrossWikiDataScript(rs.getString(1), rs.getDouble(2), rs.getString(3)));
 			}
-		} catch (Exception e) {
-			throw e;
 		} finally {
 			if (st != null)
 				st.close();
@@ -198,7 +197,7 @@ public class WikiConnect extends MySQLConnect {
 		return ret;
 	}
 
-	public String GetCleanedWikiText(String pageID) throws Exception {
+	public String GetCleanedWikiText(String pageID) throws SQLException {
 		String text = GetWikiText(pageID);
 		if (text == null) {
 			return "";
@@ -219,7 +218,7 @@ public class WikiConnect extends MySQLConnect {
 		return text;
 	}
 
-	public boolean doesWikiPageExist(final String pageTitle) throws Exception {
+	public boolean doesWikiPageExist(final String pageTitle) throws SQLException {
 		String query = "SELECT page_title from page where page_title = ?";
 		PreparedStatement st = null;
 		ResultSet rs = null;
@@ -231,8 +230,6 @@ public class WikiConnect extends MySQLConnect {
 				return true;
 			}
 			return false;
-		} catch (Exception e) {
-			throw e;
 		} finally {
 			if (st != null)
 				st.close();
@@ -246,7 +243,7 @@ public class WikiConnect extends MySQLConnect {
 	 * @return
 	 * @throws Exception
 	 */
-	public String GetWikiText(final String pageTitle) throws Exception {
+	public String GetWikiText(final String pageTitle) throws SQLException {
 		if (page_textCache.containsKey(pageTitle)) {
 			return page_textCache.get(pageTitle);
 		}
@@ -272,7 +269,13 @@ public class WikiConnect extends MySQLConnect {
 			}
 			
 			System.out.println("Importing Wikipedia text for: "+pageTitle);
-			String text = wikipedia.GetWikipediaText(pageTitle);
+			String text = null;
+			try {
+				text = wikipedia.GetWikipediaText(pageTitle);
+			} catch (IOException e) {
+				System.err.println("Error retreiving wikipedia text for inclusion into db");
+				e.printStackTrace();
+			}
 			if (text == null) {
 				System.err.println("No wiki text returned or found for: " + pageTitle);
 			}
@@ -283,8 +286,6 @@ public class WikiConnect extends MySQLConnect {
 			}
 			
 			return null;
-		} catch (Exception e) {
-			throw e;
 		} finally {
 			if (st != null)
 				st.close();
@@ -293,7 +294,7 @@ public class WikiConnect extends MySQLConnect {
 		}
 	}
 	
-	public void AddPage(String name, String text) throws Exception {
+	public void AddPage(String name, String text) throws SQLException {
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -308,7 +309,7 @@ public class WikiConnect extends MySQLConnect {
 			if (rs.next()) {
 				old_text_id = rs.getInt(1);
 			} else {
-				throw new Exception("Failed to generate text key");
+				throw new SQLException("Failed to generate text key");
 			}
 			
 			rs.close();
@@ -324,7 +325,7 @@ public class WikiConnect extends MySQLConnect {
 			if (rs.next()) {
 				rev_id = rs.getInt(1);
 			} else {
-				throw new Exception("Failed to generate revision key");
+				throw new SQLException("Failed to generate revision key");
 			}
 			
 			rs.close();
@@ -337,8 +338,6 @@ public class WikiConnect extends MySQLConnect {
 			st.setInt(2, rev_id);
 			st.executeUpdate();
 
-		} catch (Exception e) {
-			throw e;
 		} finally {
 			if (st != null)
 				st.close();

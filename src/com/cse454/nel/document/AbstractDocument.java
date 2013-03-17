@@ -2,26 +2,34 @@ package com.cse454.nel.document;
 
 import java.util.List;
 
-import com.cse454.nel.Sentence;
+import com.cse454.nel.dataobjects.Sentence;
+import com.sun.istack.internal.Nullable;
 
+/**
+ * Abstract Document describes a document with a document name, and a list of 
+ * sentences in that document.
+ *
+ */
 public abstract class AbstractDocument {
-	protected String name;
+	
+	protected String docName;
 	protected List<Sentence> sentences;
 
 	protected AbstractDocument(String name) {
-		this.name = name;
+		this.docName = name;
 		this.sentences = null;
 	}
 
 	public String GetName() {
-		return name;
+		return docName;
 	}
 
-	public List<Sentence> GetSentences() throws Exception {
-		if (sentences == null) {
-			sentences = GenerateSentences();
-		}
-
+	/**
+	 * Returns a list of {@link Sentence}s from this document, or <code>null</code> if they haven't
+	 * been generated yet.
+	 */
+	@Nullable
+	public List<Sentence> GetSentences() {
 		return sentences;
 	}
 
@@ -31,7 +39,7 @@ public abstract class AbstractDocument {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((docName == null) ? 0 : docName.hashCode());
 		return result;
 	}
 
@@ -44,10 +52,10 @@ public abstract class AbstractDocument {
 		if (getClass() != obj.getClass())
 			return false;
 		AbstractDocument other = (AbstractDocument) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (docName == null) {
+			if (other.docName != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!docName.equals(other.docName))
 			return false;
 		return true;
 	}

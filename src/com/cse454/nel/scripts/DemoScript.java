@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.scripts;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
@@ -21,6 +22,9 @@ import javax.swing.JTextPane;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import com.cse454.nel.DocPreProcessor;
+import com.cse454.nel.DocumentProcessor;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
@@ -28,9 +32,7 @@ import com.cse454.nel.search.CrossWikiSearcher;
 
 import edu.stanford.nlp.util.StringUtils;
 
-import javax.swing.JScrollPane;
-
-public class Demo {
+public class DemoScript {
 	private boolean isNeedCursorChange = true;
 
 	private final JPanel panel = new JPanel();
@@ -49,8 +51,8 @@ public class Demo {
 	private int inLinkWeight = 2;
 	private int crossWikiWeight = 13;
 	private int histogramWeight = 85;
-	
-	private static final String INPUT_DEFAULT = 
+
+	private static final String INPUT_DEFAULT =
 			 "TOKYO , Aug. 19 -LRB- Xinhua -RRB-                                                                                                                                                                                                                                   " +
 			 " Japanese Prime Minister Shinzo Abe left Tokyo Sunday morning for a weeklong visits to Indonesia , India and Malaysia .                                                                                                                                               " +
 			 " In Jakarta , his first stop , Abe is scheduled to meet with Indonesian President Susilo Bambang Yudhoyono and deliver a speech on Japan 's future policy toward the Association of Southeast Asian Nations -LRB- ASEAN -RRB- on Monday , according to Kyodo News .   " +
@@ -63,7 +65,7 @@ public class Demo {
 			 " A business mission of 250-member scale , led by the Japan Business Federation Chairman Fujio Mitarai , will accompany Abe throughout the tour ending Saturday ." +
 			 "";
 
-	public Demo() throws Exception {
+	public DemoScript() throws Exception {
 		DocPreProcessor preProcessor = new DocPreProcessor();
 		processor = new DocumentProcessor(preProcessor);
 
@@ -83,7 +85,7 @@ public class Demo {
 	}
 
 	public static void main(String[] args) throws Exception {
-		new Demo();
+		new DemoScript();
 	}
 
 	public void Link() {
@@ -124,7 +126,8 @@ public class Demo {
 		String text = input.getText();
 		List<Sentence> results;
 		try {
-			results = processor.ProcessDocument(weights, text);
+			processor.setFeatureWeights(weights);
+			results = processor.processDocument(text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

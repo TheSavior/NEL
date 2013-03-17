@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.scripts;
 
 import java.sql.SQLException;
 import java.util.Scanner;
@@ -7,7 +7,7 @@ import com.cse454.nel.mysql.DocumentConnect;
 import com.cse454.nel.mysql.WikiConnect;
 import com.cse454.nel.search.BasicSearcher;
 
-public class Test {
+public class TestScript {
 
 	private static Scanner scanner;
 

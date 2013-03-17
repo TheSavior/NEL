@@ -2,8 +2,8 @@ package com.cse454.nel.extract;
 
 import java.util.List;
 
-import com.cse454.nel.EntityMention;
-import com.cse454.nel.Sentence;
+import com.cse454.nel.dataobjects.EntityMention;
+import com.cse454.nel.dataobjects.Sentence;
 
 /**
  * Abstract base class for entity extractors.

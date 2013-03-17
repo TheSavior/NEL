@@ -1,9 +1,9 @@
 package com.cse454.nel.features;
 
-import com.cse454.nel.EntityMention;
+import com.cse454.nel.dataobjects.EntityMention;
 
 
-public interface FeatureGenerator {
-	public String GetFeatureName();
-	public void GenerateFeatures(EntityMention mention) throws Exception;
+public abstract class FeatureGenerator {
+	public abstract String GetFeatureName();
+	public abstract void GenerateFeatures(EntityMention mention) throws Exception;
 }

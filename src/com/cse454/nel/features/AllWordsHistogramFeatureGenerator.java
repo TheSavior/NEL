@@ -1,5 +1,6 @@
 package com.cse454.nel.features;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -7,13 +8,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
-import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
+import com.cse454.nel.dataobjects.Entity;
+import com.cse454.nel.dataobjects.EntityMention;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.mysql.WikiConnect;
 
-public class AllWordsHistogramFeatureGenerator implements FeatureGenerator {
+public class AllWordsHistogramFeatureGenerator extends FeatureGenerator {
 
 	public static String FEATURE_STRING = "all_words_histogram";
 
@@ -31,7 +32,7 @@ public class AllWordsHistogramFeatureGenerator implements FeatureGenerator {
 	}
 
 	@Override
-	public void GenerateFeatures(EntityMention mention) throws Exception {
+	public void GenerateFeatures(EntityMention mention) throws SQLException {
 		Set<String> words = new HashSet<String>();
 		for (Sentence sentence : document) {
 			words.addAll(Arrays.asList(sentence.getTokens()));

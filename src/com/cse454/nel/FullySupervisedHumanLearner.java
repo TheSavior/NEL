@@ -10,6 +10,8 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.cse454.nel.dataobjects.EntityMention;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.document.SentenceDbDocFactory;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
@@ -21,44 +23,44 @@ import com.cse454.nel.search.CrossWikiSearcher;
 
 public class FullySupervisedHumanLearner {
 	private static final Scanner scanner = new Scanner(System.in);
-	
+
 	private static class FeatureTrackingScorer implements AbstractScorer {
 		private Map<AbstractDocument, List<EntityMention>> docMentions = new HashMap<>();
-		
+
 		@Override public void ScoreMentions(AbstractDocument doc, List<EntityMention> mentions) {
 			docMentions.put(doc, mentions);
 		}
 
 		@Override public void Score(AbstractDocument doc, FeatureWeights weights, Sentence sentence, String[] entities) {}
 	}
-	
+
 	private static class FSHLFeatureWeights extends FeatureWeights {
 		private Map<String, Integer> featureIndices = new HashMap<>();
-		
+
 		public void SetFeature(String feature, double weight, Integer index) {
 			setFeature(feature, weight);
 			featureIndices.put(feature, index);
 		}
-		
+
 		public int getIndex(String feature) {
 			return featureIndices.get(feature);
 		}
 	}
-	
+
 	private static class Range {
 		public double min;
 		public double max;
-		
+
 		public Range(double min, double max) {
 			this.min = min;
 			this.max = max;
 		}
-		
+
 		public double getMid() {
 			return min + (max - min) / 2;
 		}
 	}
-	
+
 	private static Double ReadDouble(String msg) {
 		while (true) {
 			try {
@@ -69,23 +71,23 @@ public class FullySupervisedHumanLearner {
 			}
 		}
 	}
-	
+
 	private static Range ReadRange(String msg) {
 		System.out.println(msg);
 		double min = ReadDouble("\tmin: ");
 		double max = ReadDouble("\tmax: ");
 		return new Range(min, max);
 	}
-	
+
 	private static class WeightScorePair implements Comparable<WeightScorePair> {
 		public FeatureWeights weights;
 		public double score;
-		
+
 		public WeightScorePair(FeatureWeights weights, double score) {
 			this.weights = weights;
 			this.score = score;
 		}
-		
+
 		public boolean equals(WeightScorePair other) {
 			return score == other.score;
 		}
@@ -94,13 +96,13 @@ public class FullySupervisedHumanLearner {
 		public int compareTo(WeightScorePair o) {
 			return (score > o.score) ? -1 : (score < o.score) ? 1 : 0;
 		}
-		
-		
+
+
 	}
 
 	public static void main(String[] args) throws Exception {
 		Util.PreventStanfordNERErrors();
-	
+
 		List<Integer> docIDs = new ArrayList<>();
 		while (true) {
 			try {
@@ -112,7 +114,7 @@ public class FullySupervisedHumanLearner {
 				int start = Integer.parseInt(startStr);
 				System.out.print("End (inclusive): ");
 				int end = Integer.parseInt(scanner.nextLine());
-				
+
 				for (int i = start; i <= end; ++i) {
 					docIDs.add(i);
 				}
@@ -123,27 +125,27 @@ public class FullySupervisedHumanLearner {
 		for (Integer i : docIDs) {
 			System.out.println("doc: " + i);
 		}
-		
+
 		// Doc Factory
 		SentenceDbDocFactory docs = new SentenceDbDocFactory();
 		docs.AddDocIDs(docIDs);
-		
+
 		// Features: these are dummy weights so the processor creates the right features
 		FeatureWeights dummyWeights = new FeatureWeights();
 		dummyWeights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
 		dummyWeights.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
 		dummyWeights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, 1);
-		
+
 		// Finally setup the scorer: also mostly just a dummy, to track the learned features for use later
 		FeatureTrackingScorer mentionTracker = new FeatureTrackingScorer();
-		
+
 		System.out.println("Processing Documents");
 		MultiDocumentProcessor processor = new MultiDocumentProcessor(Math.min(docIDs.size(), 16));
-		processor.ProcessDocuments(docs, dummyWeights, mentionTracker);
-		
+		// processor.ProcessDocuments(docs, dummyWeights, mentionTracker);
+
 		// Now begin supervised learning
 		System.out.println("Documents Processed\nBegin Supervised Learning");
-		
+
 		DocPreProcessor preProcessor = new DocPreProcessor();
 		DocumentProcessor docProcessor = new DocumentProcessor(preProcessor);
 		//while (true) {
@@ -151,7 +153,7 @@ public class FullySupervisedHumanLearner {
 		/*	Range allWordsRange = ReadRange("AllWords Feature Range: ");
 			Range crossWikiRange = ReadRange("Crosswiki Feature Range: ");
 			Range inLinkRange = ReadRange("Inlink Feature Range: ");
-			
+
 			// Setup trials
 			Set<FeatureWeights> weightTrials = new HashSet<>();
 			for (int i = 0; i <= 2; ++i) {
@@ -160,12 +162,12 @@ public class FullySupervisedHumanLearner {
 						double allWords = allWordsRange.min + i*allWordsRange.getMid();
 						double crossWiki = crossWikiRange.min + t*crossWikiRange.getMid();
 						double inlinks = inLinkRange.min + v*inLinkRange.getMid();
-						
+
 						FSHLFeatureWeights weights = new FSHLFeatureWeights();
 						weights.SetFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, allWords, i);
 						weights.SetFeature(CrossWikiSearcher.FEATURE_STRING, crossWiki, t);
 						weights.SetFeature(InLinkFeatureGenerator.FEATURE_STRING, inlinks, v);
-						
+
 						weightTrials.add(weights);
 					}
 				}
@@ -183,16 +185,15 @@ public class FullySupervisedHumanLearner {
 					weightTrials.add(weights);
 				}
 			}
-			
-			
+
 			// Run trials
 			FeatureWeightScorer scorer = new FeatureWeightScorer();
 			for (Entry<AbstractDocument, List<EntityMention>> docMentions : mentionTracker.docMentions.entrySet()) {
 				AbstractDocument doc = docMentions.getKey();
 				List<EntityMention> mentions = docMentions.getValue();
-				
-				Map<Sentence, Map<FeatureWeights, String[]>> results =
-						docProcessor.ScoreWeightTrials(docProcessor.EnabledPrintStream(null), doc.GetSentences(), mentions, weightTrials);
+
+				Map<Sentence, Map<FeatureWeights, String[]>> results = null;
+						// docProcessor.ScoreWeightTrials(docProcessor.EnabledPrintStream(null), doc.GetSentences(), mentions, weightTrials);
 
 				for (Entry<Sentence, Map<FeatureWeights, String[]>> entry : results.entrySet()) {
 					Sentence sentence = entry.getKey();
@@ -203,12 +204,12 @@ public class FullySupervisedHumanLearner {
 					}
 				}
 			}
-			
+
 			List<WeightScorePair> scores = new ArrayList<>();
 			for (Entry<FeatureWeights, Double> featureScores : scorer.getScores().entrySet()) {
 				scores.add(new WeightScorePair(featureScores.getKey(), featureScores.getValue()));
 			}
-			
+
 			System.out.println("Sorting");
 			Collections.sort(scores);
 			for (int i = 0; i < 15; ++i) {
@@ -216,8 +217,8 @@ public class FullySupervisedHumanLearner {
 				System.out.println(pair.score + " => " + pair.weights);
 			}
 			System.out.println("done");
-			
-			
+
+
 			// Print results
 		/*	double[][][] scores = new double[3][3][3];
 			for (Entry<FeatureWeights, Double> featureScores : scorer.getScores().entrySet()) {
@@ -227,14 +228,14 @@ public class FullySupervisedHumanLearner {
 					  [weights.getIndex(CrossWikiSearcher.FEATURE_STRING)]
 					  [weights.getIndex(InLinkFeatureGenerator.FEATURE_STRING)] = score;
 			}
-			
+
 			System.out.println("y-axis: " + CrossWikiSearcher.FEATURE_STRING + " (" + crossWikiRange.min + ", " + crossWikiRange.max + ")");
 			System.out.println("x-axis: " + InLinkFeatureGenerator.FEATURE_STRING + " (" + inLinkRange.min + ", " + inLinkRange.max + ")");
 			for (int i = 0; i < 3; ++i) {
 				System.out.println("\n");
 				System.out.println(AllWordsHistogramFeatureGenerator.FEATURE_STRING + ": " + (allWordsRange.min + i*allWordsRange.getMid()));
 				System.out.println();
-				
+
 				for (int t = 0; t < 3; ++t) {
 					for (int v = 0; v < 3; ++v) {
 						System.out.print(scores[i][t][v] + "\t\t");

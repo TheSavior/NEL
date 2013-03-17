@@ -1,7 +1,6 @@
 package com.cse454.nel.features;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -10,14 +9,14 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.cse454.nel.DocPreProcessor;
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
-import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
+import com.cse454.nel.dataobjects.Entity;
+import com.cse454.nel.dataobjects.EntityMention;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.mysql.WikiConnect;
 
-public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenerator {
+public class EntityWikiMentionHistogramFeatureGenerator extends FeatureGenerator {
 
 	public static String FEATURE_STRING = "entity-wiki-mention-histo";
 	public static String FEATURE_STRING_SPLIT = "entity-wiki-mention-histo-split";
@@ -63,7 +62,7 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 		}
 	}
 
-	private Map<String, Double> HistogramFromMentions(List<EntityMention> mentions, List<Sentence> sentences) {
+	private Map<String, Double> HistogramFromMentions(Collection<EntityMention> mentions, List<Sentence> sentences) {
 		Set<String> mentionWords = new HashSet<String>();
 		for (EntityMention mention : mentions) {
 			if (splitMentions) {
@@ -76,7 +75,7 @@ public class EntityWikiMentionHistogramFeatureGenerator implements FeatureGenera
 			}
 		}
 
-		List<Sentence> cleanedSentences = new ArrayList<Sentence>();
+		Set<Sentence> cleanedSentences = new HashSet<Sentence>();
 		for (Sentence sentence : sentences) {
 			String[] tokens = sentence.getTokens();
 			String[] newTokens = new String[tokens.length];

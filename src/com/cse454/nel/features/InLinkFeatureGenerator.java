@@ -1,22 +1,21 @@
 package com.cse454.nel.features;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
+import com.cse454.nel.dataobjects.Entity;
+import com.cse454.nel.dataobjects.EntityMention;
 import com.cse454.nel.mysql.WikiConnect;
 
-public class InLinkFeatureGenerator implements FeatureGenerator {
+public class InLinkFeatureGenerator extends FeatureGenerator {
 
 	public static final String FEATURE_STRING = "inlink_feature";
 
 	private final WikiConnect wiki;
 	private final Map<String, Integer> inLinkCache = new HashMap<String, Integer>();
 
-	public InLinkFeatureGenerator(WikiConnect wiki) throws SQLException {
+	public InLinkFeatureGenerator(WikiConnect wiki) {
 		this.wiki = wiki;
 	}
 

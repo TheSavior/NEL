@@ -13,8 +13,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
+import com.cse454.nel.dataobjects.Entity;
+import com.cse454.nel.dataobjects.EntityMention;
 import com.cse454.nel.mysql.DocumentConnect;
 
 public class Scorer {

@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.dataobjects;
 
 /**
  * Simple entity data structure.

@@ -4,22 +4,34 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import com.cse454.nel.Sentence;
-import com.cse454.nel.mysql.DocumentConnect;
+import com.sun.istack.internal.Nullable;
 
-public class SentenceDbDocFactory implements DocumentFactory {
-	
+/**
+ * Factory for creating empty {@link SentenceDbDocument}s.
+ */
+public class SentenceDbDocFactory implements AbstractDocumentFactory {
+
 	private Queue<String> docNames = new LinkedList<>();
 	private Queue<Integer> docIDs = new LinkedList<>();
-	
+
+	/**
+	 * Add documents by name.
+	 */
 	public void AddDocNames(List<String> docs) {
 		docNames.addAll(docs);
 	}
-	
+
+	/**
+	 * Add documents by ID.
+	 */
 	public void AddDocIDs(List<Integer> docs) {
 		docIDs.addAll(docs);
 	}
-	
+
+	/**
+	 * First poll from docNames, then docIDs, finaly returning null if empty.
+	 */
+	@Nullable
 	@Override
 	public AbstractDocument NextDocument() {
 		if (!docNames.isEmpty()) {
@@ -29,36 +41,7 @@ public class SentenceDbDocFactory implements DocumentFactory {
 			int id = docIDs.poll();
 			return new SentenceDbDocument(id);
 		}
-		
+
 		return null;
 	}
-	
-	private static class SentenceDbDocument extends AbstractDocument {
-		
-		private String dbName;
-		private int docID;
-		
-		public SentenceDbDocument(String name) {
-			super(name);
-			dbName = name;
-		}
-		
-		public SentenceDbDocument(int docID) {
-			super(""+docID);
-			dbName = null;
-			this.docID = docID;
-		}
-
-		@Override
-		protected List<Sentence> GenerateSentences() throws Exception {
-			DocumentConnect docs = new DocumentConnect();
-			if (dbName != null) {
-				return docs.getDocumentByName(dbName);
-			} else {
-				return docs.getDocumentById(docID);
-			}
-		}
-		
-	}
-
 }

@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.scripts;
 
 import java.io.*;
 import java.net.*;

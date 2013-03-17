@@ -6,13 +6,13 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
-import com.cse454.nel.Sentence;
 import com.cse454.nel.Util;
+import com.cse454.nel.dataobjects.Entity;
+import com.cse454.nel.dataobjects.EntityMention;
+import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.mysql.WikiConnect;
 
-public class EntityMentionHistogramFeatureGenerator implements FeatureGenerator {
+public class EntityMentionHistogramFeatureGenerator extends FeatureGenerator {
 
 	public static String FEATURE_STRING = "entity_mention_histogram_feature";
 

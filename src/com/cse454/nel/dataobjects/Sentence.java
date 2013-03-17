@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.dataobjects;
 
 public class Sentence implements Comparable<Sentence> {
 
@@ -6,7 +6,7 @@ public class Sentence implements Comparable<Sentence> {
 	private String[] tokens;
 	private String[] ner;
 	private String[] gold;
-	private String[] entities;
+	private String[] linkedEntities;
 
 	public Sentence(int sentenceID, String tokens, String ner, String gold) {
 		this.sentenceID = sentenceID;
@@ -34,7 +34,7 @@ public class Sentence implements Comparable<Sentence> {
 	}
 
 	public String[] getEntities() {
-		return entities;
+		return linkedEntities;
 	}
 	
 	public String[] getGold() {
@@ -42,7 +42,7 @@ public class Sentence implements Comparable<Sentence> {
 	}
 	
 	public void setEntities(String[] entities) {
-		this.entities = entities;
+		this.linkedEntities = entities;
 	}
 	
 	public int compareTo(Sentence sentence) {

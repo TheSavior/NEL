@@ -1,31 +1,26 @@
-package com.cse454.nel;
+package com.cse454.nel.scripts;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 import com.cse454.nel.mysql.WikiConnect;
 
-public class PageGenerator {
+public class PageGeneratorScript {
 
 	/**
 	 * @param args
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	public static void main(String[] args) throws Exception  {
 		WikiConnect wiki = new WikiConnect();
 		Scanner scanner = new Scanner(System.in);
 		PullFromWikipedia wikipedia = new PullFromWikipedia();
-		
+
 		while(true) {
 			System.out.print("Page Title: ");
 			String page = scanner.nextLine();
 			if (wiki.doesWikiPageExist(page)) {
 				System.out.print("Page already exists. Overwrite?");
-				
+
 				if (!continueHelper(scanner)) {
 					break;
 				}
@@ -40,7 +35,7 @@ public class PageGenerator {
 				e.printStackTrace();
 				continue;
 			}
-			
+
 			if (strLine == null) {
 				System.err.println("No Data for that page");
 				continue;
@@ -60,24 +55,24 @@ public class PageGenerator {
 			in.close();
 			*/
 			System.out.println(strLine.substring(0, 200));
-			
+
 			System.out.print("Correct?");
 			if (!continueHelper(scanner)) {
 				break;
 			}
-			
+
 			wiki.AddPage(page, strLine.toString());
 			System.out.println();
 		}
 	}
-	
+
 	private static boolean continueHelper(Scanner scanner) {
 		String overwrite = "a";
 		while(!overwrite.startsWith("n") && !overwrite.startsWith("y")) {
 			System.out.print("(Y/N): ");
 			overwrite = scanner.nextLine().toLowerCase();
 		}
-		
+
 		return !overwrite.startsWith("n");
 	}
 

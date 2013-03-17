@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.cse454.nel.Sentence;
+import com.cse454.nel.dataobjects.Sentence;
 
 public class DocumentConnect extends MySQLConnect {
 

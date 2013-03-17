@@ -1,12 +1,12 @@
 package com.cse454.nel.features;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import com.cse454.nel.Sentence;
+import com.cse454.nel.dataobjects.Sentence;
 
 public class Histogram {
 
@@ -50,11 +50,11 @@ public class Histogram {
 		return new Histogram(map);
 	}
 
-	public static Histogram extractFromSentenceArray(List<Sentence> sentences) {
+	public static Histogram extractFromSentenceArray(Collection<Sentence> sentences) {
 		return extractFromSentenceArray(sentences, null);
 	}
 
-	public static Histogram extractFromSentenceArray(List<Sentence> sentences, Set<String> mentions) {
+	public static Histogram extractFromSentenceArray(Collection<Sentence> sentences, Set<String> mentions) {
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		for (Sentence sentence : sentences) {
 			for (String token : sentence.getTokens()) {

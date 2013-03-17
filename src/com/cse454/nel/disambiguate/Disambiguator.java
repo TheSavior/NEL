@@ -3,8 +3,8 @@ package com.cse454.nel.disambiguate;
 import java.util.List;
 import java.util.Map.Entry;
 
-import com.cse454.nel.Entity;
-import com.cse454.nel.EntityMention;
+import com.cse454.nel.dataobjects.Entity;
+import com.cse454.nel.dataobjects.EntityMention;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.Features;
 
