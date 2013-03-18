@@ -24,6 +24,10 @@ public class EvaluationScorer implements AbstractScorer {
 	public void ScoreMentions(AbstractDocument doc, List<EntityMention> mentions) {
 
 	}
+	
+	public void clearScores() {
+		documentScorecards.clear();
+	}
 
 	@Override
 	public void Score(AbstractDocument document, FeatureWeights weights, Sentence sentence, String[] entities) {
