@@ -33,9 +33,6 @@ public class EvaluationScorer implements AbstractScorer {
 		}
 		ScoreCard scoreCard = documentScorecards.get(document);
 
-		if (sentence.getSentenceId() == 2229) {
-			System.out.println("dsf");
-		}
 		String[] gold = sentence.getGold();
 		Set<String> goldEnts = new HashSet<String>();
 		Set<String> correctEnts = new HashSet<String>();

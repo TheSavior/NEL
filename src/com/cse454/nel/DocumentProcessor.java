@@ -196,6 +196,7 @@ public class DocumentProcessor {
 					}
 				}
 			}
+			sentence.setEntities(ents);
 		}
 	}
 
