@@ -25,17 +25,6 @@ public class SentenceDbDocument extends AbstractDocument {
 	}
 
 	@Override
-	public List<Sentence> GetSentences() {
-		if (sentences == null) {
-			try {
-				return GenerateSentences();
-			} catch (Exception e) {
-			}
-		}
-		return sentences;
-	}
-
-	@Override
 	protected List<Sentence> GenerateSentences() throws Exception {
 		DocumentConnect docs = new DocumentConnect();
 		if (dbName != null) {
