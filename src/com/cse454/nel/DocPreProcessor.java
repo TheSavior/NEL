@@ -11,7 +11,13 @@ import edu.stanford.nlp.ie.crf.CRFClassifier;
 import edu.stanford.nlp.ling.CoreAnnotations.AnswerAnnotation;
 import edu.stanford.nlp.ling.CoreLabel;
 
+/**
+ * This class is used to generate {@link Sentence} objects from raw text.
+ *
+ */
 public class DocPreProcessor {
+
+	private final Object lock = new Object();
 
 	private AbstractSequenceClassifier<CoreLabel> classifier;
 
@@ -23,7 +29,10 @@ public class DocPreProcessor {
 	public List<Sentence> ProccessArticle(String text) {
 		List<Sentence> sentences = new ArrayList<Sentence>();
 
-		List<List<CoreLabel>> out = classifier.classify(text);
+		List<List<CoreLabel>> out = null;
+		synchronized (lock) {
+			out = classifier.classify(text);
+		}
 		int sentenceCounter = 0;
 		for (List<CoreLabel> sentence : out) {
 			int numWords = sentence.size();

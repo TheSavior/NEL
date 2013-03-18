@@ -17,7 +17,7 @@ import com.cse454.nel.Util;
 import com.cse454.nel.dataobjects.EntityMention;
 import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.document.AbstractDocument;
-import com.cse454.nel.document.AbstractDocumentFactory;
+import com.cse454.nel.document.DocumentFactory;
 import com.cse454.nel.document.SentenceDbDocFactory;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
@@ -90,11 +90,11 @@ public class EvaluationScript {
 	 */
 	private static class EvaluationDocumentProcessThread implements Runnable {
 
-		private AbstractDocumentFactory docs;
+		private DocumentFactory docs;
 		private Set<FeatureWeights> featureWeights;
 		private AbstractScorer scorer;
 
-		public EvaluationDocumentProcessThread(AbstractDocumentFactory docs, Set<FeatureWeights> featureWeights, AbstractScorer scorer) {
+		public EvaluationDocumentProcessThread(DocumentFactory docs, Set<FeatureWeights> featureWeights, AbstractScorer scorer) {
 			this.docs = docs;
 			this.featureWeights = featureWeights;
 			this.scorer = scorer;

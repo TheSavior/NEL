@@ -1,55 +1,99 @@
 package com.cse454.nel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Map;
 
+import com.cse454.nel.MultiDocumentProcessor.ProcessedDocumentCallback;
+import com.cse454.nel.dataobjects.Sentence;
+import com.cse454.nel.document.AbstractDocument;
+import com.cse454.nel.document.DocumentFactory;
+
+/**
+ * Here's a sample class showing how simple it is to use our NEL system.
+ *
+ */
 public class Main {
 
+	private static final int NUM_THREADS = 4;
+	private static final String FOLDER = "./docs/";
+
 	public static void main(String[] args) throws Exception {
+		// Stanford NER commandeers System.err with annoying messages
+		Util.PreventStanfordNERErrors();
+
+		// Create a new doc factory for our document files
+		DocPreProcessor preProcessor = new DocPreProcessor();
+		DocumentFactory docFactory = new FileDocumentFactory(FOLDER, preProcessor);
+
+		// Multi-doc processor processes many documents at once using our factory
+		MultiDocumentProcessor multiDocProcessor = new MultiDocumentProcessor(4);
+		// Add our callback to retrieve the results for each document
+		multiDocProcessor.addProcessDocumentListener(new ProcessedDocumentCallback() {
+
+			@Override
+			public void onDocumentFinished(AbstractDocument document) {
+				// write the entities to a file?
+			}
+		});
+
+		// now process the docs!
+		multiDocProcessor.ProcessDocuments(docFactory);
+	}
+
+	private static class FileDocumentFactory implements DocumentFactory {
+
+		private final File[] files;
+		private final DocPreProcessor preprocessor;
+
+		private int curDoc = 0;
+
+		public FileDocumentFactory(String folder, DocPreProcessor preProcessor) {
+			this.files = new File(folder).listFiles();
+			this.preprocessor = preProcessor;
+		}
+
+		@Override
+		public AbstractDocument NextDocument() {
+			if (curDoc == files.length) {
+				return null;
+			}
+			return new FileDocument(files[curDoc], preprocessor);
+		}
 
 	}
 
-	public void getArgs(String[] args) {
-		Map<String, String> options = new HashMap<String, String>();
-		Map<String, String> doubleOptions = new HashMap<String, String>();
-		List<String> argsList = new ArrayList<String>();
-	    for (int i = 0; i < args.length; i++) {
-	        switch (args[i].charAt(0)) {
+	private static class FileDocument extends AbstractDocument {
 
-	        case '-':
-	            if (args[i].length() < 2)
-	                throw new IllegalArgumentException("Not a valid argument: " + args[i]);
-	            if (args[i].charAt(1) == '-') {
-	                if (args[i].length() < 3)
-	                    throw new IllegalArgumentException("Not a valid argument: "+args[i]);
-	                // --opt
-	                String opt = args[i].substring(2, args[i].length());
-	                // arg
-	                if (args.length - 1 == i)
-	                	throw new IllegalArgumentException("Expected arg after: "+args[i]);
-	                doubleOptions.put(opt, args[i+1]);
-	                i++;
-	            } else {
-	                if (args.length-1 == i)
-	                    throw new IllegalArgumentException("Expected arg after: "+args[i]);
-	                // -opt
-	                options.put(args[i], args[i+1]);
-	                i++;
-	            }
-	            break;
-	        default:
-	            // arg
-	            argsList.add(args[i]);
-	            break;
-	        }
-	    }
-	}
+		private final File file;
+		private final DocPreProcessor preprocessor;
 
-	public static void usage() {
-		System.err.println("java com.cse454.nel.Main " +
-				"<keyfile>");
-		System.exit(-1);
+		protected FileDocument(File file, DocPreProcessor preProcessor) {
+			super(file.getAbsolutePath());
+			this.file = file;
+			this.preprocessor = preProcessor;
+		}
+
+		@Override
+		protected List<Sentence> GenerateSentences() throws Exception {
+			return preprocessor.ProccessArticle(readFile(file));
+		}
+
+		private static String readFile(File file) throws IOException {
+		  FileInputStream stream = new FileInputStream(file);
+		  try {
+		    FileChannel fc = stream.getChannel();
+		    MappedByteBuffer bb = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
+		    // Instead of using default, pass in a decoder.
+		    return Charset.defaultCharset().decode(bb).toString();
+		  }
+		  finally {
+		    stream.close();
+		  }
+		}
 	}
 }

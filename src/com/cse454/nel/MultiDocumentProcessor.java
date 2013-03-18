@@ -5,20 +5,37 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import com.cse454.nel.document.AbstractDocument;
-import com.cse454.nel.document.AbstractDocumentFactory;
+import com.cse454.nel.document.DocumentFactory;
+import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
+import com.cse454.nel.features.InLinkFeatureGenerator;
+import com.cse454.nel.search.CrossWikiSearcher;
 
 /**
- * Used to process multiple documents with a given {@link AbstractDocumentFactory}.
+ * Used to process multiple documents with a given {@link DocumentFactory}.
  * Multi-threaded.
  *
  * See {@link Main} for an example usage.
  *
  */
 public class MultiDocumentProcessor {
+
+	public static interface ProcessedDocumentCallback {
+		public void onDocumentFinished(AbstractDocument document);
+	}
+
+	private static final FeatureWeights DEFAULT_WEIGHTS = new FeatureWeights();
+	static {
+		DEFAULT_WEIGHTS.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		DEFAULT_WEIGHTS.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
+		DEFAULT_WEIGHTS.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING,
+				1);
+	}
 	private final int numThreads;
     private final ThreadPoolExecutor executor;
     private final Object docLock;
+
+    private ProcessedDocumentCallback mCallback;
 
     public MultiDocumentProcessor(int numThreads) {
     	this.numThreads = numThreads;
@@ -26,7 +43,11 @@ public class MultiDocumentProcessor {
     	this.executor = new ThreadPoolExecutor(numThreads, numThreads, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
 
-	public void ProcessDocuments(AbstractDocumentFactory docs, FeatureWeights weights) throws InterruptedException {
+    public void ProcessDocuments(DocumentFactory docs) {
+    	ProcessDocuments(docs, DEFAULT_WEIGHTS);
+    }
+
+	public void ProcessDocuments(DocumentFactory docs, FeatureWeights weights) {
 		// Setup Threads
 		System.out.println("Starting Threads");
 		for (int i = 0; i < numThreads; ++i) {
@@ -36,16 +57,25 @@ public class MultiDocumentProcessor {
 
 		// Wait for them to finish
 		executor.shutdown();
-		executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS);
+		} catch (InterruptedException e) {
+			System.err.println("Executor interrupted before shutting down completely");
+			e.printStackTrace();
+		}
 		System.out.println("Processing Complete");
+	}
+
+	public void addProcessDocumentListener(ProcessedDocumentCallback callback) {
+		mCallback = callback;
 	}
 
 	private class DocumentProcessThread implements Runnable {
 
-		private AbstractDocumentFactory docs;
+		private DocumentFactory docs;
 		private FeatureWeights weights;
 
-		public DocumentProcessThread(AbstractDocumentFactory docs, FeatureWeights featureWeights) {
+		public DocumentProcessThread(DocumentFactory docs, FeatureWeights featureWeights) {
 			this.docs = docs;
 			this.weights = featureWeights;
 		}
@@ -78,6 +108,9 @@ public class MultiDocumentProcessor {
 				processor.processDocument(document);
 
 				// Now do some useful work with the entities!
+				if (mCallback != null) {
+					mCallback.onDocumentFinished(document);
+				}
 
 			}
 

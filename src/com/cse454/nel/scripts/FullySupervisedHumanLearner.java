@@ -1,4 +1,4 @@
-package com.cse454.nel;
+package com.cse454.nel.scripts;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,10 @@ import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
 
+import com.cse454.nel.DocPreProcessor;
+import com.cse454.nel.DocumentProcessor;
+import com.cse454.nel.MultiDocumentProcessor;
+import com.cse454.nel.Util;
 import com.cse454.nel.dataobjects.EntityMention;
 import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.document.AbstractDocument;

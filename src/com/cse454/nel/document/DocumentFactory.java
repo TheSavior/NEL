@@ -7,7 +7,7 @@ import com.sun.istack.internal.Nullable;
  * as want to be processed.
  *
  */
-public interface AbstractDocumentFactory {
+public interface DocumentFactory {
 	/**
 	 * Get the next document to be processed, or null when done.  NOT Thread Safe
 	 */

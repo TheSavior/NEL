@@ -9,7 +9,7 @@ import com.sun.istack.internal.Nullable;
 /**
  * Factory for creating empty {@link SentenceDbDocument}s.
  */
-public class SentenceDbDocFactory implements AbstractDocumentFactory {
+public class SentenceDbDocFactory implements DocumentFactory {
 
 	private Queue<String> docNames = new LinkedList<>();
 	private Queue<Integer> docIDs = new LinkedList<>();

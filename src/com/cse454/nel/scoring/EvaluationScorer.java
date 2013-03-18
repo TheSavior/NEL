@@ -28,7 +28,7 @@ public class EvaluationScorer implements AbstractScorer {
 	@Override
 	public void Score(AbstractDocument document, FeatureWeights weights, Sentence sentence, String[] entities) {
 		if (!documentScorecards.containsKey(document)) {
-			ScoreCard scoreCard = new ScoreCard(weights);
+			ScoreCard scoreCard = new ScoreCard();
 			documentScorecards.put(document, scoreCard);
 		}
 		ScoreCard scoreCard = documentScorecards.get(document);
@@ -129,7 +129,6 @@ public class EvaluationScorer implements AbstractScorer {
 	// Scorecard per document evaluating how well it does on that document
 	static class ScoreCard {
 
-		private FeatureWeights weights;
 		private Map<Sentence, Set<String>> goldEnts;
 		private Map<Sentence, Set<String>> correctEnts;
 		private Map<Sentence, Set<String>> incorrectEnts;
@@ -137,8 +136,7 @@ public class EvaluationScorer implements AbstractScorer {
 		private Map<Sentence, Set<String>> badEnts;
 		private Map<Sentence, Integer> missedEntities;
 
-		public ScoreCard(FeatureWeights weights) {
-			this.weights = weights;
+		public ScoreCard() {
 			this.goldEnts = new HashMap<Sentence, Set<String>>();
 			this.correctEnts = new HashMap<Sentence, Set<String>>();
 			this.incorrectEnts = new HashMap<Sentence, Set<String>>();
