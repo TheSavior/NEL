@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/commons-cli-1.2.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/commons-io-1.4.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/commons-lang-2.4.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/hadoop-0.20.2-core.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/je-4.0.103.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/jsc.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/maxent-3.0.0.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/opennlp-tools-1.5.0.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/servlet-api.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/trove-2.1.0.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/weka-wrapper-1.0.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/weka.jar"/>
-	<classpathentry kind="lib" path="lib/wikipedia-miner-1.2.0/lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.23-bin.jar"/>
 	<classpathentry kind="lib" path="stanford-ner.jar" sourcepath="/Users/Simon/Downloads/stanford-ner-2012-11-11/stanford-ner-1.2.7-sources/edu/stanford/nlp/ling/CoreLabel.java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

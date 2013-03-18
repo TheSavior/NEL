@@ -10,8 +10,6 @@ import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-
 import com.cse454.nel.MultiDocumentProcessor.ProcessedDocumentCallback;
 import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.document.AbstractDocument;
@@ -46,7 +44,7 @@ public class Main {
 					FileWriter fw = new FileWriter(FOLDER + "ents_" + document.GetName());
 					BufferedWriter out = new BufferedWriter(fw);
 					for (Sentence sentence : document.GetSentences()) {
-						String ents = StringUtils.concatenate(sentence.getEntities());
+						String ents = Util.combine(sentence.getEntities(), " ");
 						out.write(sentence.getSentenceId() + "\t" + ents + "\n");
 					}
 					out.close();
@@ -72,6 +70,7 @@ public class Main {
 
 		private final File[] files;
 		private final DocPreProcessor preprocessor;
+		private final Object lock = new Object();
 
 		private int curDoc = 0;
 
@@ -82,11 +81,15 @@ public class Main {
 
 		@Override
 		public AbstractDocument NextDocument() {
-			if (curDoc == files.length) {
-				return null;
+			FileDocument doc = null;
+			synchronized (lock) {
+				if (curDoc == files.length) {
+					return null;
+				}
+				doc = new FileDocument(files[curDoc], preprocessor);
+				curDoc++;
 			}
-			FileDocument doc = new FileDocument(files[curDoc], preprocessor);
-			curDoc++;
+
 			return doc;
 		}
 	}
