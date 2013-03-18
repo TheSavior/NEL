@@ -45,9 +45,6 @@ public class EvaluationScorer implements AbstractScorer {
 		Integer missedEntities = new Integer(0);
 		if (gold.length == entities.length) {
 			for (int i = 0; i < gold.length; i++) {
-				if (i == 14) {
-					System.out.println("adsf");
-				}
 				if (gold[i].equals("0")) {
 					// check for one's we're incorrectly entity linking
 					if (!entities[i].equals("0")) {

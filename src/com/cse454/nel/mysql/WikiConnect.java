@@ -16,7 +16,7 @@ import com.cse454.nel.scripts.PullFromWikipedia;
 public class WikiConnect extends MySQLConnect {
 	private static String defaultDB = "wikidb";
 	
-	private static int maxCrosswikiEntries = 10;
+	private static int maxCrosswikiEntries = 5;
 	public static void SetMaxCrosswikiEntries(int max) {
 		maxCrosswikiEntries = max;
 	}

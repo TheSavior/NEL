@@ -32,7 +32,6 @@ public class MultiDocumentProcessor {
 		DEFAULT_WEIGHTS.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, 78);
 	}
 	private final int numThreads;
-    private final ThreadPoolExecutor executor;
     private final Object docLock;
 
     private ProcessedDocumentCallback mCallback;
@@ -40,7 +39,6 @@ public class MultiDocumentProcessor {
     public MultiDocumentProcessor(int numThreads) {
     	this.numThreads = numThreads;
     	this.docLock = new Object();
-    	this.executor = new ThreadPoolExecutor(numThreads, numThreads, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
     }
 
     public void ProcessDocuments(DocumentFactory docs) {
@@ -48,6 +46,8 @@ public class MultiDocumentProcessor {
     }
 
 	public void ProcessDocuments(DocumentFactory docs, FeatureWeights weights) {
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(numThreads, numThreads, 100, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<Runnable>(100));
+		
 		// Setup Threads
 		System.out.println("Starting Threads");
 		for (int i = 0; i < numThreads; ++i) {

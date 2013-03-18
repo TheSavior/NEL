@@ -5,12 +5,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.cse454.nel.MultiDocumentProcessor.ProcessedDocumentCallback;
 import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.document.SentenceDbDocFactory;
+import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
+import com.cse454.nel.features.InLinkFeatureGenerator;
 import com.cse454.nel.mysql.WikiConnect;
 import com.cse454.nel.scoring.EvaluationScorer;
 import com.cse454.nel.search.CrossWikiSearcher;
@@ -59,6 +62,9 @@ public class Experimentor {
 		RunCrosswikiTrial(10, scorer, multiDocProcessor, scores);
 		RunCrosswikiTrial(30, scorer, multiDocProcessor, scores);
 		RunCrosswikiTrial(100, scorer, multiDocProcessor, scores);
+		for (Entry<Integer, CWResult> score : scores.entrySet()) {
+			System.out.println(score.getKey() + ": " + score.getValue());
+		}
 	}
 	
 	private static class CWResult {
@@ -92,6 +98,8 @@ public class Experimentor {
 		// Setup weights
 		FeatureWeights weights = new FeatureWeights();
 		weights.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
+		weights.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		weights.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, 1);
 		
 		long start = System.currentTimeMillis();
 		processor.ProcessDocuments(docs, weights);
