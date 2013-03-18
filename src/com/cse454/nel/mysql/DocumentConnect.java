@@ -1,10 +1,7 @@
 package com.cse454.nel.mysql;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 
 import com.cse454.nel.dataobjects.Sentence;
 
@@ -116,6 +113,36 @@ public class DocumentConnect extends MySQLConnect {
 			}
 
 			return sentences;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (st != null)
+				st.close();
+			if (rs != null)
+				rs.close();
+		}
+	}
+	
+	public SortedMap<Integer, String> getGoldSentences() throws SQLException {
+		SortedMap<Integer, String> map = new TreeMap<Integer, String>();
+		
+		ResultSet rs = null;
+		PreparedStatement st = null;
+
+		try {		
+			try {
+				st = connection.prepareStatement("SELECT sentenceID, gold FROM sentences WHERE !isnull(gold) ORDER BY sentenceID;");
+			} catch (Exception e) {
+				throw e;
+			}
+			
+			rs = st.executeQuery();
+			
+			while (rs.next()) {
+				map.put(rs.getInt("sentenceID"), rs.getString("gold"));
+			}
+
+			return map;
 		} catch (Exception e) {
 			throw e;
 		} finally {

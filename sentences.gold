@@ -1,0 +1,483 @@
+0	Beijing 0 0 0 0 Xinhua 0
+1	0 0 0 0 0 Air_China Air_China 0 0 0 Beijing 0 0
+2	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Beijing 0 Ürümqi 0 0 0 0 0
+3	Air_China Air_China 0 0 0 0 0 0 0 Asia 0 0 0 0 0 0 0 0 0 0 0 0
+4	0 0 0 0 0 0 0 0 0 Chinese_yuan 0 0 0 0 US_dollars US_dollars 0 0 0 0 0
+5	0 0 0 0 0 0 0 China_National_Aviation_Corporation China_National_Aviation_Corporation China_National_Aviation_Corporation China_National_Aviation_Corporation China_National_Aviation_Corporation 0 CNAH 0 0 Air_China Air_China 0 0 0 0 0 0 0 0 0 0
+6	Air_China Air_China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+7	0 0 Boeing Boeing_737_Next_Generation 0 0 0 Beijing 0 0 0 0 0 0 0 0 0 0 Air_China Air_China 0 0 0
+8	0 0 0 0 0 0 0 Boeing 0 Airbus 0 0 0 0
+9	Air_China Air_China 0 0 0 0 0 0 0 0 0 0 0 0 0
+10	0 0 0 0 0 0 0 0 0 China_Southwest_Airlines China_Southwest_Airlines China_Southwest_Airlines 0 0 0 0 0 0 0 0 0 China_National_Aviation_Corporation 0
+11	Air_China Air_China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+12	0 0 0 0 0 0 0 0 0 0 0 0 0 0
+13	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+14	0 0 0 0 0 0 0 0 0 0 Air_China Air_China 0 CITIC_Group CITIC_Group CITIC_Group CITIC_Group 0 Beijing_Capital_International_Airport 0 0 0 0 0 0 0 0
+15	0 0 0 0 0 0 0 0 0 0 0 0 Chinese_yuan 0 0 0 US_dollars US_dollars 0 0 0 Air_China Air_China 0 0 0 0 0 0 0 0 0 0 0 Air_China Air_China
+16	0 0 0 Air_China Air_China 0 0 0 0 0 0 Portland,_Oregon 0 0 United_States United_States 0
+17	Paris 0 0 0 0 Xinhua 0
+18	0 0 0 Dominique_de_Villepin Dominique_de_Villepin Dominique_de_Villepin 0 0 0 0 United_States 0 0 0 Iraq 0 0 0 0 0 0 0 United_States United_States 0 0 0 0 0 0 0 0 0 0
+19	0 0 0 0 0 0 0 0 0 0 0 0
+20	0 0 0 0 0 0 Dominique_de_Villepin Dominique_de_Villepin 0 0 0 0 0 0 0 Minister_for_Foreign_Affairs_(Finland) Minister_for_Foreign_Affairs_(Finland) Minister_for_Foreign_Affairs_(Finland) Erkki_Tuomioja Erkki_Tuomioja
+21	0 0 0 0 0 0 0 0 0 United_Nations_Security_Council United_Nations_Security_Council United_Nations_Security_Council United_Nations_Security_Council 0 0 0 0 0 0 0 0 0 0
+22	0 0 0 0 0 0 0 0 0 0 0 0 0
+23	0 0 0 0 0 0 0 United_Nations United_Nations 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 United_States United_States 0 0 0 0 0 0
+24	France 0 Russia 0 0 0 0 0 United_States 0 0 0 0 0 0 0 0 0 0 0 0 0 Iraq 0
+25	0 0 0 0 0 0 0 0 0 United_States United_States 0 0 0 0 0 0 0 0 0 0 0 0 0 Iraq 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+26	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Dominique_de_Villepin Dominique_de_Villepin
+27	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+28	Dominique_de_Villepin Dominique_de_Villepin 0 0 0 0 0 0 0 0 0 New_York 0 0 0 United_Nations_Security_Council United_Nations_Security_Council 0 0 United_Nations 0 0 0 Hans_Blix Hans_Blix 0
+29	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Iraq 0
+30	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Arab 0 0 0 0 0 0 0 0 0 0 0 0
+31	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+32	0 0 0 Dominique_de_Villepin Dominique_de_Villepin 0 0 France 0 0 0 0 0 0 0 0 0 0 United_States 0 0 0 0 0 0 0 0 United_Nations United_Nations 0
+33	0 0 0 0 0 0 0 0 United_Nations_Security_Council United_Nations_Security_Council 0 0 0 0 0 0 0 0 0 0 0 0
+34	0 0 0 0 0 0 0 0 0 0 0 0 Tajikistan 0 Emomalii_Rahmon Emomalii_Rahmon Emomalii_Rahmon 0 Prime_Minister_of_India Prime_Minister_of_India Prime_Minister_of_India Atal_Bihari_Vajpayee Atal_Bihari_Vajpayee Atal_Bihari_Vajpayee 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Press_Trust_of_India Press_Trust_of_India Press_Trust_of_India Press_Trust_of_India 0 Press_Trust_of_India 0 0 0
+35	Atal_Bihari_Vajpayee 0 Emomalii_Rahmon 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Press_Trust_of_India 0
+36	0 0 0 0 Atal_Bihari_Vajpayee 0 0 Emomalii_Rahmon 0 India 0 0 0 0 0 0 0 US_dollars US_dollars 0 0 Tajikistan 0 0 0 0 0 0 India 0 0 0 0 0 0 0 0 0 Press_Trust_of_India 0 0
+37	Minister_of_Home_Affairs_(India) Minister_of_Home_Affairs_(India) Minister_of_Home_Affairs_(India) L._K._Advani L._K._Advani L._K._Advani 0 Foreign_relations_of_Tajikistan Foreign_relations_of_Tajikistan Foreign_relations_of_Tajikistan 0 0 0 0 Mutual_legal_assistance_treaty Mutual_legal_assistance_treaty Mutual_legal_assistance_treaty Mutual_legal_assistance_treaty Mutual_legal_assistance_treaty Mutual_legal_assistance_treaty 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Press_Trust_of_India 0 0
+38	Minister_of_Finance_(India) Minister_of_Finance_(India) Minister_of_Finance_(India) Yashwant_Sinha Yashwant_Sinha 0 Tajikistan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+39	Guangzhou 0 0 0 0 Xinhua 0
+40	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+41	41
+42	0 0 0 0 0 0 0 0 0National_Development_and_Reform_Commission National_Development_and_Reform_Commission National_Development_and_Reform_Commission National_Development_and_Reform_Commission National_Development_and_Reform_Commission 0 0 0 China_Southern_Power_Grid_Company 0 0 0 0 0 0 0 0
+43	0 0 0 0 0 0 0 0 0 0 0 0 Yunnan Yunnan 0 0 China 0 China 0 0 0 0 Guangdong Guangdong 0
+44	0 0 0 0 China_Southern_Power_Grid_Company 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 0 0 0 0 0 0
+45	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China_Southern_Power_Grid_Company 0
+46	0 0 0 0 0 0 0 0 0 0 China_Southern_Power_Grid_Company 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+47	0 0 0 0 0 0 0 0 0 0 0 Guangdong Guangdong 0 0 0 0 0 0 China 0
+48	China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+49	China_Southern_Power_Grid_Company 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0
+50	China_Southern_Power_Grid_Company 0 0 0 0 0 0 0 0 0 0 0 Chinese_yuan 0 0 0 U.S._dollars U.S._dollars 0 0 0 0 0 0 0 0 0 0 0
+51	China_Southern_Power_Grid_Company 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+52	Moscow 0 0 0 0 Xinhua 0
+53	0 0 0 Dzhokhar_Dudayev Dzhokhar_Dudayev 0 0 0 0 0 0 0 0 Russians 0 0 Moscow 0 0 0 0 Chechnya 0 0 0 0 0 0 0 0 0 0
+54	Dzhokhar_Dudayev 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Lev_Rokhlin Lev_Rokhlin 0 0 0 0 Russian 0 0 0 Chechnya Chechnya 0 0 0 0
+55	0 0 0 0 0 0 0 0 0 0 0 0 Nazran 0 0 0 Russia 0 Ingushetia Ingushetia 0 Chechnya 0 0 0 0 0 0 0 Information_Telegraph_Agency_of_Russia 0 0 0 0
+56	0 0 0 0 Russian 0 0 0 0 0 0 Grozny 0 0 0 0 0 Chechnya 0 0 0 0 0 0 Dzhokhar_Dudayev 0 0 0 0 0 0 0 0 0
+57	0 0 0 0 0 Russian_Prime_Minister Russian_Prime_Minister Russian_Prime_Minister Viktor_Chernomyrdin Viktor_Chernomyrdin 0 0 0 Sergei_Shakhrai Sergei_Shakhrai 0 Moscow 0 0 0
+58	0 0 Russian 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+59	0 0 0 0 0 0 Presidential_Administration_of_Russia Presidential_Administration_of_Russia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+60	0 0 0 0 0 0 North_Caucasus North_Caucasus 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Russian 0 0 Chechnya 0 0 Lev_Rokhlin Lev_Rokhlin 0 0 0 0 0 0 0
+61	0 0 0 0 Sergei_Shakhrai 0 Moscow 0 0 0 0 0 Nazran 0 0 0 0 0 0 0 0 0 0 0 Republic_of_Ingushetia Republic_of_Ingushetia Republic_of_Ingushetia 0 0 0 0 0 0 0 0 0 0 0 0 Chechnya Chechnya 0
+62	0 0 0 0 0 Government_of_Russia Government_of_Russia 0 0 0 0 0 0 Chechnya 0 0 0 0 0 0
+63	0 0 0 0 0 0 0 0 0 0 Grozny 0 0 Russian 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+64	London 0 0 0 0 Xinhua 0
+65	British_Prime_Minister British_Prime_Minister British_Prime_Minister Tony_Blair Tony_Blair 0 0 Gerhard_Schroeder Gerhard_Schroeder 0 0 0 0 Germany 0 0 0 0 0 0 0 German 0 0 0 0 0 0 0 0
+66	0 Downing_Street Downing_Street 0 0 0 0 Tony_Blair 0 0 0 0 0 Gerhard_Schroeder 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+67	Tony_Blair 0 Gerhard_Schroeder 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Gerhard_Schroeder 0 0 0 0 0 0 0 0 0 0
+68	0 0 0 0 0 0 0 Gerhard_Schroeder Gerhard_Schroeder 0 0 0 0 0 0 0 0 0
+69	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 United_Kingdom 0 France 0 0 Germany 0 0 Tony_Blair 0 0
+70	Tony_Blair 0 Gerhard_Schroeder 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Europe 0
+71	0 0 Tony_Blair 0 0 0 0 Chancellor_of_Germany Chancellor_of_Germany Helmut_Kohl Helmut_Kohl 0 0 0 0 0 0 0 0 Helmut_Kohl Helmut_Kohl 0 0 0 0 0 0 0 0 0 Europe 0 0
+72	0 0 0 0 German 0 0 0 0 Gerhard_Schroeder 0 Social_Democratic_Party_of_Germany Social_Democratic_Party_of_Germany Social_Democratic_Party_of_Germany 0 0 0 0 0 0 0 0 0 0 0 Helmut_Kohl 0 Christian_Democratic_Union_(Germany) 0
+73	Gaza_Strip 0 0 0 0 Xinhua 0
+74	Al-Aqsa_Martyrs'_Brigades Al-Aqsa_Martyrs'_Brigades 0 0 0 0 0 Palestinian_people 0 Yasser_Arafat Yasser_Arafat 0 0 Fatah Fatah 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+75	0 Al-Aqsa_Martyrs'_Brigades Al-Aqsa_Martyrs'_Brigades 0 0 West_bank West_bank 0 0 0 0 0 0 0 0 0 Al-Aqsa_Martyrs'_Brigades Al-Aqsa_Martyrs'_Brigades 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+76	0 Israel_Defense_Forces Israel_Defense_Forces 0 0 0 0 0 0 Al-Aqsa_Martyrs'_Brigades Al-Aqsa_Martyrs'_Brigades 0 0 0 0 Israel 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 West_bank 0 Nablus 0
+77	0 0 0 Al-Aqsa_Martyrs'_Brigades Al-Aqsa_Martyrs'_Brigades 0 0 Palestinian_people 0 0 0 0 0 0 0 0 Islamic_Jihad_Movement_in_Palestine Islamic_Jihad_Movement_in_Palestine 0 0 0 0 0 0 Hamas Hamas Hamas 0 Hamas 0 0
+78	Islamic_Jihad_Movement_in_Palestine Islamic_Jihad_Movement_in_Palestine 0 Hamas 0 0 0 0 0 0 0 0 0 Israel_Defense_Forces Israel_Defense_Forces 0 0 0 0 Hamas 0 0 Ismail_Abu_Shanab Ismail_Abu_Shanab Ismail_Abu_Shanab 0 0 0 0 0 0 0 0 0 Gaza Gaza 0 0 0
+79	Dhaka 0 0 0 0 Xinhua_News_Agency 0 
+80	Bangladesh Rapid_Action_Battalion Rapid_Action_Battalion Rapid_Action_Battalion 0 0 0 0 0 0 0 0 0 0 0 0 Islam 0 Jamaat-ul-Mujahideen_Bangladesh Jamaat-ul-Mujahideen_Bangladesh Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+81	Rapid_Action_Battalion 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 Dhaka 0 
+82	0 0 0 0 0 0 Rapid_Action_Battalion 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+83	Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Dhaka 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+84	0 Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+85	Ulan_Bator Ulan_Bator 0 April 0 0 Xinhua 0 
+86	Prime_Minister_of_Mongolia Prime_Minister_of_Mongolia Prime_Minister_of_Mongolia Puntsagiin_Jasrai Puntsagiin_Jasrai 0 0 0 0 0 0 Russia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+87	0 0 0 0 0 0 0 0 Russian 0 Viktor_Chernomyrdin Viktor_Chernomyrdin 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+88	0 0 0 0 0 0 0 Moscow 0 0 Prime_Minister_of_Mongolia Prime_Minister_of_Mongolia Prime_Minister_of_Mongolia 0 0 0 0 0 Soviet_Union Soviet_Union 0 
+89	Puntsagiin_Jasrai 0 0 0 0 0 0 0 0 0 0 0 Deputy_prime_minister Deputy_prime_minister Deputy_prime_minister 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+90	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+91	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+92	0 0 0 0 0 0 0 Mongolia 0 Russia 0 0 0 Ruble 0 0 0 United_States_dollar United_States_dollar 0 0 
+93	0 Politics_of_Mongolia 0 0 0 0 0 Siberia 0 0 0 0 Mongolia 0 0 0 0 0 0 0 0 0 0 0 
+94	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Post-Soviet_states Post-Soviet_states Post-Soviet_states 0 
+95	0 0 0 Mongolia 0 0 0 Russia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Soviet_Union 0 0 0 
+96	0 0 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 United_States_dollar 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Mongolia 0 Russia 0 0 0 0 0 0 0 0 0 
+97	Dhaka 0 0 0 0 Xinhua_News_Agency 0 
+98	0 United_States United_States 0 0 0 0 0 0 0 0 Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 United_States 0 0 0 0 0 0 
+99	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Bangladesh 0 0 0 0 0 
+100	Bangladesh 0 0 0 0 0 0 0 Richard_Boucher Richard_Boucher 0 United_States Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs Assistant_Secretary_of_State_for_South_and_Central_Asian_Affairs 0 0 0 0 0 0 Dhaka 0 0 0 
+101	0 0 Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 South_Asia South_Asia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+102	Richard_Boucher 0 0 0 0 Dhaka 0 0 0 0 0 0 0 Bangladesh 0 0 Politics_of_Bangladesh Politics_of_Bangladesh 0 0 0 0 0 0 0 
+103	Richard_Boucher 0 Bangladesh 0 0 0 0 0 Islam 0 0 Jamaat-ul-Mujahideen_Bangladesh Jamaat-ul-Mujahideen_Bangladesh Jamaat-ul-Mujahideen_Bangladesh 0 Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 Bangladesh 0 0 0 0 0 
+104	0 0 0 Bangladesh 0 0 0 0 0 0 0 0 0 0 Gross_domestic_product 0 Gross_domestic_product Gross_domestic_product Gross_domestic_product 0 0 0 
+105	Amman 0 0 0 0 Xinhua_News_Agency 0 
+106	0 0 0 0 Younis_Mahmoud Younis_Mahmoud 0 0 0 0 0 0 Mohammed_Nasser_Shakroun Mohammed_Nasser_Shakroun 0 Iraq 0 0 0 0 Palestine 0 0 0 AFC_Asian_Cup AFC_Asian_Cup 0 0 King_Abdullah_Stadium King_Abdullah_Stadium King_Abdullah_Stadium King_Abdullah_Stadium 0 Amman 0 Jordan 0 
+107	0 0 0 0 0 0 Younis_Mahmoud 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+108	Mohammed_Nasser_Shakroun 0 0 0 0 0 0 0 Iraq 0 0 0 0 0 0 0 0 0 0 0 0 
+109	0 0 0 0 0 0 0 0 0 Iraq 0 0 0 0 0 0 0 0 0 0 0 0 0 
+110	China 0 0 0 Singapore 0 0 0 0 0 0 0 0 0 0 0 0 0 
+111	Palestine 0 0 0 0 0 0 0 0 0 0 0 0 0 
+112	Palestine 0 Ramzi_Saleh Ramzi_Saleh 0 0 0 0 0 0 0 0 0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 Younis_Mahmoud 0 Emad_Mohammed Emad_Mohammed 0 0 0 0 
+113	0 Iraq 0 0 0 0 0 0 0 0 0 0 Ramzi_Saleh 0 0 0 0 0 0 0 Hawar_Mulla_Mohammed Hawar_Mulla_Mohammed Hawar_Mulla_Mohammed 0 0 0 0 0 
+114	Iraq 0 0 0 0 0 0 0 0 0 0 Younis_Mahmoud 0 0 Hawar_Mulla_Mohammed 0 0 0 0 0 0 0 0 0 
+115	0 0 0 0 0 0 0 0 0 0 Hawar_Mulla_Mohammed 0 0 0 0 0 0 0 0 0 0 0 0 Younis_Mahmoud 0 0 0 Iraqi_people 0 0 0 Qatar 0 0 0 0 0 0 Palestine 0 0 
+116	0 0 0 0 Iraq 0 Akram_Ahmad_Salman Akram_Ahmad_Salman 0 0 Mahdi_Karim Mahdi_Karim 0 0 0 0 0 0 0 0 0 0 0 0 Iraq 0 0 0 0 0 0 0 0 0 
+117	Younis_Mahmoud 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Ramzi_Saleh 0 
+118	0 0 0 0 0 0 0 Younis_Mahmoud 0 0 0 0 0 0 0 0 0 0 0 0 Ramzi_Saleh 0 0 0 Iraqi_people 0 0 0 0 
+119	0 0 0 0 0 Hawar_Mulla_Mohammed Hawar_Mulla_Mohammed Hawar_Mulla_Mohammed 0 0 0 0 0 0 0 0 0 Ramzi_Saleh 0 0 0 0 0 0 0 0 0 0 
+120	Younis_Mahmoud 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Mahdi_Karim Mahdi_Karim 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+121	0 0 0 0 Palestine 0 0 0 0 0 0 0 0 Fadi_Lafi Fadi_Lafi 0 0 0 0 0 0 0 0 0 
+122	Iraq 0 0 0 0 0 0 0 0 0 Mohammed_Nasser_Shakroun 0 0 0 0 0 0 Palestine 0 Saeb_Jendeya Saeb_Jendeya 0 0 0 0 0 0 0 0 0 
+123	Dhaka 0 0 0 0 Xinhua_News_Agency 0 
+124	Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Islamist_terrorists Islamist_terrorists 0 0 0 0 0 0 0 0 0 
+125	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jamaat-ul-Mujahideen_Bangladesh Jamaat-ul-Mujahideen_Bangladesh Jamaat-ul-Mujahideen_Bangladesh 0 Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+126	Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 Bangla_Bhai Bangla_Bhai 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+127	Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 0 Islam 0 0 Bangladesh 0 0 0 0 0 0 Muslim 0 0 
+128	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+129	0 0 0 0 0 0 Jamaat-ul-Mujahideen_Bangladesh 0 0 0 0 0 0 0 0 0 
+130	0 0 0 0 0 0 0 0 0 0 0 0 
+131	0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+132	0 0 0 0 0 0 0 
+133	Jamaat-e-Islami Jamaat-e-Islami Jamaat-e-Islami 0 0 0 0 0 0 0 0 0 0 0 Bangladesh_Nationalist_Party Bangladesh_Nationalist_Party Bangladesh_Nationalist_Party 0 Bangladesh_Nationalist_Party 0 0 Prime_Minister Prime_Minister Khaleda_Zia Khaleda_Zia 0 0 0 0 0 0 0 0 Baitul_Mukarram Baitul_Mukarram 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jamaat-ul-Mujahideen_Bangladesh 0 
+134	0 0 0 0 0 0 0 0 0 0 0 0 0 
+135	Communist_Party_of_Bangladesh Communist_Party_of_Bangladesh Communist_Party_of_Bangladesh Communist_Party_of_Bangladesh 0 0 0 0 0 0 0 0 0 0 0 0 Dhaka 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+136	Islami_Oikya_Jote Islami_Oikya_Jote Islami_Oikya_Jote 0 Islami_Oikya_Jote Islami_Oikya_Jote Islami_Oikya_Jote 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Bangladesh_Awami_League Bangladesh_Awami_League 0 0 0 0 0 0 0 0 Old_High_Court_Building,_Dhaka Old_High_Court_Building,_Dhaka Old_High_Court_Building,_Dhaka Old_High_Court_Building,_Dhaka 0 0 0 0 0 
+137	Jakarta 0 0 0 0 Xinhua_News_Agency 0 
+138	Indonesia 0 0 0 0 0 Avian_influenza Avian_influenza 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 World_Bank World_Bank 0 0 0 0 
+139	0 0 0 World_Bank World_Bank 0 0 0 0 Indonesia 0 0 0 0 0 0 0 Vice_President_of_Indonesia Vice_President_of_Indonesia Vice_President_of_Indonesia Jusuf_Kalla Jusuf_Kalla 0 0 0 0 0 0 
+140	0 0 Jusuf_Kalla 0 0 0 Indonesia 0 0 0 0 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 
+141	0 Jusuf_Kalla Jusuf_Kalla 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+142	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Indonesia 0 0 
+143	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+144	0 0 0 0 0 0 0 0 Indonesia 0 0 0 0 0 0 0 0 0 
+145	Indonesia 0 0 0 0 0 Bird_flu Bird_flu 0 0 Avian_influenza Avian_influenza 0 0 0 0 0 0 0 
+146	0 0 0 0 0 Jusuf_Kalla 0 0 Indonesia 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 Avian_influenza Avian_influenza 0 
+147	0 Indonesia 0 0 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 0 0 0 0 Influenza_A_virus_subtype_H5N1 0 0 0 0 0 0 Indonesia 0 0 0 0 0 Jusuf_Kalla 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Avian_influenza Avian_influenza Avian_influenza 0 
+148	0 0 0 World_Health_Organization World_Health_Organization World_Health_Organization 0 0 0 0 0 0 0 0 0 0 Bird_flu Bird_flu 0 0 0 0 0 0 
+149	Indonesia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 North_Sumatra North_Sumatra 0 0 0 0 0 0 0 0 0 0 0 0 
+150	0 0 0 0 0 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 Bird_flu Bird_flu 0 
+151	0 0 Indonesia 0 0 0 0 0 0 0 0 Aburizal_Bakrie Aburizal_Bakrie 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Indonesian_rupiah 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 Indonesia 0 
+152	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+153	0 0 Chairman 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Indonesia 0 0 0 0 0 United_States_dollar United_States_dollar United_States_dollar 0 0 0 0 0 0 0 0 World_Health_Organization World_Health_Organization World_Health_Organization 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+154	0 0 0 Indonesia 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 
+155	Hong_Kong Hong_Kong 0 0 0 0 Xinhua_News_Agency 0 
+156	Cathay_Pacific Cathay_Pacific Cathay_Pacific 0 0 0 0 0 0 Airbus_A330 Airbus_A330 0 0 0 0 0 0 0 0 0 0 Hong_Kong_International_Airport Hong_Kong_International_Airport Hong_Kong_International_Airport Hong_Kong_International_Airport 0 0 0 0 0 
+157	0 0 0 0 0 0 0 Airbus 0 0 France 0 Rafael_Hui Rafael_Hui 0 Chief_Secretary_for_Administration Chief_Secretary_for_Administration Chief_Secretary_for_Administration Chief_Secretary_for_Administration 0 0 Government_of_Hong_Kong Government_of_Hong_Kong Government_of_Hong_Kong Government_of_Hong_Kong 0 0 Cathay_Pacific Cathay_Pacific Chief_executive_officer Chief_executive_officer 0 0 0 
+158	0 0 0 0 0 Cathay_Pacific Cathay_Pacific 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+159	0 0 0 0 0 0 0 0 0 Cathay_Pacific Cathay_Pacific 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Hong_Kong_people Hong_Kong_people Hong_Kong_people 0 
+160	Cathay_Pacific Cathay_Pacific Chief_executive_officer Chief_executive_officer 0 0 0 0 0 0 0 0 0 0 0 0 Cathay_Pacific Cathay_Pacific 0 Hong_Kong Hong_Kong 0 0 0 0 0 0 0 0 0 0 
+161	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Hong_Kong Hong_Kong 0 0 0 0 0 0 0 0 
+162	Beijing 0 0 0 0 Xinhua_News_Agency 0 
+163	0 0 0 0 0 0 0 United_States United_States 0 China 0 0 Korean_Air Korean_Air Korean_Air Korean_Air Korean_Air Korean_Air 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Beijing 0 
+164	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+165	0 0 0 0 0 International_Air_Transport_Association International_Air_Transport_Association International_Air_Transport_Association International_Air_Transport_Association 0 International_Air_Transport_Association 0 0 0 0 0 0 0 0 0 China 0 0 United_States United_States 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+166	Korean_Air Korean_Air 0 0 0 0 0 0 South_Korea South_Korea South_Korea 0 0 0 China 0 0 0 0 0 0 
+167	0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 United_States United_States 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Korean_Air Korean_Air 0 0 0 0 
+168	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+169	0 South_Korea 0 0 0 0 0 0 United_States 0 0 0 0 0 China 0 0 0 0 0 0 
+170	0 0 0 0 0 0 Korean_Air Korean_Air 0 0 0 0 0 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+171	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 Korean_Air Korean_Air 0 0 0 0 0 0 0 0 0 0 0 0 0 
+172	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Asia 0 0 North_America North_America 0 0 
+173	Cairo 0 0 0 0 Xinhua_News_Agency 0 
+174	Ministry_of_Culture_(Egypt) Ministry_of_Culture_(Egypt) Ministry_of_Culture_(Egypt) Farouk_Hosny Farouk_Hosny 0 0 0 0 0 0 Egyptians 0 0 0 0 0 0 0 0 New_York New_York Christie's 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+175	0 0 0 0 German 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Amenemhat_III Amenemhat_III 0 0 0 0 0 Egypt 0 0 0 0 0 0 0 0 Egypt 0 0 Dahshur 0 0 0 0 0 0 0 0 0 Cairo 0 0 0 0 0 
+176	0 0 Interpol 0 0 0 Egypt 0 0 0 Christie's 0 0 0 0 0 0 0 0 0 U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement U.S._Immigration_and_Customs_Enforcement 0 
+177	0 0 0 0 Egypt 0 0 New_York New_York 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 United_States United_States 0 0 0 0 0 Secretary-General Secretary-General 0 Egypt 0 Supreme_Council_of_Antiquities Supreme_Council_of_Antiquities Supreme_Council_of_Antiquities Supreme_Council_of_Antiquities Zahi_Hawass Zahi_Hawass 0 0 0 0 0 
+178	Egypt 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+179	Beijing 0 0 0 0 Xinhua_News_Agency 0 
+180	0 Government_of_China Government_of_China 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 Peru 0 0 0 0 0 Ministry_of_Foreign_Affairs_of_the_People%27s_Republic_of_China Ministry_of_Foreign_Affairs_of_the_People%27s_Republic_of_China Ministry_of_Foreign_Affairs_of_the_People%27s_Republic_of_China 0 Jiang_Yu Jiang_Yu 0 0 0 0 
+181	China 0 0 0 United_States_dollar United_States_dollar 0 0 Red_Cross Red_Cross 0 0 0 0 0 0 Jiang_Yu 0 0 
+182	0 0 0 0 0 0 Richter_magnitude_scale Richter_magnitude_scale 0 0 Peru 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+183	0 China Diplomatic_mission 0 Peru 0 0 0 0 0 0 Chinese_people 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Lima 0 
+184	President_of_the_People%27s_Republic_of_China President_of_the_People%27s_Republic_of_China Hu_Jintao Hu_Jintao 0 0 0 0 0 0 0 0 0 Peru 0 Alan_Garcia Alan_Garcia 0 0 0 0 0 
+185	Brno 0 0 0 0 Xinhua_News_Agency 0 
+186	MotoGP_Motorcycle_World_Champions MotoGP_Motorcycle_World_Champions 0 Casey_Stoner Casey_Stoner 0 0 0 0 0 0 0 Ducati 0 0 0 Czech_Republic_motorcycle_Grand_Prix Czech_Republic_motorcycle_Grand_Prix Czech_Republic_motorcycle_Grand_Prix Czech_Republic_motorcycle_Grand_Prix 0 0 0 
+187	0 0 0 Australia 0 0 0 0 0 0 0 0 0 
+188	0 0 0 0 0 0 0 0 0 0 0 0 
+189	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Casey_Stoner 0 0 
+190	United_States_of_America John_Hopkins_(motorcycle_racer) John_Hopkins_(motorcycle_racer) 0 0 Suzuki 0 0 0 0 0 Casey_Stoner 0 0 0 0 
+191	John_Hopkins_(motorcycle_racer) 0 0 0 0 0 Nicky_Hayden Nicky_Hayden 0 0 0 
+192	Phnom_Penh Phnom_Penh 0 0 0 0 Xinhua_News_Agency 0 
+193	0 0 0 Cambodia 0 Thailand 0 0 Association_of_Southeast_Asian_Nations 0 Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Phnom_Penh Phnom_Penh 0 
+194	0 0 0 0 0 0 0 0 Olympic_Stadium_(Phnom_Penh) Olympic_Stadium_(Phnom_Penh) 0 0 0 0 0 0 0 0 0 
+195	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+196	0 0 0 0 0 0 0 0 0 0 0 0 0 
+197	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+198	0 0 0 0 0 0 0 0 0 0 0 0 
+199	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+200	0 0 Politics_of_Cambodia Politics_of_Cambodia 0 0 0 0 0 0 0 0 0 0 Olympic_Stadium_(Phnom_Penh) Olympic_Stadium_(Phnom_Penh) 0 0 0 0 0 0 
+201	0 0 0 0 Cambodia 0 0 0 0 0 0 0 0 0 0 0 0 ASEAN_Football_Federation ASEAN_Football_Federation ASEAN_Football_Federation 0 ASEAN_Football_Federation 0 0 0 Asian_Football_Confederation Asian_Football_Confederation Asian_Football_Confederation 0 Asian_Football_Confederation 0 0 0 FIFA 0 0 0 0 0 0 0 0 0 
+202	0 0 0 0 0 0 0 0 0 Indonesia 0 Brunei 0 0 
+203	0 0 Philippines 0 0 Association_of_Southeast_Asian_Nations 0 0 0 0 0 0 0 
+204	0 0 Association_of_Southeast_Asian_Nations 0 0 0 0 0 0 0 0 Thailand 0 0 Burma 0 0 0 0 0 0 0 0 0 0 Vietnam 0 0 Vietnam 0 0 0 
+205	Washington,_D.C. 0 0 0 0 Xinhua_News_Agency 0 
+206	United_States United_States United_States 0 0 0 0 0 Palestinian_National_Security_Forces Palestinian_National_Security_Forces Palestinian_National_Security_Forces 0 0 0 0 0 0 0 0 0 0 United_States_Department_of_State United_States_Department_of_State 0 0 0 0 0 
+207	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Palestinian_National_Security_Forces Palestinian_National_Security_Forces 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+208	0 0 0 0 0 0 0 Palestinian_National_Authority Palestinian_National_Authority 0 0 0 0 0 0 0 Palestinian_people Palestinian_people 0 0 0 0 0 0 0 0 0 
+209	0 0 0 0 0 0 0 0 0 0 0 0 0 0 United_States United_States 0 0 Palestinian_National_Authority Palestinian_National_Authority 0 0 0 0 0 West_Bank West_Bank 0 United_States_Secretary_of_State United_States_Secretary_of_State United_States_Secretary_of_State United_States_Secretary_of_State Condoleezza_Rice Condoleezza_Rice 0 0 0 0 
+210	Condoleezza_Rice 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 0 0 State_of_Palestine 0 0 0 0 0 President_of_the_State_of_Palestine President_of_the_State_of_Palestine Mahmoud_Abbas Mahmoud_Abbas 0 0 0 
+211	Kampala 0 0 0 0 Xinhua_News_Agency 0 
+212	Uganda 0 0 Kassim_Ouma Kassim_Ouma Kassim_Ouma Kassim_Ouma Kassim_Ouma Kassim_Ouma 0 0 0 0 0 0 0 Sergio_Mora Sergio_Mora Sergio_Mora Sergio_Mora Sergio_Mora Sergio_Mora Sergio_Mora 0 
+213	0 0 0 0 0 0 0 0 0 0 0 0 Las_Vegas Las_Vegas 0 
+214	0 United_States Uganda 0 0 0 0 0 0 0 0 0 0 0 0 0 0 World_Boxing_Council 0 World_Boxing_Organization 0 Jermain_Taylor Jermain_Taylor 0 0 0 
+215	0 0 0 0 0 0 0 0 0 0 West_Palm_Beach,_Florida West_Palm_Beach,_Florida West_Palm_Beach,_Florida 0 Philadelphia 0 0 0 0 0 0 0 0 0 
+216	0 0 0 0 Florida 0 0 0 0 0 0 0 0 0 0 Cubans 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Kassim_Ouma 0 0 0 0 0 0 0 0 
+217	Kassim_Ouma 0 0 0 0 0 0 0 0 World_Boxing_Organization 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+218	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+219	0 0 0 0 0 0 0 0 Sergio_Mora 0 0 0 0 0 0 0 0 0 0 0 Kassim_Ouma 0 
+220	Kassim_Ouma 0 Verno_Phillips Verno_Phillips 0 0 0 0 0 0 Uganda 0 0 0 0 0 0 0 0 
+221	0 0 0 0 0 International_Boxing_Federation 0 0 Russia Roman_Karmazin Roman_Karmazin 0 0 0 
+222	Addis_Ababa Addis_Ababa 0 0 0 0 Xinhua_News_Agency 0 
+223	Ethiopia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 CNN 0 0 0 0 
+224	0 0 United_States 0 Beyoncé_Knowles Beyoncé_Knowles 0 0 0 0 0 0 0 0 0 Janet_Jackson Janet_Jackson 0 0 50_Cent 50_Cent 0 0 0 0 0 0 0 0 0 0 0 0 Addis_Ababa Addis_Ababa 0 0 0 0 0 0 0 0 
+225	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Haile_Gebrselassie Haile_Gebrselassie 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Bonga 0 0 0 Coffea_arabica Coffea_arabica Coffea_arabica 0 0 
+226	Ethiopia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+227	0 0 0 0 0 0 0 
+228	United_Nations United_Nations United_Nations 0 0 0 0 0 0 Ethiopia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Ethiopia 0 0 
+229	Ethiopia 0 0 0 Julian_calendar Julian_calendar 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+230	0 Ethiopian_calendar Ethiopian_calendar 0 0 0 0 0 Gregorian_calendar Gregorian_calendar 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2117	Islamabad 0 0 0 0 Xinhua_News_Agency 0 
+2118	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Pakistan 0 North_Waziristan North_Waziristan 0 0 0 0 0 0 0 0 0 
+2119	0 0 0 0 0 0 0 0 0 0 Mir_Ali,_Pakistan Mir_Ali,_Pakistan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Waheed_Arshad Waheed_Arshad 0 0 Geo_TV Geo_TV 0 0 
+2120	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2121	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Geo_TV 0 0 0 0 0 
+2122	0 0 0 0 0 0 0 0 0 0 0 0 0 Geo_TV 0 0 
+2123	0 0 0 0 0 Mir_Ali,_Pakistan Mir_Ali,_Pakistan 0 Miranshah 0 0 0 0 North_Waziristan North_Waziristan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2124	0 0 Pakistan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2125	Chengdu 0 0 0 0 Xinhua_News_Agency 0 
+2126	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 Sichuan Sichuan 0 0 0 0 0 0 0 0 
+2127	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2128	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Wolong_National_Nature_Reserve Wolong_National_Nature_Reserve Wolong_National_Nature_Reserve 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2129	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2130	0 0 0 0 0 0 0 0 0 0 0 0 
+2131	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2132	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2133	0 0 0 0 0 0 0 0 0 0 0 0 0 
+2134	0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2135	0 0 0 0 0 0 0 0 0 
+2136	China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2137	0 0 0 0 0 0 0 0 0 0 0 
+2138	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 
+2139	0 0 0 0 0 0 0 0 
+2140	Bangkok 0 0 0 0 Xinhua_News_Agency 0 
+2141	Thailand 0 Election_Commission_of_Thailand Election_Commission_of_Thailand 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2142	Amman 0 0 0 0 Xinhua_News_Agency 0 
+2143	Jordan 0 Abdullah_II_of_Jordan Abdullah_II_of_Jordan Abdullah_II_of_Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Al_Jazeera 0 0 
+2144	Macau 0 0 0 0 Xinhua_News_Agency 0 
+2145	Cuba 0 China 0 0 0 Macau 0 0 0 2007_FIVB_World_Grand_Prix 2007_FIVB_World_Grand_Prix 2007_FIVB_World_Grand_Prix 2007_FIVB_World_Grand_Prix 2007_FIVB_World_Grand_Prix 2007_FIVB_World_Grand_Prix 0 0 0 0 
+2146	0 0 0 0 Xu_Yunli Xu_Yunli 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2147	0 Cubans 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2148	0 0 0 0 0 0 0 0 0 0 Chinese_people 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2149	Cuba 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2150	0 Cubans 0 0 0 0 0 0 0 0 0 0 0 
+2151	0 Netherlands 0 0 United_States United_States 0 0 0 0 0 0 0 0 0 0 0 Macau 0 0 0 0 0 0 0 
+2152	China 0 Cuba 0 0 United_States 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2153	Baghdad 0 0 0 0 Xinhua_News_Agency 0 
+2154	0 0 0 0 0 0 0 0 0 0 Baghdad 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2155	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Xinhua_News_Agency 0 0 0 0 0 
+2156	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2157	0 0 0 0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 0 0 Iraq 0 0 
+2158	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2159	0 0 0 Baghdad 0 0 0 0 0 0 0 0 0 0 0 Iraqi_people 0 0 0 
+2160	Jinan 0 0 0 0 Xinhua_News_Agency 0 
+2161	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 Shandong Shandong 0 
+2162	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Zouping_County Zouping_County 0 0 0 0 0 0 
+2163	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2164	Amman 0 0 0 0 Xinhua_News_Agency 0 
+2165	0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2166	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2167	0 0 0 0 0 0 0 0 0 Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) 0 0 0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2168	0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 Jordan 0 0 0 
+2169	0 0 0 0 0 Iraqi_people 0 0 Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2170	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2171	0 0 0 0 0 0 0 0 0 0 0 0 0 
+2172	Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) Ministry_of_Higher_Education_and_Scientific_Research_(Jordan) 0 0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 0 0 Jordan 0 0 0 0 0 0 0 0 0 0 0 
+2173	0 0 0 0 0 0 0 Iraqi_people 0 0 0 0 0 0 Syria 0 Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jordan 0 0 0 0 0 
+2174	0 0 0 0 UNICEF UNICEF UNICEF UNICEF 0 UNICEF 0 0 0 0 0 0 0 0 0 United_Nations_High_Commissioner_for_Refugees United_Nations_High_Commissioner_for_Refugees United_Nations_High_Commissioner_for_Refugees United_Nations_High_Commissioner_for_Refugees United_Nations_High_Commissioner_for_Refugees 0 0 0 0 0 0 0 Jordan 0 Syria 0 Egypt 0 Lebanon 0 0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 0 0 
+2175	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2176	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2177	0 0 0 0 Iraqi_people 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2178	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jordanian_dinar 0 0 0 0 0 0 United_States_dollar United_States_dollar 0 0 0 0 
+2179	Harare 0 0 0 0 Xinhua_News_Agency 0 
+2180	0 Zimbabwe 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2181	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2182	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2183	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2184	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2185	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2186	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2187	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2188	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Sub-Saharan_Africa Sub-Saharan_Africa 0 
+2189	0 0 0 0 0 0 0 0 0 0 0 0 University_of_Zimbabwe University_of_Zimbabwe University_of_Zimbabwe 0 Midlands_State_University Midlands_State_University Midlands_State_University 0 Great_Zimbabwe_University Great_Zimbabwe_University Great_Zimbabwe_University 0 0 0 0 0 0 0 0 0 0 
+2190	Beijing 0 0 0 0 Xinhua_News_Agency 0 
+2191	Slovaks 0 Peter_Hochschorner Peter_Hochschorner 0 Pavol_Hochschorner Pavol_Hochschorner 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Beijing 0 China 0 0 0 0 0 0 0 
+2192	0 
+2193	French_people Cédric_Forgit Cédric_Forgit 0 Martin_Braud Martin_Braud 0 0 0 0 Germans Felix_Michel Felix_Michel 0 Sebastian_Piersig Sebastian_Piersig 0 0 0 
+2194	Beijing 0 0 0 0 Xinhua_News_Agency 0 
+2195	Chinese_people 0 0 0 0 0 0 0 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 
+2196	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Shunyi_Olympic_Rowing-Canoeing_Park Shunyi_Olympic_Rowing-Canoeing_Park Shunyi_Olympic_Rowing-Canoeing_Park Shunyi_Olympic_Rowing-Canoeing_Park 0 
+2197	0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2198	0 0 0 0 Li_Jingjing Li_Jingjing 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2199	0 0 0 0 China 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Chinese_people 0 0 0 0 0 0 0 
+2200	0 0 0 0 0 Chinese_people 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2008_Summer_Olympics 2008_Summer_Olympics 0 
+2201	Kabul 0 0 0 0 Xinhua_News_Agency 0 
+2202	0 Germans 0 0 0 0 0 0 Kabul 0 0 0 0 0 0 0 0 0 Afghan 0 0 0 0 0 0 0 
+2203	0 Germans 0 0 0 0 0 0 0 0 0 0 0 0 0 Afghan 0 0 
+2204	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2205	0 Berlin 0 0 Germans 0 0 0 0 0 0 0 0 0 0 0 0 0 Germany 0 0 0 Kabul 0 0 0 0 0 0 Germany 0 0 
+2206	Bangkok 
+2207	0 0 0 0 Thailand 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2208	0 0 Rajabhat_University_system Rajabhat_University_system Rajabhat_University_system Rajabhat_University_system 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2209	0 0 0 
+2210	Baghdad 0 French_people 0 0 Bernard_Kouchner Bernard_Kouchner 0 0 0 0 0 Baghdad 0 0 0 French_people 0 0 0 0 0 0 0 
+2211	0 French_people 0 0 0 0 Baghdad 0 0 0 0 0 0 0 0 0 0 0 French_people 0 0 0 United_States 0 0 Iraq 0 0 0 
+2212	0 0 0 
+2213	Washington,_D.C. 0 Space_Shuttle_Endeavour Space_Shuttle_Endeavour Space_Shuttle_Endeavour 0 0 0 International_Space_Station International_Space_Station International_Space_Station 0 International_Space_Station 0 0 0 0 0 0 0 0 0 Earth 0 0 0 NASA_TV NASA_TV 0 
+2214	0 0 0 0 Houston 0 0 0 0 0 0 0 Christopher_C._Kraft_Jr._Mission_Control_Center Christopher_C._Kraft_Jr._Mission_Control_Center 0 
+2215	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 International_Space_Station 0 0 0 0 0 0 0 0 0 0 Pacific_Ocean Pacific_Ocean 0 
+2216	0 Space_Shuttle_Endeavour 0 0 0 
+2217	Amman 0 Jordan 0 Abdullah_II_of_Jordan Abdullah_II_of_Jordan Abdullah_II_of_Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2218	0 Parliament_of_Jordan Parliament_of_Jordan 0 0 0 Parliament_of_Jordan Parliament_of_Jordan Parliament_of_Jordan Parliament_of_Jordan 0 0 Parliament_of_Jordan Parliament_of_Jordan Parliament_of_Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2219	0 Parliament_of_Jordan 0 
+2220	Tokyo 0 0 0 0 Xinhua_News_Agency 0 
+2221	Japanese_people 0 0 Shinz?_Abe Shinz?_Abe 0 Tokyo 0 0 0 0 0 0 0 Indonesia 0 India 0 Malaysia 0 
+2222	0 Jakarta 0 0 0 0 0 Shinz?_Abe 0 0 0 0 0 Indonesia 0 Susilo_Bambang_Yudhoyono Susilo_Bambang_Yudhoyono Susilo_Bambang_Yudhoyono 0 0 0 0 0 Japan 0 0 0 0 0 Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations Association_of_Southeast_Asian_Nations 0 Association_of_Southeast_Asian_Nations 0 0 0 0 0 0 Kyodo_News Kyodo_News 0 
+2223	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Japanese_people 0 0 0 0 0 0 
+2224	Shinz?_Abe 0 0 0 New_Delhi New_Delhi 0 0 0 
+2225	0 0 0 0 0 0 0 0 0 0 Parliament_of_India Parliament_of_India 0 0 0 0 0 0 Indian_people 0 0 Manmohan_Singh Manmohan_Singh 0 0 0 0 0 
+2226	0 0 India 0 0 0 Japan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Japanese_people 0 0 0 
+2227	0 Kuala_Lumpur Kuala_Lumpur 0 0 0 0 0 Shinz?_Abe 0 Malaysia 0 0 Abdullah_Ahmad_Badawi Abdullah_Ahmad_Badawi Abdullah_Ahmad_Badawi 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Kyodo_News 0 0 
+2228	0 0 0 0 0 0 0 0 Shinz?_Abe 0 0 0 0 Japan 0 India 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Japan 0 Association_of_Southeast_Asian_Nations 0 0 0 0 
+2229	0 0 0 0 0 0 0 0 0 0 Japan_Business_Federation Japan_Business_Federation Japan_Business_Federation 0 Fujio_Mitarai Fujio_Mitarai 0 0 0 Shinz?_Abe 0 0 0 0 0 0 
+2230	Tehran 0 0 0 0 Xinhua_News_Agency 0 
+2231	0 0 0 0 Iran 0 0 0 0 0 0 0 0 0 0 0 0 0 Iranian_peoples 0 0 0 0 Iran 0 0 Fars_News_Agency Fars_News_Agency Fars_News_Agency 0 0 
+2232	0 0 0 0 0 0 0 0 0 0 0 0 Chah_Bahar 0 0 0 0 Iranshahr_(city) 0 0 0 0 0 0 0 Sistan_and_Baluchestan_Province Sistan_and_Baluchestan_Province Sistan_and_Baluchestan_Province 0 0 0 Pakistan 0 Afghanistan 0 0 0 0 0 
+2233	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2234	0 0 0 0 Iranian_Students_News_Agency Iranian_Students_News_Agency Iranian_Students_News_Agency 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2235	0 0 0 0 Islamic_Republic_News_Agency Islamic_Republic_News_Agency Islamic_Republic_News_Agency 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2236	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Pakistan 0 
+2237	0 Sistan_and_Baluchestan_Province Sistan_and_Baluchestan_Province 0 0 0 0 0 Kerman_Province 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Iran 0 0 0 0 Sunni 0 0 Jundallah 0 
+2238	0 0 0 0 Belgium 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Bam,_Iran 0 Kerman_Province 0 
+2239	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2338	Beijing 0 0 0 0 Xinhua_News_Agency 0 
+2339	Australia 0 Cadel_Evans Cadel_Evans 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2340	0 0 Tour_de_France Tour_de_France Tour_de_France 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Michael_Rogers_(cyclist) Michael_Rogers_(cyclist) 0 0 0 0 0 0 0 
+2341	0 0 0 0 0 0 0 0 
+2342	0 0 0 0 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Cadel_Evans 0 
+2343	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Cadel_Evans 0 
+2344	0 0 0 0 0 0 0 0 0 0 2008_Summer_Olympics 2008_Summer_Olympics 0 0 0 Australians 0 0 0 0 0 0 0 0 Olympic_Games 0 0 
+2345	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Beijing Olympic_Games Olympic_Games 0 
+2346	0 0 Tour_de_France Tour_de_France Tour_de_France 0 0 0 0 0 Beijing 0 0 0 Cadel_Evans 0 
+2347	0 0 0 0 0 Alexandr_Dyachenko Alexandr_Dyachenko 0 Kazakhstan 0 0 0 0 0 
+2348	Amman 0 August 0 0 Xinhua_News_Agency 0 
+2349	Jordan 0 Abdullah_II_of_Jordan Abdullah_II_of_Jordan Abdullah_II_of_Jordan 0 0 0 0 0 List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe List_of_Presidents_of_the_Parliamentary_Assembly_of_the_Council_of_Europe 0 0 0 René_van_der_Linden René_van_der_Linden René_van_der_Linden René_van_der_Linden 0 0 0 0 0 0 0 0 0 0 0 0 Jordan 0 0 Parliamentary_Assembly_of_the_Council_of_Europe 0 
+2350	Abdullah_II_of_Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Jordan 0 0 0 Petra_(agency) 0 
+2351	0 0 0 0 0 0 0 European_Union 0 0 0 0 0 0 0 Middle_East Middle_East 0 0 0 0 0 0 0 0 0 0 United_States President_of_the_United_States George_W._Bush George_W._Bush George_W._Bush 0 
+2352	René_van_der_Linden 0 0 0 0 0 0 0 0 0 0 Jordan 0 0 0 0 0 0 0 0 0 0 0 0 0 Abdullah_II_of_Jordan 0 0 0 0 0 0 Parliamentary_Assembly_of_the_Council_of_Europe 0 
+2353	0 Parliamentary_Assembly_of_the_Council_of_Europe 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Israel 0 0 Palestine 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Parliamentary_Assembly_of_the_Council_of_Europe 0 0 0 World_Wide_Web 0 0 
+2354	0 0 0 0 George_W._Bush 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Israel 0 0 Palestine 0 0 0 0 Arab_people 0 0 0 0 0 0 0 Middle_East Middle_East 0 0 0 
+2355	Antananarivo 0 0 0 0 Xinhua_News_Agency 0 
+2356	0 0 Indian_Ocean_Island_Games Indian_Ocean_Island_Games Indian_Ocean_Island_Games Indian_Ocean_Island_Games 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2357	Madagascar 0 0 Charles_Rabemananjara Charles_Rabemananjara 0 0 0 0 0 0 0 0 0 0 0 Mahamasina_Municipal_Stadium 0 0 0 
+2358	0 0 0 Marc_Ravalomanana Marc_Ravalomanana 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 0 Olympic_Games Olympic_Games 0 Beijing 0 0 0 0 0 0 0 
+2359	Marc_Ravalomanana 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 China 0 0 0 Olympic_Games Olympic_Games 0 
+2360	Charles_Rabemananjara 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Indian_Ocean_Island_Games 0 0 0 0 0 
+2361	0 0 0 0 0 0 0 0 0 0 0 0 Madagascar 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Réunion 0 0 0 0 0 0 0 0 0 0 0 0 
+2362	Mauritius 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Seychelles 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2363	0 0 0 0 0 0 Madagascar 0 0 0 0 0 Indian_Ocean_Island_Games 0 0 0 0 
+2364	0 0 0 0 0 Maldives 0 0 Indian_Ocean_Island_Games 0 0 0 0 0 0 0 Comoros 0 Madagascar 0 Mauritius 0 Seychelles 0 0 France 0 0 0 Mayotte 0 Reunion 0 
+2365	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Indian_Ocean_Island_Games 0 0 0 0 0 Seychelles 0 0 0 
+2366	0 0 0 0 0 0 0 0 0 0 0 0 
+2367	Berlin 0 0 0 0 Xinhua_News_Agency 0 
+2368	0 Foreign_Office_(Germany) Foreign_Office_(Germany) Foreign_Office_(Germany) 0 0 0 0 Germany 0 0 0 0 0 0 Afghan 0 0 Kabul 0 0 0 0 0 
+2369	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2370	0 Germany 0 N-tv 0 0 0 0 0 0 0 0 0 Germany 0 0 Kabul 0 
+2371	Afghan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Germany 0 0 0 0 
+2372	0 0 0 0 0 0 0 0 0 0 0 
+2373	0 0 0 0 0 0 Germans 0 0 Christina_Meier_(hostage)#Germany 0 0 0 0 0 0 0 0 0 0 Afghan 0 0 0 0 0 0 0 
+2374	0 0 0 0 Germany 0 0 0 0 0 0 Afghanistan 0 
+2375	0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2376	Kuala_Lumpur Kuala_Lumpur 0 0 0 0 Xinhua_News_Agency 0 
+2377	Badminton_World_Federation Badminton_World_Federation Badminton_World_Federation 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2378	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Badminton_World_Federation Badminton_World_Federation Badminton_World_Federation 0 0 0 0 0 0 0 
+2379	0 0 0 0 0 0 0 0 0 0 
+2380	0 0 0 0 0 0 Badminton_World_Federation 0 0 0 0 Punch_Gunalan Punch_Gunalan Punch_Gunalan 0 0 0 0 0 0 0 0 Badminton_World_Federation 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Punch_Gunalan 0 0 0 0 0 
+2381	Punch_Gunalan 0 0 0 0 0 0 0 0 0 Badminton_World_Federation 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2382	0 0 0 0 0 0 0 0 0 0 
+2383	0 0 0 0 0 Badminton_World_Federation Asia 0 0 0 0 0 0 0 0 0 0 0 0 Badminton_World_Federation 0 0 0 0 
+2384	0 0 0 0 0 0 0 0 0 0 
+2385	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2386	0 0 0 0 0 0 0 0 0 Badminton_World_Federation 0 0 0 0 0 0 0 0 Olympic_sports 0 0 0 0 
+2387	0 Punch_Gunalan 0 0 0 0 0 0 0 Olympic_sports 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2388	0 0 0 0 0 0 
+2389	Qingdao 0 East_China East_China 0 0 0 0 Xinhua_News_Agency 0 
+2390	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Qingdao 0 0 0 0 0 0 
+2391	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2392	0 0 0 0 0 0 0 0 0 0 
+2393	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2394	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2395	0 0 0 0 0 0 0 0 0 
+2396	0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2397	Qingdao 0 0 0 0 0 0 0 0 2008_Summer_Olympics 2008_Summer_Olympics 2008_Summer_Olympics 0 0 0 
+2398	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2399	Lisbon 0 0 0 0 Xinhua_News_Agency 0 
+2400	0 0 0 European_Union European_Union 0 European_Union 0 0 0 0 0 0 Peru 0 0 0 0 0 0 0 0 South_America South_America 0 0 0 0 0 0 0 0 0 0 0 0 
+2401	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Lima 0 0 0 0 0 0 Ica,_Peru 0 Pisco,_Peru 0 Chincha_Province 0 0 0 0 Huancavelica 0 0 
+2402	0 0 0 0 0 0 0 0 Peru 0 0 0 0 0 0 0 0 0 
+2403	Portugal 0 0 0 0 0 0 European_Union 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Peru 0 0 0 0 0 0 
+2404	Dar_es_Salaam Dar_es_Salaam Dar_es_Salaam 0 0 0 0 Xinhua_News_Agency 0 
+2405	0 0 0 0 0 0 Richter_magnitude_scale 0 0 0 Tanzania 0 Arusha 0 0 0 0 0 0 0 0 0 0 0 0 
+2406	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2407	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Arusha 0 0 0 0 0 0 0 0 0 0 
+2408	Arusha 0 0 0 0 0 Tanzania 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2409	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Ol_Doinyo_Lengai Ol_Doinyo_Lengai Ol_Doinyo_Lengai 0 0 0 0 0 0 East_Africa East_Africa 0 
+2410	0 0 0 Tanzania 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2411	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2412	0 0 0 Ol_Doinyo_Lengai Ol_Doinyo_Lengai Ol_Doinyo_Lengai 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2413	Islamabad 0 0 0 0 Xinhua_News_Agency 0 
+2414	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Pakistan 0 0 Karachi 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2415	0 0 0 0 0 0 0 0 0 Pakistan_Merchant_Navy Pakistan_Merchant_Navy Pakistan_Merchant_Navy Pakistan_Merchant_Navy 0 Pakistan_Merchant_Navy 0 0 0 0 0 0 0 0 0 0 
+2416	0 0 Pakistan_Navy Pakistan_Navy 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Associated_Press_of_Pakistan Associated_Press_of_Pakistan Associated_Press_of_Pakistan Associated_Press_of_Pakistan 0 Associated_Press_of_Pakistan 0 0 0 
+2417	0 0 0 Pakistan_Merchant_Navy 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2418	0 0 0 0 0 0 
+2419	0 0 0 0 0 0 0 0 0 0 0 0 0 Pakistan_Merchant_Navy 0 0 0 0 0 0 0 0 0 0 0 
+2420	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2421	0 0 0 0 0 0 0 0 0 0 0 0 
+2422	Kunming 0 0 0 0 Xinhua_News_Agency 0 0 0 0 0 0 0 0 0 0 0 0 China 0 Yunnan 0 0 0 0 0 0 0 0 0 
+2423	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2424	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Thailand 0 0 0 0 0 0 
+2425	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Burma 0 0 China 0 Guangdong 0 Hong_Kong Hong_Kong 0 
+2426	0 0 0 0 0 0 0 0 0 0 0 0 0 
+2427	Abuja 0 0 0 0 Xinhua_News_Agency 0 
+2428	Nigeria 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2429	0 0 0 0 0 0 0 0 0 0 0 0 Nigeria 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2430	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2431	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Lagos 0 Port_Harcourt Port_Harcourt 0 Ibadan 0 Kaduna 0 Kano 0 0 Enugu 0 0 0 
+2432	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2433	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2434	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2435	0 0 0 0 0 0 0 0 0 0 0 0 0 0 Niger_Delta Niger_Delta 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2436	Beijing 0 0 0 0 Xinhua_News_Agency 0 
+2437	Japan 0 0 0 France 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2438	0 0 0 0 0 France 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Olympic_Games 0 0 0 0 Beijing 0 
+2439	Japan 0 Hayato_Sakamoto Hayato_Sakamoto 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 France 0 0 0 0 0 
+2440	0 0 Takahiro_Okada Takahiro_Okada 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2441	Japan 0 0 Senichi_Hoshino Senichi_Hoshino 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2442	0 0 0 0 0 0 0 0 0 0 0 0 0 0 France 0 0 0 0 0 0 0 0 0 Japan 0 0 0 0 0 
+2443	Senichi_Hoshino 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Japan 0 0 0 0 0 0 0 0 0 0 0 
+2444	Japan 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2445	Takahiro_Okada Takahiro_Okada 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2446	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 France 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2447	0 0 0 0 
+2448	Tianjin 0 0 0 0 Xinhua_News_Agency 0 0 China 0 0 0 0 0 0 Australia 0 0 0 0 0 0 0 0 0 0 Tianjin_Olympic_Center_Stadium Tianjin_Olympic_Center_Stadium 0 0 0 0 0 0 0 0 0 0 0 0 Denmark 0 0 0 0 0 FIFA_Women%27s_World_Cup FIFA_Women%27s_World_Cup FIFA_Women%27s_World_Cup FIFA_Women%27s_World_Cup FIFA_Women%27s_World_Cup 0 
+2449	0 0 0 0 0 0 0 0 0 
+2450	0 0 0 0 0 0 0 0 0 0 0 0 0 
+2451	0 0 0 0 0 0 0 0 0 China 0 Sweden 0 0 0 0 0 0 0 
+2452	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 FIFA_Women%27s_World_Cup FIFA_Women%27s_World_Cup 0 0 
+2453	0 0 0 0 0 0 0 Australia 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2454	0 0 0 0 0 0 0 0 0 0 China 0 0 FIFA_Women%27s_World_Cup FIFA_Women%27s_World_Cup 0 0 0 Australia 0 Tom_Sermanni Tom_Sermanni 0 
+2455	0 0 Heather_Garriock Heather_Garriock 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Caitlin_Munoz Caitlin_Munoz 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2456	Collette_McCallum Collette_McCallum 0 0 0 0 China 0 0 0 0 0 0 0 0 0 0 0 0 0 Heather_Garriock 0 0 0 0 
+2457	0 Pu_Wei Pu_Wei 0 0 0 0 0 0 0 0 0 0 0 0 
+2458	Australia 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2459	China 0 0 0 0 0 0 0 0 0 
+2460	0 Liu_Yali Liu_Yali 0 0 0 0 0 0 0 0 0 0 0 0 
+2461	Australia 0 0 0 0 0 0 0 0 0 0 Heather_Garriock 0 0 Weng_Xinzhi Weng_Xinzhi 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2462	0 Matildas 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 Sarah_Walsh Sarah_Walsh 0 0 0 0 0 0 0 0 0 China 0 Pu_Wei Pu_Wei 0 0 0 0 
+2463	0 0 0 0 0 0 0 0 0 0 0 0 
+2464	0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
+2465	China 0 0 0 0 0 0 0 FIFA_Women's_World_Cup FIFA_Women's_World_Cup 0 
+2466	0 0 0 Vietnam 0 0 0 0 Shanghai 0 0 0 England 0 0 0 0 Macao 0 China 0 0 0 0 0 0 0 0 0 0 0 
