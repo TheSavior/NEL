@@ -33,7 +33,7 @@ public class Main {
 		// Multi-doc processor processes many documents at once using our factory
 		MultiDocumentProcessor multiDocProcessor = new MultiDocumentProcessor(4);
 		// Add our callback to retrieve the results for each document
-		multiDocProcessor.addProcessDocumentListener(new ProcessedDocumentCallback() {
+		multiDocProcessor.setProcessDocumentListener(new ProcessedDocumentCallback() {
 
 			@Override
 			public void onDocumentFinished(AbstractDocument document) {

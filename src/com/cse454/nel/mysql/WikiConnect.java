@@ -16,6 +16,11 @@ import com.cse454.nel.scripts.PullFromWikipedia;
 public class WikiConnect extends MySQLConnect {
 	private static String defaultDB = "wikidb";
 	
+	private static int maxCrosswikiEntries = 10;
+	public static void SetMaxCrosswikiEntries(int max) {
+		maxCrosswikiEntries = max;
+	}
+	
 	private PullFromWikipedia wikipedia;
 
 	private Map<String, String> page_textCache; // page_latest -> text
@@ -35,7 +40,7 @@ public class WikiConnect extends MySQLConnect {
 	 */
 	public List<CrossWikiDataScript> GetCrossWikiDocs(String entityMention, boolean removeDisambiguation) throws SQLException {
 
-		String query = "Select * from crosswiki where mention = ? order by likelihood desc limit 10";
+		String query = "Select * from crosswiki where mention = ? order by likelihood desc limit ?";
 		PreparedStatement st = null;
 		ResultSet rs = null;
 
@@ -43,6 +48,7 @@ public class WikiConnect extends MySQLConnect {
 		try {
 			st = connection.prepareStatement(query);
 			st.setString(1, entityMention);
+			st.setInt(2, maxCrosswikiEntries);
 			rs = st.executeQuery();
 			while (rs.next()) {
 				if (removeDisambiguation && rs.getString(3).contains("_(disambiguation)")) {

@@ -27,10 +27,9 @@ public class MultiDocumentProcessor {
 
 	private static final FeatureWeights DEFAULT_WEIGHTS = new FeatureWeights();
 	static {
-		DEFAULT_WEIGHTS.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
-		DEFAULT_WEIGHTS.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
-		DEFAULT_WEIGHTS.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING,
-				1);
+		DEFAULT_WEIGHTS.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 9);
+		DEFAULT_WEIGHTS.setFeature(CrossWikiSearcher.FEATURE_STRING, 13);
+		DEFAULT_WEIGHTS.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING, 78);
 	}
 	private final int numThreads;
     private final ThreadPoolExecutor executor;
@@ -67,7 +66,7 @@ public class MultiDocumentProcessor {
 		System.out.println("Processing Complete");
 	}
 
-	public void addProcessDocumentListener(ProcessedDocumentCallback callback) {
+	public void setProcessDocumentListener(ProcessedDocumentCallback callback) {
 		mCallback = callback;
 	}
 
