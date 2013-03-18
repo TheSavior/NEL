@@ -1,12 +1,16 @@
 package com.cse454.nel;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.cse454.nel.MultiDocumentProcessor.ProcessedDocumentCallback;
 import com.cse454.nel.dataobjects.Sentence;
@@ -37,7 +41,22 @@ public class Main {
 
 			@Override
 			public void onDocumentFinished(AbstractDocument document) {
-				// write the entities to a file?
+				// write the entities to a file
+				try {
+					FileWriter fw = new FileWriter(FOLDER + "ents_" + document.GetName());
+					BufferedWriter out = new BufferedWriter(fw);
+					for (Sentence sentence : document.GetSentences()) {
+						String ents = StringUtils.concatenate(sentence.getEntities());
+						out.write(sentence.getSentenceId() + "\t" + ents + "\n");
+					}
+					out.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			@Override
 			public void onProcessError(Exception e) {
@@ -78,7 +97,7 @@ public class Main {
 		private final DocPreProcessor preprocessor;
 
 		protected FileDocument(File file, DocPreProcessor preProcessor) {
-			super(file.getAbsolutePath());
+			super(file.getName());
 			this.file = file;
 			this.preprocessor = preProcessor;
 		}
