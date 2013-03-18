@@ -14,6 +14,7 @@ import com.cse454.nel.dataobjects.EntityMention;
 import com.cse454.nel.dataobjects.Sentence;
 import com.cse454.nel.disambiguate.Disambiguator;
 import com.cse454.nel.document.AbstractDocument;
+import com.cse454.nel.document.SimpleDocument;
 import com.cse454.nel.extract.AbstractEntityExtractor;
 import com.cse454.nel.extract.NerExtractor;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
@@ -33,10 +34,16 @@ import com.cse454.nel.search.CrossWikiSearcher;
  */
 public class DocumentProcessor {
 
+	private static FeatureWeights WEIGHTS = new FeatureWeights();
+	static {
+		WEIGHTS.setFeature(InLinkFeatureGenerator.FEATURE_STRING, 1);
+		WEIGHTS.setFeature(CrossWikiSearcher.FEATURE_STRING, 1);
+		WEIGHTS.setFeature(AllWordsHistogramFeatureGenerator.FEATURE_STRING,
+				1);
+	}
+
 	private final DocPreProcessor mPreProcessor;
 	private final WikiConnect mWikiDb;
-
-	private FeatureWeights mFeatureWeights;
 
 	/**
 	 * Constructs a new {@link DocumentProcessor}
@@ -56,16 +63,19 @@ public class DocumentProcessor {
 	 * @param weights The {@link FeatureWeights} to use during this document processing.
 	 */
 	public void setFeatureWeights(FeatureWeights weights) {
-		mFeatureWeights = weights;
+		WEIGHTS = weights;
 	}
 
 	/**
 	 * Parses text into sentences, extracts entities from them and returns a list
 	 * of {@link Sentence}s with their entities field filled.
+	 * @throws Exception
 	 */
-	public List<Sentence> processDocument(String text) {
+	public AbstractDocument processDocument(String text) throws Exception {
 		List<Sentence> sentences = mPreProcessor.ProccessArticle(text);
-		return processDocument(sentences);
+		AbstractDocument doc = new SimpleDocument("simple", sentences);
+		processDocument(doc);
+		return doc;
 	}
 
 	/**
@@ -73,33 +83,33 @@ public class DocumentProcessor {
 	 * mutates its inner list of {@link Sentence}s
 	 * @param document Document to extract entities from.
 	 * @return The same document object given, with it's inner list of sentences changed.
+	 * @throws Exception
 	 */
-	public AbstractDocument processDocument(AbstractDocument document) {
-		List<Sentence> sentences = document.GetSentences();
-		processDocument(sentences);
-		return document;
+	public void processDocument(AbstractDocument document) throws Exception {
+		processDocumentHelper(document);
 	}
 
 	/**
 	 * Changes out param sentences by adding their LinkedEntities field.
+	 * @throws Exception
+	 * @throws IllegalArgumentException
 	 */
-	private List<Sentence> processDocument(List<Sentence> sentences) {
+	private void processDocumentHelper(AbstractDocument document) throws Exception {
 		// Extract entity mentions from sentences
-		List<EntityMention> mentions = extractEntityMentions(sentences);
-
+		List<EntityMention> mentions = extractEntityMentions(document.GetSentences());
+		document.setMentions(mentions);
 		// Generate candidate entities for each mention
 		generateCandidateEntities(mentions);
 
 		// Generate feature scores for each mention
 		Set<String> features = new HashSet<>();
-		for (Entry<String, Double> weight : mFeatureWeights.entrySet()) {
+		for (Entry<String, Double> weight : WEIGHTS.entrySet()) {
 			features.add(weight.getKey());
 		}
-		generateFeatureScores(mentions, sentences, features);
+		generateFeatureScores(mentions, document.GetSentences(), features);
 
 		// Disambiguate
-		disambiguate(mentions, sentences);
-		return sentences;
+		disambiguate(mentions, document.GetSentences());
 	}
 
 	/**
@@ -164,7 +174,7 @@ public class DocumentProcessor {
 		Disambiguator disambiguator = new Disambiguator();
 		Map<Integer, List<EntityMention>> sentenceEntities = listEntityMentionBySentenceID(mentions);
 		// Disambiguate
-		disambiguator.disambiguate(mentions, mFeatureWeights);
+		disambiguator.disambiguate(mentions, WEIGHTS);
 
 		// Collate data per sentence
 		for (Sentence sentence : sentences) {

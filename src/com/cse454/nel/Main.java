@@ -19,7 +19,7 @@ import com.cse454.nel.document.DocumentFactory;
  */
 public class Main {
 
-	private static final int NUM_THREADS = 4;
+	private static final int NUM_THREADS = 1;
 	private static final String FOLDER = "./docs/";
 
 	public static void main(String[] args) throws Exception {
@@ -28,7 +28,7 @@ public class Main {
 
 		// Create a new doc factory for our document files
 		DocPreProcessor preProcessor = new DocPreProcessor();
-		DocumentFactory docFactory = new FileDocumentFactory(FOLDER, preProcessor);
+		FileDocumentFactory docFactory = new FileDocumentFactory(FOLDER, preProcessor);
 
 		// Multi-doc processor processes many documents at once using our factory
 		MultiDocumentProcessor multiDocProcessor = new MultiDocumentProcessor(4);
@@ -38,6 +38,10 @@ public class Main {
 			@Override
 			public void onDocumentFinished(AbstractDocument document) {
 				// write the entities to a file?
+			}
+			@Override
+			public void onProcessError(Exception e) {
+				// error processing file
 			}
 		});
 
@@ -62,9 +66,10 @@ public class Main {
 			if (curDoc == files.length) {
 				return null;
 			}
-			return new FileDocument(files[curDoc], preprocessor);
+			FileDocument doc = new FileDocument(files[curDoc], preprocessor);
+			curDoc++;
+			return doc;
 		}
-
 	}
 
 	private static class FileDocument extends AbstractDocument {

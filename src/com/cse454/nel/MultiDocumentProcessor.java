@@ -22,6 +22,7 @@ public class MultiDocumentProcessor {
 
 	public static interface ProcessedDocumentCallback {
 		public void onDocumentFinished(AbstractDocument document);
+		public void onProcessError(Exception e);
 	}
 
 	private static final FeatureWeights DEFAULT_WEIGHTS = new FeatureWeights();
@@ -105,7 +106,12 @@ public class MultiDocumentProcessor {
 					break;
 				}
 
-				processor.processDocument(document);
+				try {
+					processor.processDocument(document);
+				} catch (Exception e) {
+					mCallback.onProcessError(e);
+					continue;
+				}
 
 				// Now do some useful work with the entities!
 				if (mCallback != null) {

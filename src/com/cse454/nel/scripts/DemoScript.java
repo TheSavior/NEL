@@ -25,6 +25,7 @@ import javax.swing.event.HyperlinkListener;
 import com.cse454.nel.DocPreProcessor;
 import com.cse454.nel.DocumentProcessor;
 import com.cse454.nel.dataobjects.Sentence;
+import com.cse454.nel.document.AbstractDocument;
 import com.cse454.nel.features.AllWordsHistogramFeatureGenerator;
 import com.cse454.nel.features.FeatureWeights;
 import com.cse454.nel.features.InLinkFeatureGenerator;
@@ -88,7 +89,7 @@ public class DemoScript {
 		new DemoScript();
 	}
 
-	public void Link() {
+	public void Link() throws Exception {
 		weights = new FeatureWeights();
 		int in;
 		int cross;
@@ -124,21 +125,21 @@ public class DemoScript {
 
 		// Here's the text to be linked (value to come from gui)
 		String text = input.getText();
-		List<Sentence> results;
+		AbstractDocument result;
 		try {
 			processor.setFeatureWeights(weights);
-			results = processor.processDocument(text);
+			result = processor.processDocument(text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			// JOptionPane.showMessageDialog(null, e.getMessage());
 			return;
 		}
-
+		List<Sentence> sentences = result.GetSentences();
 		StringBuilder builder = new StringBuilder();
 
-		System.out.println(results.size() + " sentences");
-		for (Sentence s : results) {
+		System.out.println(sentences.size() + " sentences");
+		for (Sentence s : sentences) {
 			String[] ents = s.getEntities();
 			String[] tokens = s.getTokens();
 			if (ents == null) {
@@ -279,7 +280,12 @@ public class DemoScript {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Linking");
-				Link();
+				try {
+					Link();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		frmNamedEntityLinker.setVisible(true);
